@@ -8,6 +8,7 @@ import {
 import images from '@config/Images';
 import fonts from '@config/Fonts';
 import {ScreenHeight} from '@rneui/base';
+import colors from '@config/Colors';
 
 type Props = {
   title?: string;
@@ -18,14 +19,15 @@ type Props = {
 const AuthLayoutContainer = ({children, title, description}: Props) => {
   return (
     <BackgroundImgContainer>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView extraHeight={0} extraScrollHeight={0}>
         <View
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            height: ScreenHeight - 500,
+            flex:1,
+            paddingBottom:16
           }}>
           <Image source={images.appLogo} style={{width: 200, height: 200}} />
         </View>
@@ -44,7 +46,8 @@ const AuthLayoutContainer = ({children, title, description}: Props) => {
               <Typography
                 lineHeight={18}
                 fontSize={15}
-                fontFamily={fonts.poppinsRegular}>
+                fontFamily={fonts.poppinsRegular}
+                color={colors.primaryTextLight}>
                 {description}
               </Typography>
             )}

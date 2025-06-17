@@ -1,49 +1,48 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image} from 'react-native';
 import React, {memo} from 'react';
 import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import colors from '@config/Colors';
+import Typography from '@components/ui/Typography';
+import fonts from '@config/Fonts';
+import { FontAwesome } from '@components/index';
+import styles from './BottomTab.style';
 
 const BottomTab = ({
   tabs,
   state,
-  navigation
-}: BottomTabBarProps & {tabs: {label: string; icon: any}[]}) => {
+  navigation,
+}: BottomTabBarProps & {tabs: {label: string; icon?: any; image?: any}[]}) => {
   return (
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          height: 75,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          backgroundColor: colors.white,
-          elevation: 20,
-          paddingHorizontal: 16,
-          paddingTop:5,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        {tabs.map((item, index) => (
+    <View
+      style={styles.container}>
+      {tabs.map((item, index) => {
+        const isActive = state.index === index;
+        return (
           <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={()=>navigation.navigate(item.label)}
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate(item.label)}
             key={index}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flex: 1,
-              gap: 4,
-            }}>
-            <Image source={item.icon} tintColor={state.index === index ? colors.primary : colors.tabBarItem} />
-            <Text style={{color:state.index === index ? colors.primaryText : colors.tabBarItem, fontSize:13}}>{item.label}</Text>
+            style={styles.tabItem}>
+            {item?.image && (
+              <Image
+                source={item.image}
+                style={styles.tabImage}
+                resizeMode="contain"
+                tintColor={isActive ? colors.primary : colors.tabBarItem}
+              />
+            )}
+            {item?.icon && <FontAwesome name={item?.icon} size={23.5} color={isActive ? colors.primary : colors.tabBarItem} />}
+            <Typography
+              fontSize={13}
+              fontFamily={
+                isActive ? fonts.poppinsMedium : fonts.poppinsRegular
+              }>
+              {item.label}
+            </Typography>
           </TouchableOpacity>
-        ))}
-      </View>
+        );
+      })}
+    </View>
   );
 };
 

@@ -1,7 +1,7 @@
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
 import React, { memo, ReactNode } from 'react';
-import {Text, StyleSheet, TextStyle} from 'react-native';
+import {Text, StyleSheet, TextStyle, TextProps} from 'react-native';
 
 type Props = {
   children?:ReactNode,
@@ -11,7 +11,7 @@ type Props = {
   color?:string,
   style?:TextStyle,
   onPress?:()=>void
-}
+} & TextProps
 
 const Typography = ({
   children,

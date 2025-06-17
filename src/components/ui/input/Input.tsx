@@ -32,7 +32,7 @@ interface InputFieldProps {
   leftIcon?: any;
   rightIcon?: any;
   maxLength?: number;
-  error?: string;
+  error?: any;
   numberOfLines?: number;
   multiline?: boolean;
   inputMode?: 'text' | 'numeric' | 'decimal' | 'email' | 'tel' | 'url' | undefined;

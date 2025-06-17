@@ -5,11 +5,11 @@ import { StyleSheet } from 'react-native';
 const Styles = StyleSheet.create({
   inputContainerStyle: {
     borderWidth: 1.5,
-    borderRadius: 15,
+    borderRadius: 12,
     borderColor: colors.inputBorder,
     paddingHorizontal: 10,
     backgroundColor: colors.btnSecondary,
-    borderBottomWidth:1.5
+    borderBottomWidth:1.5,
   },
   containerStyle: {
     paddingHorizontal: 0,

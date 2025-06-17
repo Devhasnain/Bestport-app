@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "12305641445",
+    "project_id": "best-port",
+    "storage_bucket": "best-port.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12305641445:android:6d258b3854f7012ff5c90c",
+        "android_client_info": {
+          "package_name": "com.bestport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12305641445-es3hu77tlnbv879sv4gm66e4k3vl03o9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxnS0OyHoO_dpk_b_lPVCtg9WbSpqk8lk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12305641445-es3hu77tlnbv879sv4gm66e4k3vl03o9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

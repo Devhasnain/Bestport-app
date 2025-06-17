@@ -65,6 +65,9 @@ const colors = {
 
   // Chat and notification aleart
   aleart: 'green',
+
+
+  gray:"#D3D3D3",
 };
 
 export default colors;

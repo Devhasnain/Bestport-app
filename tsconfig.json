@@ -11,7 +11,9 @@
       "@config/*": ["config/*"],
       "@store/*": ["store/*"],
       "@navigation/*": ["navigation/*"],
-      "@hooks/*":["hooks/*"]
+      "@hooks/*":["hooks/*"],
+      "@api/*":["api/*"],
+      "@services/*":["services/*"],
     }
   }
 }
