@@ -1,3 +1,4 @@
+import { ScreenWidth } from "@rneui/base";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -6,7 +7,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
-        paddingVertical: 10,
+        width:ScreenWidth
     }
 });
 

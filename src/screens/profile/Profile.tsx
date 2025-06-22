@@ -61,7 +61,9 @@ const Profile = () => {
     <>
       <BackgroundImgContainer>
         <Header title="Profile" />
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingHorizontal:12}}
+        >
           <View
             style={{
               display: 'flex',

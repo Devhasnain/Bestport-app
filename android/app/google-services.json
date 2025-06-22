@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "12305641445-6v8kj05i2tc1qluk3bn8dkq027ek5qim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bestport",
+            "certificate_hash": "328d4b8db84fa11ff7c4b261f62c13c1dcdbcea3"
+          }
+        },
+        {
           "client_id": "12305641445-es3hu77tlnbv879sv4gm66e4k3vl03o9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "12305641445-es3hu77tlnbv879sv4gm66e4k3vl03o9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bestport"
+              }
             }
           ]
         }

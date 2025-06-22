@@ -4,6 +4,8 @@ const endpoints = {
     profile:"/auth/me",
     setFcm:"/auth/set-fcm",
     getFcm:"/auth/fcm",
+    createJob:"job/create",
+    jobs:'job'
 };
 
 export default endpoints;

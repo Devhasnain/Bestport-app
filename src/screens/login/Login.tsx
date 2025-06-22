@@ -38,10 +38,14 @@ const Login = () => {
     }
   }, []);
 
+  const redirectToForget = useCallback(() => {
+    navigate('ForgetPassword');
+  }, []);
+
   return (
     <AuthLayoutContainer
       title="Login"
-      description="Welcome back! Please enter your credentials to continue.">
+      description="Please enter your credentials to continue.">
       <Formik
         initialValues={initialValues}
         validationSchema={loginSchema}
@@ -62,7 +66,7 @@ const Login = () => {
                 onChange={handleChange('password')}
                 error={touched?.password && errors.password}
               />
-              <TouchableOpacity activeOpacity={0.8}>
+              <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
                 <Typography
                   color={colors.authLinkText}
                   fontSize={15}

@@ -1,6 +1,9 @@
+import { JobStatus } from "../types/job";
+
 export const dummyJobs = [
   {
     _id: "job1",
+    urgency: "Low",
     title: "Fix kitchen sink leak",
     description: "The kitchen sink is leaking from the bottom and needs urgent repair.",
     category: "Plumbing",
@@ -25,6 +28,7 @@ export const dummyJobs = [
   },
   {
     _id: "job2",
+    urgency: "High",
     title: "Install ceiling fan",
     description: "Need a new ceiling fan installed in the living room.",
     category: "Electrical",
@@ -46,6 +50,7 @@ export const dummyJobs = [
   },
   {
     _id: "job3",
+    urgency: "Medium",
     title: "Paint bedroom walls",
     description: "Repainting bedroom walls with a fresh coat of light blue.",
     category: "Painting",
@@ -70,6 +75,7 @@ export const dummyJobs = [
   },
   {
     _id: "job1",
+    urgency: "High",
     title: "Fix kitchen sink leak",
     description: "The kitchen sink is leaking from the bottom and needs urgent repair.",
     category: "Plumbing",
@@ -94,6 +100,7 @@ export const dummyJobs = [
   },
   {
     _id: "job2",
+    urgency: "Low",
     title: "Install ceiling fan",
     description: "Need a new ceiling fan installed in the living room.",
     category: "Electrical",
@@ -115,6 +122,7 @@ export const dummyJobs = [
   },
   {
     _id: "job3",
+    urgency: "Medium",
     title: "Paint bedroom walls",
     description: "Repainting bedroom walls with a fresh coat of light blue.",
     category: "Painting",
@@ -139,6 +147,7 @@ export const dummyJobs = [
   },
   {
     _id: "job1",
+    urgency: "Low",
     title: "Fix kitchen sink leak",
     description: "The kitchen sink is leaking from the bottom and needs urgent repair.",
     category: "Plumbing",
@@ -163,6 +172,7 @@ export const dummyJobs = [
   },
   {
     _id: "job2",
+    urgency: "Low",
     title: "Install ceiling fan",
     description: "Need a new ceiling fan installed in the living room.",
     category: "Electrical",
@@ -184,6 +194,7 @@ export const dummyJobs = [
   },
   {
     _id: "job3",
+    urgency: "Low",
     title: "Paint bedroom walls",
     description: "Repainting bedroom walls with a fresh coat of light blue.",
     category: "Painting",
@@ -264,6 +275,44 @@ export const serviceTypes = [
 ];
 
 
-export const urgencyLevel=[
+export const urgencyLevel = [
   "Low", "Medium", "High"
 ]
+
+export const urgencyLevelText = (urgency: string) => {
+
+  switch (urgency) {
+    case "Low":
+      return "No rush"
+    case "Medium":
+      return "Should be handled soon"
+    case "High":
+      return "Requires immediate attention"
+  }
+}
+
+
+export function formatJobStatus(status: JobStatus): string {
+  const map: Record<JobStatus, string> = {
+    pending: 'Pending',
+    assigned: 'Assigned',
+    'in-progress': 'In Progress',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+  };
+
+  return map[status] || status;
+}
+
+
+export function getStatusColor(status: JobStatus): string {
+  const colorMap: Record<JobStatus, string> = {
+    pending: '#facc15',        // Yellow
+    assigned: '#3b82f6',       // Blue
+    'in-progress': '#06b6d4',  // Cyan
+    completed: '#22c55e',      // Green
+    cancelled: '#ef4444',      // Red
+  };
+
+  return colorMap[status] || '#6b7280';
+}

@@ -1,18 +1,19 @@
-import {ImageBackground} from 'react-native';
+import {ImageBackground, View} from 'react-native';
 import React, {ReactNode} from 'react';
 import images from '@config/Images';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {ScreenHeight} from '@rneui/base';
 
 type Props = {
   children: ReactNode;
-  px?:number
 };
 
-const BackgroundImgContainer = ({children, px = 16}: Props) => {
+const BackgroundImgContainer = ({children}: Props) => {
   return (
-    <ImageBackground source={images.appBackground} style={{flex: 1}}>
-      <SafeAreaView style={{paddingHorizontal: px}}>{children}</SafeAreaView>
-    </ImageBackground>
+    <View style={{flex: 1, minHeight: ScreenHeight}}>
+      <ImageBackground source={images.appBackground} style={{flex: 1}}>
+          {children}
+      </ImageBackground>
+    </View>
   );
 };
 

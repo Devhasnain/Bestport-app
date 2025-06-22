@@ -3,7 +3,7 @@ import NetInfo from '@react-native-community/netinfo';
 import endpoints from './endpoints';
 // Base URLs
 const live = `https://bestport-backend-production.up.railway.app/api/v1`;
-const dev = 'http://192.168.1.102:5000/api/v1';
+const dev = 'http://192.168.1.103:3000/api/v1';
 
 const baseApi = axios.create({
   baseURL: `${live}`,

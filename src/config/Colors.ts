@@ -1,73 +1,65 @@
 const colors = {
-  // Main App Color
-  primary: '#F14900' /* #F14900 */,
-  secondary: '#000000',
-  white: '#fff',
+  // Core Branding Colors
+  primary: '#fe6313',         // Main orange from logo
+  secondary: '#231F20',       // Deep black for contrast
+  white: '#FFFFFF',           // White for background and contrast
 
-  // Text Primary Color
-  primaryText: '#000000' /* #000000 */,
-  primaryTextLight: '#666666' /* #666666 */,
+  // Text Colors
+  primaryText: '#231F20',     // Dark charcoal for readability
+  primaryTextLight: '#666666',// Subdued for hints/descriptions
 
-  // Button Text Color. Used in buttons and cards
-  primaryBtnText: '#fff' /*#fff */,
+  // Button Text
+  primaryBtnText: '#FFFFFF',  // For contrast on primary buttons
 
-  // Button Background Color
-  btnPrimary: '#F14900' /* #F14900 */,
-  btnSecondary: '#fff' /* #fff */,
-  btnAccent: '#000000' /* #000000 */,
-  btnDisabled:"rgb(253, 177, 144)" /*rgb(253, 177, 144) */,
-  messageBox:"rgb(252, 194, 170)" /*rgb(253, 177, 144) */,
+  // Button Backgrounds
+  btnPrimary: '#fe6313',      // Bright brand orange
+  btnSecondary: '#FFFFFF',    // White button background
+  btnAccent: '#231F20',       // High contrast black for secondary emphasis
+  btnDisabled: '#FDB190',     // Soft peach for disabled state
+  messageBox: '#FCC2AA',      // Very light peach for message backgrounds
 
-  // Input Placeholder Color
-  inputplaceholder: '#A5A5A5' /* #888888  #A5A5A5*/,
-  inputBorder: '#A5A5A5' /* #D1D1D1  #A5A5A5*/,
-  activeInputBorderColor: '#F14900' /* #F14900 */,
+  // Inputs
+  inputplaceholder: '#A5A5A5',        // Muted gray
+  inputBorder: '#CCCCCC',             // Light gray border
+  activeInputBorderColor: '#fe6313',  // Highlight input on focus
 
-  // Tab Bar Items
-  tabBarItem: '#A5A5A5' /* #A5A5A5 */,
-  activeTabIcon: '#F14900' /* #F14900 */,
-  activeTabText: '#E3001B' /* #E3001B */,
+  // Tabs
+  tabBarItem: '#A5A5A5',      // Inactive tab color
+  activeTabIcon: '#fe6313',   // Brand color for active icon
+  activeTabText: '#E3001B',   // Bright red for active tab text
 
-  cardBackground: '#F14900' /* #F14900*/,
-  jobTypeBadge: '#FF5B14' /* ##FF5B14*/,
-  cardBadgeDark: '#0060AD1C' /*for white background card #0060AD1C */,
+  // Cards & Badges
+  cardBackground: '#FFF3ED',  // Lightened background using brand orange tint
+  jobTypeBadge: '#FF5B14',    // Accent orange for job type
+  cardBadgeDark: '#0060AD1C', // Subtle dark badge for overlays
 
-  checkedRadio: '#F14900 ' /* #FF5B14 */,
-  notificationDot: '#E3001B',
-  editBtnBlack: '#231F20',
+  // Radio & Checkbox
+  checkedRadio: '#F14900',    
+  checkedColor: '#F14900',
 
-  // Auth Page Links Texts  Forget password, Sign up, Sign In
-  authLinkText: '#E3001B',
-
-  // Stepper Inactive circle color && Edit Profile Image Background  && Switch Component
-  stepperDefault: '#C4C4C4',
-
-  // Select Checkbox Card
-  checkedColor: '#F14900' /* #FF5B14 */,
-
-  // Rating Star Color
-  ratingStarColor: '#F6CC23',
-
-  // Will be removed at the end
-  // accent: '#000000',
-  // accentLight: '#666666',
-
-  // Drawer
+  // Icons, Drawers, Links
   drawerIcon: '#F14900',
+  editBtnBlack: '#231F20',
+  authLinkText: '#E3001B',     // For link texts like sign in/up
 
-  profileProgressBar: '#E3001B' /* Loophire #E3001B Chefzone #FFCFD5 */,
+  // Stepper & Profile
+  stepperDefault: '#C4C4C4',     // Light gray for inactive step
+  profileProgressBar: '#E3001B', // Strong red progress
 
-  // Strike Color
-  strikeColor: '#FFCFD5',
+  // Ratings
+  ratingStarColor: '#F6CC23',   // Yellow star for rating visuals
 
-  // video card poster overlay color
-  black50: 'rgba(0,0,0,0.5)',
+  // Strikes / lines
+  strikeColor: '#FFCFD5',       // Pale pink for strike-through
 
-  // Chat and notification aleart
-  aleart: 'green',
+  // Overlays
+  black50: 'rgba(0, 0, 0, 0.5)',
 
+  // Alerts
+  aleart: '#28A745',           // Bootstrap green for success or alerts
 
   gray:"#D3D3D3",
+
 };
 
 export default colors;

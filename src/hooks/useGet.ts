@@ -11,7 +11,7 @@ type Props = {
 export const useGet = ({ endpoint, token, autoFetch = false }: Props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>(null);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
 
   const request = useCallback(async () => {
     setLoading(true);

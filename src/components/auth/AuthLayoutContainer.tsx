@@ -7,7 +7,6 @@ import {
 } from '@components/index';
 import images from '@config/Images';
 import fonts from '@config/Fonts';
-import {ScreenHeight} from '@rneui/base';
 import colors from '@config/Colors';
 
 type Props = {
@@ -19,7 +18,9 @@ type Props = {
 const AuthLayoutContainer = ({children, title, description}: Props) => {
   return (
     <BackgroundImgContainer>
-      <KeyboardAvoidingView extraHeight={0} extraScrollHeight={0}>
+      <KeyboardAvoidingView extraHeight={0} extraScrollHeight={0}
+      contentContainerStyle={{paddingHorizontal:16}}
+      >
         <View
           style={{
             display: 'flex',
@@ -27,7 +28,7 @@ const AuthLayoutContainer = ({children, title, description}: Props) => {
             alignItems: 'center',
             justifyContent: 'center',
             flex:1,
-            paddingBottom:16
+            paddingVertical:30
           }}>
           <Image source={images.appLogo} style={{width: 200, height: 200}} />
         </View>

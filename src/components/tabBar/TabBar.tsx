@@ -14,7 +14,7 @@ import Typography from '@components/ui/Typography';
 import colors from '@config/Colors';
 
 const {width} = Dimensions.get('window');
-const TAB_WIDTH = 100;
+const TAB_WIDTH = 105;
 
 type Props = {
   tabs: any[];
@@ -102,14 +102,12 @@ const TabBar = ({tabs = [], containerStyle}: Props) => {
     <>
       <FlatList
         ref={flatListRef}
-        contentContainerStyle={
-          [
-            {
-              paddingHorizontal:12,
-              gap:12,
-            }
-          ]
-        }
+        contentContainerStyle={[
+          {
+            paddingHorizontal: 12,
+            gap: 12,
+          },
+        ]}
         style={{
           minHeight: 50,
           maxHeight: 50,

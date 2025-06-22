@@ -22,8 +22,7 @@ const AppFlatlist = ({
   windowSize = 5,
   removeClippedSubviews = true,
   updateCellsBatchingPeriod = 50,
-  ListEmptyComponentStyles = {},
-  ListEmptyComponentTitle = 'No results found.',
+  renderEmptyComponent = () => <NoResultsFound title={'No results found.'} />,
   contentContainerStyle = {},
   renderItem,
   ...props
@@ -31,17 +30,6 @@ const AppFlatlist = ({
   const keyExtractor = useCallback(
     (_: any, index: number) => index.toString(),
     [],
-  );
-
-  const renderEmptyComponent = useMemo(
-    () => () =>
-      (
-        <NoResultsFound
-          title={ListEmptyComponentTitle}
-          additionalStyles={ListEmptyComponentStyles}
-        />
-      ),
-    [ListEmptyComponentTitle, ListEmptyComponentStyles],
   );
 
   const renderFooter = useMemo(
@@ -83,7 +71,12 @@ const AppFlatlist = ({
       removeClippedSubviews={removeClippedSubviews}
       updateCellsBatchingPeriod={updateCellsBatchingPeriod}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={[contentContainerStyle]}
+      contentContainerStyle={[
+        contentContainerStyle,
+        {
+          paddingBottom: 110,
+        },
+      ]}
       {...props}
     />
   );

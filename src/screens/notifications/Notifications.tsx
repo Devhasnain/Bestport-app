@@ -70,8 +70,8 @@ const notifications = [
 
 const Notifications = () => {
   return (
-    <BackgroundImgContainer px={0}>
-      <Header title="Notifications" style={{paddingHorizontal: 12}} />
+    <BackgroundImgContainer>
+      <Header title="Notifications" />
       <AppFlatlist
         contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12, gap: 12}}
         data={notifications}

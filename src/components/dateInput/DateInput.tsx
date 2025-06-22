@@ -1,4 +1,4 @@
-import {formatTo12HourTime, formatToDMY} from '@utils/DateFormat';
+import {formatTo12HourTime, formatToDMY, formatToFull12HourDateTime} from '@utils/DateFormat';
 import {
   TouchableOpacity,
   Image,
@@ -22,7 +22,7 @@ type Props = {
   handleChange?: any;
   additionlStyle?: ViewStyle;
   placeholder: string;
-  error?: string;
+  error?: any;
 };
 
 const DateInput = ({
@@ -88,7 +88,7 @@ const DateInput = ({
               : mode === 'time'
               ? formatTo12HourTime(value)
               : mode === 'datetime'
-              ? formatTo12HourTime(value)
+              ? formatToFull12HourDateTime(value)
               : value
             : placeholder}
         </Text>

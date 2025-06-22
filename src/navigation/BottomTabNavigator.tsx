@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MyListings from '@screens/customer/myListings/MyListings';
+import Home from '@screens/home';
 import images from '@config/Images';
 import {BottomTab} from '@components/index';
 import Notifications from '@screens/notifications/Notifications';
@@ -28,7 +28,7 @@ const BottomTabNavigator = () => {
   return (
     <TabStack.Navigator
       screenOptions={{
-        animation:"fade",
+        animation: 'fade',
         tabBarStyle: {
           height: 70,
           paddingTop: 8,
@@ -37,7 +37,7 @@ const BottomTabNavigator = () => {
       tabBar={props => <BottomTab tabs={TabBarItems} {...props} />}>
       <TabStack.Screen
         name="Home"
-        component={MyListings}
+        component={Home}
         options={{
           headerShown: false,
         }}

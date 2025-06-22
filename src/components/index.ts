@@ -15,6 +15,8 @@ export { default as SearchBar } from "./searchBar/SearchBar"
 export { default as AppFlatlist } from "./appFlatlist/AppFlatlist"
 export { default as NetworkAware } from "./networkAware/NetworkAware"
 export { default as UserProfileImagePicker } from "./userProfileImagePicker/UserProfileImagePicker"
+export {default as NoResultsFound} from "./NoResultsFound";
+export {default as JobCard} from "./jobCard/JobCard";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

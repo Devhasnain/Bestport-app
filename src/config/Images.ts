@@ -14,6 +14,7 @@ const images = {
     googleIcon: require('@assets/images/google.png'),
     angleDownImage: require('@assets/images/dropdown.png'),
     checkBoxImg: require('@assets/images/check.png'),
+    wavingHand: require('@assets/images/waving-hand.png'),
 
     // Tabbar Icons 
     homeIcon: require("@assets/images/home2.png"),

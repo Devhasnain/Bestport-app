@@ -10,16 +10,19 @@ import SignUp from '@screens/signup/SignUp';
 import CreateJob from '@screens/createJob/CreateJob';
 import Faqs from '@screens/faqs/Faqs';
 import JobDetail from '@screens/jobDetail/JobDetail';
+import ForgetPassword from '@screens/forgetPassword/ForgetPassword';
+import VerifyOtp from '@screens/verifyOtp/VerifyOtp';
+import SetNewPassword from '@screens/setNewPassword/SetNewPassword';
 
 const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShown: false,
-  animation:"fade_from_bottom"
+  animation: 'fade_from_bottom',
 };
 
 const RootStack = createNativeStackNavigator();
 const RootNavigation = () => {
   return (
-    <RootStack.Navigator initialRouteName='Welcome'>
+    <RootStack.Navigator initialRouteName="Welcome">
       <RootStack.Screen
         name="App"
         component={BottomTabNavigator}
@@ -53,6 +56,21 @@ const RootNavigation = () => {
       <RootStack.Screen
         name="SignUp"
         component={SignUp}
+        options={defaultScreenOptions}
+      />
+      <RootStack.Screen
+        name="ForgetPassword"
+        component={ForgetPassword}
+        options={defaultScreenOptions}
+      />
+      <RootStack.Screen
+        name="VerifyOtp"
+        component={VerifyOtp}
+        options={defaultScreenOptions}
+      />
+      <RootStack.Screen
+        name="SetNewPassword"
+        component={SetNewPassword}
         options={defaultScreenOptions}
       />
     </RootStack.Navigator>

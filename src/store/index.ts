@@ -5,10 +5,12 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 import authReducer from './authSlice';
+import jobReducer from './jobSlice';
 
 // Combine reducers
 const rootReducer = combineReducers({
     auth: authReducer,
+    job: jobReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

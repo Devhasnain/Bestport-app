@@ -10,7 +10,6 @@ import ErrorBoundary from 'react-native-error-boundary';
 import {Provider} from 'react-redux';
 import {persistor, store} from '@store/index';
 import {PersistGate} from 'redux-persist/integration/react';
-import fonts from '@config/Fonts';
 import FirebaseProvider from '@components/FirebaseProvider';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -51,23 +50,23 @@ const App = () => {
         />
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <SafeAreaProvider>
-              <NavigationContainer
-                theme={appTheme}
-                ref={navigationRef}
-                onReady={handleOnReady}
-                onStateChange={handleOnStateChange}>
-                <GestureHandlerRootView style={{flex: 1}}>
-                  <BottomSheetModalProvider>
+            <GestureHandlerRootView style={{flex: 1}}>
+              <BottomSheetModalProvider>
+                <SafeAreaProvider>
+                  <NavigationContainer
+                    theme={appTheme}
+                    ref={navigationRef}
+                    onReady={handleOnReady}
+                    onStateChange={handleOnStateChange}>
                     <AuthManager navigationReady={navigationReady}>
                       <FirebaseProvider>
                         <RootNavigation />
                       </FirebaseProvider>
                     </AuthManager>
-                  </BottomSheetModalProvider>
-                </GestureHandlerRootView>
-              </NavigationContainer>
-            </SafeAreaProvider>
+                  </NavigationContainer>
+                </SafeAreaProvider>
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
           </PersistGate>
         </Provider>
         <NetworkAware />
