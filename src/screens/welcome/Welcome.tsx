@@ -16,6 +16,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {authorize} from 'react-native-app-auth';
 
 const config = {
+  
   issuer: 'https://login.microsoftonline.com/common/v2.0',
   clientId: 'dac1220d-a8cd-45fe-ba2a-63f495b91a9a',
   redirectUrl: 'https://best-port.firebaseapp.com/__/auth/handler',
@@ -31,6 +32,7 @@ GoogleSignin.configure({
   webClientId:
     '12305641445-es3hu77tlnbv879sv4gm66e4k3vl03o9.apps.googleusercontent.com',
   offlineAccess: true,
+  iosClientId:"12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4.apps.googleusercontent.com",
 });
 
 const Welcome = () => {
