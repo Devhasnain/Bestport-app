@@ -1,6 +1,7 @@
 import axios from 'axios';
 import NetInfo from '@react-native-community/netinfo';
 import endpoints from './endpoints';
+import { isIOS } from '@rneui/base';
 // Base URLs
 const live = `https://bestport-backend-production.up.railway.app/api/v1`;
 const dev = 'http://192.168.1.103:3000/api/v1';
@@ -17,20 +18,20 @@ const baseApi = axios.create({
 // Request Interceptor – Check Internet Before Each Request
 baseApi.interceptors.request.use(
   async (request) => {
-    try {
-      // Use NetInfo to check connection
-      const netState = await NetInfo.fetch();
+    // try {
+    //   // Use NetInfo to check connection
+    //   const netState = await NetInfo.fetch();
 
-      if (!netState.isConnected || !netState.isInternetReachable) {
-        return Promise.reject({
-          message: 'No internet connection. Please check your network.',
-          isOffline: true,
-        });
-      }
-    } catch (e) {
-      console.error('NetInfo fetch failed:', e);
-      // Optionally allow the request to proceed if NetInfo fails
-    }
+    //   if (!isIOS && !netState.isConnected || !netState.isInternetReachable) {
+    //     return Promise.reject({
+    //       message: 'No internet connection. Please check your network.',
+    //       isOffline: true,
+    //     });
+    //   }
+    // } catch (e) {
+    //   console.error('NetInfo fetch failed:', e);
+    //   // Optionally allow the request to proceed if NetInfo fails
+    // }
 
     // ✅ Optional: Debug logging in development
     if (__DEV__ && request?.baseURL) {

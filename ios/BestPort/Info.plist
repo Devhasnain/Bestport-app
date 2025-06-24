@@ -83,27 +83,22 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
-
 	<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-    <key>CFBundleTypeRole</key>
-    <string>Editor</string>
-    <key>CFBundleURLSchemes</key>
-    <array>
-      <string>com.googleusercontent.apps.12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4</string>
-    </array>
-  </dict>
-</array>
-
-<key>GoogleService-Info</key>
-<string>GoogleService-Info</string>
-<key>LSApplicationQueriesSchemes</key>
-<array>
-  <string>google</string>
-  <string>com.google.gppconsent</string>
-  <string>com.googleusercontent.apps.12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4</string>
-</array>
-
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>google</string>
+		<string>com.google.gppconsent</string>
+		<string>com.googleusercontent.apps.12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4</string>
+	</array>
 </dict>
 </plist>

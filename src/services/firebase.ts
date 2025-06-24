@@ -3,11 +3,16 @@ import baseApi, { endpoints } from '@api/index';
 import { store } from '@store/index';
 import notifee, { EventType } from '@notifee/react-native';
 import { navigate } from '@navigation/NavigationService';
+import { isIOS } from '@rneui/base';
+import { Platform } from 'react-native';
 
 /**
  * Request user permission for notifications (iOS only).
  */
 export const requestUserPermission = async () => {
+  if (isIOS && !messaging().isDeviceRegisteredForRemoteMessages) {
+    await messaging().registerDeviceForRemoteMessages();
+  }
   const authStatus = await messaging().requestPermission();
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -21,6 +26,12 @@ export const requestUserPermission = async () => {
  */
 export const getFcmToken = async (): Promise<string | null> => {
   try {
+    if (Platform.OS === 'ios') {
+      if (messaging().isDeviceRegisteredForRemoteMessages) {
+        await messaging().registerDeviceForRemoteMessages();
+      }
+    }
+
     const token = await messaging().getToken();
     if (token) {
       console.log('FCM Token:', token);
@@ -52,6 +63,9 @@ export const sendFcmTokenToServer = async (token: string) => {
 };
 
 export const onForeGroundListener = async () => {
+  if (isIOS && !messaging().isDeviceRegisteredForRemoteMessages) {
+    await messaging().registerDeviceForRemoteMessages();
+  }
   messaging().onMessage(async remoteMessage => {
     console.log(remoteMessage, 'Foreground MSG11');
     notifeeHandler(remoteMessage);
@@ -59,6 +73,9 @@ export const onForeGroundListener = async () => {
 };
 //Background notifications listeners
 export const onBackGroundListener = async () => {
+  if (isIOS && !messaging().isDeviceRegisteredForRemoteMessages) {
+    await messaging().registerDeviceForRemoteMessages();
+  }
   messaging().setBackgroundMessageHandler(async remoteMessage => {
     console.log(remoteMessage, 'Background MSG11');
     notifeeHandler(remoteMessage);
