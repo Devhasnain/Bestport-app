@@ -1,5 +1,5 @@
 import {View, ScrollView, TouchableOpacity, Image} from 'react-native';
-import React, { useCallback } from 'react';
+import React, {useCallback} from 'react';
 import {
   BackgroundImgContainer,
   Typography,
@@ -11,9 +11,10 @@ import {
 import fonts from '@config/Fonts';
 import colors from '@config/Colors';
 import images from '@config/Images';
-import { navigate } from '@navigation/NavigationService';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser, setToken, setUser } from '@store/authSlice';
+import {navigate} from '@navigation/NavigationService';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUser, setToken, setUser} from '@store/authSlice';
+import {getSocket} from '@services/socket';
 const tabs = [
   {
     title: 'Edit profile',
@@ -49,21 +50,22 @@ const tabs = [
 
 const Profile = () => {
   const user = useSelector(getUser);
-  console.log(user)
   const dispatch = useDispatch();
-  const handleLogout = useCallback(()=>{
-    dispatch(setToken(null))
-    dispatch(setUser(null))
-    navigate("Welcome")
-  },[]);
+  const handleLogout = useCallback(() => {
+    const socket = getSocket();
+    socket?.disconnect();
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+    navigate('Welcome');
+  }, []);
 
   return (
     <>
       <BackgroundImgContainer>
         <Header title="Profile" />
-        <ScrollView showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingHorizontal:12}}
-        >
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingHorizontal: 12}}>
           <View
             style={{
               display: 'flex',
@@ -86,7 +88,7 @@ const Profile = () => {
                 fontFamily={fonts.poppinsRegular}
                 fontSize={14}
                 color={colors.white}>
-                  {user?.email}
+                {user?.email}
               </Typography>
             </View>
           </View>
@@ -115,7 +117,7 @@ const Profile = () => {
               </TouchableOpacity>
             ))}
             <TouchableOpacity
-            onPress={handleLogout}
+              onPress={handleLogout}
               activeOpacity={0.8}
               style={{
                 display: 'flex',

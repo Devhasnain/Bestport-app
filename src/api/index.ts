@@ -6,6 +6,8 @@ import { isIOS } from '@rneui/base';
 const live = `https://bestport-backend-production.up.railway.app/api/v1`;
 const dev = 'http://192.168.1.103:3000/api/v1';
 
+export const socketUrl = 'http://192.168.1.103:3000';
+
 const baseApi = axios.create({
   baseURL: `${live}`,
   timeout: 20000,

@@ -13,6 +13,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import FirebaseProvider from '@components/FirebaseProvider';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import SocketProvider from '@components/SocketProvider';
 
 const appTheme = {
   ...DefaultTheme,
@@ -60,7 +61,9 @@ const App = () => {
                     onStateChange={handleOnStateChange}>
                     <AuthManager navigationReady={navigationReady}>
                       <FirebaseProvider>
-                        <RootNavigation />
+                        <SocketProvider>
+                          <RootNavigation />
+                        </SocketProvider>
                       </FirebaseProvider>
                     </AuthManager>
                   </NavigationContainer>
