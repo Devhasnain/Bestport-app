@@ -1,15 +1,17 @@
-import {ActivityIndicator, Image, View} from 'react-native';
+import { ActivityIndicator, Image, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import images from '@config/Images';
+import colors from '@config/Colors';
 import React from 'react';
 
 import styles from './UserProfileImagePicker.style';
-import LinearGradient from 'react-native-linear-gradient';
-import colors from '@config/Colors';
-import images from '@config/Images';
+
 
 const UserProfileImagePicker = ({
   selectedImage,
   setSelectedImage,
   loading = false,
+  user,
 }: any) => {
   return (
     <LinearGradient
@@ -29,6 +31,8 @@ const UserProfileImagePicker = ({
           source={
             selectedImage?.uri
               ? {uri: selectedImage?.uri}
+              : user && user?.profile_img
+              ? {uri: user?.profile_img}
               : images.imageNotFound
           }
           style={styles.img}

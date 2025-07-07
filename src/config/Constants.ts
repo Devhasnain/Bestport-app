@@ -1,5 +1,6 @@
 import { JobStatus } from "../types/job";
 
+
 export const dummyJobs = [
   {
     _id: "job1",
@@ -221,34 +222,130 @@ export const dummyJobs = [
 
 export const faqs = [
   {
-    title: "What is your return policy?",
-    description: "You can return any item within 30 days of purchase as long as it's in its original condition and packaging."
+    title: "What is Bestport?",
+    description:
+      "Bestport is a job management platform where customers can create service requests, and our verified employees complete them efficiently."
   },
   {
-    title: "How can I track my order?",
-    description: "Once your order is shipped, you’ll receive an email with a tracking number and link to track your delivery."
+    title: "Who can register on Bestport?",
+    description:
+      "Only customers can register through the app. Employees are added and managed by the admin through the admin panel."
   },
   {
-    title: "Do you offer international shipping?",
-    description: "Yes, we ship internationally. Shipping costs and delivery times vary depending on the destination."
+    title: "How do I create a job request?",
+    description:
+      "Once logged in as a customer, you can create a job by providing job details and address. The job is then reviewed by the admin before assignment."
   },
   {
-    title: "How do I reset my password?",
-    description: "Click on the 'Forgot Password' link on the login page, and follow the instructions to reset your password via email."
+    title: "How are jobs assigned to employees?",
+    description:
+      "After reviewing a customer's job request, the admin assigns it to an active employee. The employee can then accept or decline the job."
   },
   {
-    title: "Can I cancel or modify my order?",
-    description: "You can cancel or change your order within 1 hour of placing it by contacting our support team."
+    title: "What happens after an employee accepts the job?",
+    description:
+      "Once accepted, the job status changes to 'Assigned'. The employee visits the provided address, performs the task, and marks it as completed."
   },
   {
-    title: "What payment methods do you accept?",
-    description: "We accept all major credit/debit cards, PayPal, Apple Pay, and Google Pay."
+    title: "How can I leave a review?",
+    description:
+      "After a job is marked completed, customers can go to the Completed Jobs tab and leave a review for the employee."
   },
   {
-    title: "Is my personal information secure?",
-    description: "Yes, we use industry-standard encryption to protect your data and never share it with third parties without your consent."
+    title: "What about spare parts or products used during the job?",
+    description:
+      "If any spare parts are used, the employee can select them when marking the job as completed. This helps maintain service records."
+  },
+  {
+    title: "How is the job payment handled?",
+    description:
+      "All payments are handled in cash between the customer and the employee at the job location."
+  },
+  {
+    title: "Can I update my email or personal details?",
+    description:
+      "Yes, you can update your name, email, and password in the app settings. Make sure your email is valid and verified."
+  },
+  {
+    title: "What is the Customer Support screen?",
+    description:
+      "Customers and employees can use the Customer Support screen to send messages or report issues directly to the admin."
+  },
+  {
+    title: "Why do you need notification permissions?",
+    description:
+      "Notification permissions are required to keep you updated about job status, admin messages, and other important events."
+  },
+  {
+    title: "Why do you need media permissions?",
+    description:
+      "Media permissions are needed if you upload or attach any images or documents related to a job or support request."
+  },
+  {
+    title: "Do I need internet access to use the app?",
+    description:
+      "Yes, an active internet connection is required to use Bestport, receive updates, and communicate with the admin."
   }
 ];
+
+export const privacyPolicy = [
+  {
+    title: "Introduction",
+    content:
+      "At Bestport, your privacy is important to us. This policy explains what data we collect, how we use it, and your rights as a user."
+  },
+  {
+    title: "Personal Information",
+    content:
+      "We collect personal information such as your name, email address, and phone number to create and manage your account. Customers can register through the app, while employees are added via the admin panel."
+  },
+  {
+    title: "Usage of Information",
+    content:
+      "Your information is used to manage job assignments, support communication, and enhance your experience on the app."
+  },
+  {
+    title: "Email Updates",
+    content:
+      "We may send you important notifications regarding your job status or account. Please ensure your email is valid and verified."
+  },
+  {
+    title: "Permissions",
+    content:
+      "Bestport may request access to notifications, media, and internet. These permissions are essential for core functionality such as job updates, uploading media, and sending support messages."
+  },
+  {
+    title: "Job and Payment Data",
+    content:
+      "Job history, used products, and customer reviews are stored securely. However, payment is handled directly in cash between customer and employee, and we do not store payment information."
+  },
+  {
+    title: "Third-Party Services",
+    content:
+      "We use services like Google Sign-In for authentication. These services have their own privacy policies."
+  },
+  {
+    title: "Data Security",
+    content:
+      "We implement reasonable security measures to protect your data. However, no method of transmission over the Internet is 100% secure."
+  },
+  {
+    title: "User Rights",
+    content:
+      "You have the right to update or delete your personal information. Contact support via the app if you wish to do so."
+  },
+  {
+    title: "Changes to Policy",
+    content:
+      "We may update this policy occasionally. Any changes will be reflected in the app. Continued use of the app constitutes acceptance of the updated policy."
+  },
+  {
+    title: "Contact Us",
+    content:
+      "If you have any questions about this Privacy Policy, please use the Customer Support screen in the app to contact the admin."
+  }
+];
+
 
 
 export const serviceTypes = [

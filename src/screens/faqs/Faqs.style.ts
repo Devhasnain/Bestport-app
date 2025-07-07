@@ -1,20 +1,22 @@
 import { StyleSheet } from 'react-native';
-import fonts from '@config/Fonts';
 import colors from '@config/Colors';
+import fonts from '@config/Fonts';
 
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     gap: 20,
     paddingTop: 16,
-    paddingBottom:20
   },
   cardContainer: {
     padding: 16,
     backgroundColor: colors.white,
     borderRadius: 12,
-    elevation: 10,
+    borderWidth:0.3,
+    borderColor:colors.inputplaceholder,
+    display:"flex",flexDirection:"column",
+    gap:10
   },
   cardTitle: {
     fontFamily: fonts.poppinsSemiBold,

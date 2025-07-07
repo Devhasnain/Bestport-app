@@ -1,4 +1,6 @@
 import Feather from "react-native-vector-icons/Feather";
+
+
 export { default as Input } from "./ui/input/Input";
 export { default as BottomTab } from "./bottomTab/BottomTab";
 export { Feather }
@@ -21,5 +23,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Toast from 'react-native-simple-toast';
 
-export { AntDesign, Fontisto, FontAwesome, Ionicons }
+export { AntDesign, Fontisto, FontAwesome, Ionicons,Toast }

@@ -1,21 +1,24 @@
-import {View, ViewStyle} from 'react-native';
-import React, {memo, ReactNode} from 'react';
-import styles from './Header.style';
-import Typography from '@components/ui/Typography';
-import fonts from '@config/Fonts';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import Typography from '@components/ui/Typography';
+import { Header as RNHeader } from '@rneui/themed';
+import React, { memo, ReactNode } from 'react';
+import { View, ViewStyle } from 'react-native';
 import colors from '@config/Colors';
-import {Header as RNHeader} from '@rneui/themed';
+import fonts from '@config/Fonts';
+
+import styles from './Header.style';
+
 
 type Props = {
   leftIcon?: boolean;
   title?: string;
   style?: ViewStyle;
-  children?:ReactNode
+  children?:ReactNode;
+  titleFontSize?:number
 };
 
-const Header = ({style, title, leftIcon = false,children}: Props) => {
+const Header = ({style, title, leftIcon = false,children,titleFontSize=18}: Props) => {
   const navigation = useNavigation();
   return (
     <RNHeader
@@ -37,7 +40,7 @@ const Header = ({style, title, leftIcon = false,children}: Props) => {
           {title && <Typography
             style={{width: '90%'}}
             fontFamily={fonts.poppinsSemiBold}
-            fontSize={21}
+            fontSize={titleFontSize}
             numberOfLines={1}>
             {title}
           </Typography>}

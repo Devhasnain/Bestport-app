@@ -1,13 +1,8 @@
-import {
-  ActivityIndicator,
-  RefreshControl,
-  FlatList,
-  View,
-  FlatListProps,
-} from 'react-native';
-import React, {useCallback, useMemo} from 'react';
+import { ActivityIndicator, RefreshControl, FlatList, View, FlatListProps, } from 'react-native';
 import NoResultsFound from '@components/NoResultsFound';
+import React, { useCallback, useMemo } from 'react';
 import colors from '@config/Colors';
+
 
 const AppFlatlist = ({
   data = [],
@@ -25,6 +20,7 @@ const AppFlatlist = ({
   renderEmptyComponent = () => <NoResultsFound title={'No results found.'} />,
   contentContainerStyle = {},
   renderItem,
+  paddingBottom=110,
   ...props
 }: FlatListProps<any> & any) => {
   const keyExtractor = useCallback(
@@ -74,7 +70,7 @@ const AppFlatlist = ({
       contentContainerStyle={[
         contentContainerStyle,
         {
-          paddingBottom: 110,
+          paddingBottom: paddingBottom,
         },
       ]}
       {...props}

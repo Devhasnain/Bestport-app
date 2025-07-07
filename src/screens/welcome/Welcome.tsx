@@ -1,61 +1,39 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React, {useCallback} from 'react';
-import {
-  AuthLayoutContainer,
-  BackgroundImgContainer,
-  Ionicons,
-  Typography,
-} from '@components/index';
-import fonts from '@config/Fonts';
-import colors from '@config/Colors';
-import {navigate} from '@navigation/NavigationService';
-
-import {Button} from '@rneui/themed';
+import { BackgroundImgContainer, Ionicons, Typography } from '@components/index';
+import GoogleAuthBtn from '@components/auth/GoogleAuthBtn';
+import { navigate } from '@navigation/NavigationService';
+import { authorize } from 'react-native-app-auth';
+import React, { useCallback } from 'react';
+import { View, Image } from 'react-native';
+import { Button } from '@rneui/themed';
 import images from '@config/Images';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {authorize} from 'react-native-app-auth';
+import colors from '@config/Colors';
+import fonts from '@config/Fonts';
 
-const config = {
-  
-  issuer: 'https://login.microsoftonline.com/common/v2.0',
-  clientId: 'dac1220d-a8cd-45fe-ba2a-63f495b91a9a',
-  redirectUrl: 'https://best-port.firebaseapp.com/__/auth/handler',
-  scopes: ['openid', 'profile', 'email', 'offline_access'],
-  additionalParameters: {},
-  serviceConfiguration: {
-    authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-    tokenEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
-  },
-};
 
-GoogleSignin.configure({
-  webClientId:
-    '12305641445-es3hu77tlnbv879sv4gm66e4k3vl03o9.apps.googleusercontent.com',
-  offlineAccess: true,
-  iosClientId:"12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4.apps.googleusercontent.com",
-});
+// const config = {
+
+//   issuer: 'https://login.microsoftonline.com/common/v2.0',
+//   clientId: 'dac1220d-a8cd-45fe-ba2a-63f495b91a9a',
+//   redirectUrl: 'https://best-port.firebaseapp.com/__/auth/handler',
+//   scopes: ['openid', 'profile', 'email', 'offline_access'],
+//   additionalParameters: {},
+//   serviceConfiguration: {
+//     authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+//     tokenEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+//   },
+// };
 
 const Welcome = () => {
-  const signIn = useCallback(async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log('User info:', userInfo);
-    } catch (error) {
-      console.error('Google Sign-In error', error);
-    }
-  }, []);
+  // const loginWithMicrosoft = useCallback(async () => {
+  //   try {
+  //     const result = await authorize(config);
+  //     console.log('Microsoft login success', result);
 
-  const loginWithMicrosoft = useCallback(async () => {
-    try {
-      const result = await authorize(config);
-      console.log('Microsoft login success', result);
-
-      // Optionally send result.idToken to Firebase or your backend
-    } catch (err) {
-      console.error('Microsoft login error', err);
-    }
-  }, []);
+  //     // Optionally send result.idToken to Firebase or your backend
+  //   } catch (err) {
+  //     console.error('Microsoft login error', err);
+  //   }
+  // }, []);
 
   const handleRedirect = useCallback(() => navigate('Login'), []);
 
@@ -98,44 +76,8 @@ const Welcome = () => {
           justifyContent: 'center',
           paddingHorizontal: 45,
         }}>
-        <Button
-          onPress={signIn}
-          containerStyle={{width: '100%'}}
-          buttonStyle={{
-            gap: 20,
-            backgroundColor: colors.white,
-            borderWidth: 1.5,
-            borderColor: colors.gray,
-            borderRadius: 12,
-            paddingVertical: 12,
-          }}>
-          <Image source={images.googleIcon} style={{height: 23, width: 23}} />
-          <Typography
-            fontFamily={fonts.poppinsMedium}
-            fontSize={15}
-            color={colors.primaryTextLight}>
-            Continue with Google
-          </Typography>
-        </Button>
-        <Button
-          onPress={loginWithMicrosoft}
-          containerStyle={{width: '100%'}}
-          buttonStyle={{
-            gap: 20,
-            backgroundColor: colors.white,
-            borderWidth: 1.5,
-            borderColor: colors.gray,
-            borderRadius: 12,
-            paddingVertical: 12,
-          }}>
-          <Image source={images.googleIcon} style={{height: 23, width: 23}} />
-          <Typography
-            fontFamily={fonts.poppinsMedium}
-            fontSize={15}
-            color={colors.primaryTextLight}>
-            Continue with Google
-          </Typography>
-        </Button>
+        <GoogleAuthBtn />
+
         <Button
           onPress={handleRedirect}
           containerStyle={{width: '100%'}}

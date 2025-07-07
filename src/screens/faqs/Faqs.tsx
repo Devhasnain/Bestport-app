@@ -1,17 +1,12 @@
-import {
-  AppFlatlist,
-  BackgroundImgContainer,
-  Header,
-  SearchBar,
-  FontAwesome,
-  Typography,
-} from '@components/index';
-import React, {useCallback, useState} from 'react';
+import { AppFlatlist, BackgroundImgContainer, Header, SearchBar, FontAwesome, Typography, } from '@components/index';
+import { TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { faqs } from '@config/Constants';
+import colors from '@config/Colors';
+import fonts from '@config/Fonts';
 
 import styles from './Faqs.style';
-import colors from '@config/Colors';
-import {faqs} from '@config/Constants';
-import {TouchableOpacity, View} from 'react-native';
+
 
 const Faqs = () => {
   const [search, setSearch] = useState('');
@@ -19,7 +14,7 @@ const Faqs = () => {
 
   const filtereFaqs = (item: any) => {
     if (search?.trim()?.length)
-      if (item?.q?.toLowerCase()?.includes(search?.toLowerCase())) {
+      if (item?.title?.toLowerCase()?.includes(search?.toLowerCase())) {
         return true;
       } else return false;
     else return true;
@@ -32,15 +27,15 @@ const Faqs = () => {
         key={index}
         onPress={() => setActiveTab(index)}
         style={styles.cardContainer}>
-        <View>
-          <Typography>{item?.title}</Typography>
+        <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+          <Typography fontFamily={fonts.poppinsMedium} fontSize={15} style={{width:"80%"}}>{item?.title}</Typography>
           <FontAwesome
             name={activeTab === index ? 'angle-up' : 'angle-down'}
             size={22}
             color={colors.primaryTextLight}
           />
         </View>
-        {activeTab === index && <Typography>{item.description}</Typography>}
+        {activeTab === index && <Typography fontSize={14}>{item?.description}</Typography>}
       </TouchableOpacity>
     ),
     [activeTab],
@@ -51,6 +46,7 @@ const Faqs = () => {
       <Header title="Faqs" leftIcon />
       <SearchBar value={search} setValue={setSearch} placeholder="Search faq" />
       <AppFlatlist
+      paddingBottom={20}
         data={faqs.filter(filtereFaqs)}
         contentContainerStyle={styles.listContainer}
         renderItem={renderItem}

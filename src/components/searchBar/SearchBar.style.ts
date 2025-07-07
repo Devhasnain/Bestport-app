@@ -1,6 +1,6 @@
+import { StyleSheet } from 'react-native';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
-import { StyleSheet } from 'react-native';
 
 
 const styles = StyleSheet.create({
@@ -13,7 +13,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     marginBottom: 10,
-    elevation:20
+    borderWidth:0.5,
+    borderColor:colors.inputplaceholder,
+    marginHorizontal:14
   },
   searchInput: {
     flex:1,

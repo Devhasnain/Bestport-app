@@ -1,14 +1,16 @@
-import axios from 'axios';
 import NetInfo from '@react-native-community/netinfo';
-import endpoints from './endpoints';
 import { isIOS } from '@rneui/base';
+import axios from 'axios';
+
+import endpoints from './endpoints';
+
+
 // Base URLs
 const live = `https://bestport-backend-production.up.railway.app/api/v1`;
-const dev = 'http://192.168.1.103:3000/api/v1';
+const dev = 'http://192.168.1.104:3000/api/v1';
 
-export const socketUrl = 'https://bestport-backend-production.up.railway.app'
-
-// 'http://192.168.1.103:3000';
+export const socketUrl = 'http://192.168.1.104:3000';
+// 'https://bestport-backend-production.up.railway.app'
 
 const baseApi = axios.create({
   baseURL: `${live}`,
