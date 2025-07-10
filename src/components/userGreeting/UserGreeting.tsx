@@ -10,6 +10,8 @@ import {Switch} from '@rneui/themed';
 import colors from '@config/Colors';
 import {connectSocket, getSocket} from '@services/socket';
 import Toast from 'react-native-simple-toast';
+import { isIOS } from '@rneui/base';
+import { showToast } from '@utils/showToast';
 
 const UserGreeting = () => {
   const user = useSelector(getUser);
@@ -18,12 +20,12 @@ const UserGreeting = () => {
   const toggleSwitch = useCallback(() => {
     if (isEnabled) {
       socket?.disconnect();
-      Toast.show('Your are offline now', 1000);
+      showToast('Your are offline now');
     } else {
       if (socket?.connected) connectSocket();
       socket?.connect();
       socket?.emit('online');
-      Toast.show('Back online', 1000);
+      showToast('Back online');
     }
     setIsEnabled(previousState => !previousState);
   }, [isEnabled]);
@@ -36,7 +38,7 @@ const UserGreeting = () => {
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 12,
-        paddingTop: 55,
+        paddingTop: isIOS ? 70 : 55,
         paddingBottom: 25,
         gap: 5,
       }}>

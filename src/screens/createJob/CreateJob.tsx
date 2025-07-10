@@ -17,9 +17,9 @@ import {createJobSchema} from '@utils/schemas';
 import {usePost} from '@hooks/usePost';
 import endpoints from '@api/endpoints';
 import {useDispatch} from 'react-redux';
-import Toast from 'react-native-simple-toast';
 import getErrorMessage from '@utils/getErrorMessage';
 import {addJob} from '@store/jobSlice';
+import { showToast } from '@utils/showToast';
 const CreateJob = () => {
   const dispatch = useDispatch();
   const {request, loading} = usePost(endpoints.createJob);
@@ -38,10 +38,10 @@ const CreateJob = () => {
     try {
       const res = await request({payload: values});
       dispatch(addJob(res.data));
-      Toast.show('Job has been submitted successfully.', 1000);
+      showToast('Job has been submitted successfully.');
       resetForm();
     } catch (error) {
-      Toast.show(getErrorMessage(error), 1000);
+      showToast(getErrorMessage(error));
     }
   }, []);
   return (

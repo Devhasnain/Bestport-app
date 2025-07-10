@@ -8,6 +8,7 @@ import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
 import Home from '@screens/home';
+import { isIOS } from '@rneui/base';
 
 
 const TabStack = createBottomTabNavigator();
@@ -18,7 +19,8 @@ const BottomTabNavigator = () => {
       screenOptions={{
         animation: 'fade',
         tabBarStyle: {
-          height: 75,
+          height: isIOS ? 90 : 75,
+          paddingTop:15,
           borderTopWidth:0.3,
           elevation: 0,
         },

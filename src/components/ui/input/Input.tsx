@@ -133,6 +133,7 @@ const InputField: React.FC<InputFieldProps> = ({
         inputAdditionalStyle,
         error ? { borderColor: 'red', marginBottom: -3 } : {},
         isFocused ? { borderColor: colors.activeInputBorderColor, borderWidth: 1.5 } : {},
+        multiline ? {paddingTop:3, paddingBottom:8} : {}
       ]}
       numberOfLines={numberOfLines}
       multiline={multiline}

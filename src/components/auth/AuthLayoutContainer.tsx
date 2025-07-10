@@ -2,12 +2,14 @@ import {View, Image} from 'react-native';
 import React, {memo, ReactNode} from 'react';
 import {
   BackgroundImgContainer,
+  Header,
   KeyboardAvoidingView,
   Typography,
 } from '@components/index';
 import images from '@config/Images';
 import fonts from '@config/Fonts';
 import colors from '@config/Colors';
+import { isIOS } from '@rneui/base';
 
 type Props = {
   title?: string;
@@ -18,6 +20,11 @@ type Props = {
 const AuthLayoutContainer = ({children, title, description}: Props) => {
   return (
     <BackgroundImgContainer>
+      {
+        isIOS &&
+      <Header leftIcon />
+      }
+
       <KeyboardAvoidingView extraHeight={0} extraScrollHeight={0}
       contentContainerStyle={{paddingHorizontal:16}}
       >
@@ -28,7 +35,7 @@ const AuthLayoutContainer = ({children, title, description}: Props) => {
             alignItems: 'center',
             justifyContent: 'center',
             flex:1,
-            paddingVertical:30
+            paddingVertical: isIOS? 5 : 30
           }}>
           <Image source={images.appLogo} style={{width: 200, height: 200}} />
         </View>

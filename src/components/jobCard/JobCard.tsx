@@ -26,6 +26,10 @@ const JobCard = ({item}: Props) => {
         backgroundColor: 'white',
         minHeight: 100,
         gap: 12,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 6},
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
       }}>
       <View style={{display: 'flex', flexDirection: 'column', gap: 3}}>
         <Typography fontFamily={fonts.poppinsMedium}>{item?.title}</Typography>

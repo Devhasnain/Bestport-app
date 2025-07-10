@@ -11,6 +11,7 @@ import colors from '@config/Colors';
 import { View } from 'react-native';
 import fonts from '@config/Fonts';
 import { Formik } from 'formik';
+import { showToast } from '@utils/showToast';
 
 
 const EditEmail = () => {
@@ -21,9 +22,9 @@ const EditEmail = () => {
     try {
       await request({payload: values});
       dispatch(setUser({...user, email: values?.email}));
-      Toast.show('Email updated successfully', 1000);
+      showToast('Email updated successfully');
     } catch (error) {
-      Toast.show(getErrorMessage(error), 1000);
+      showToast(getErrorMessage(error));
     }
   }, []);
   return (

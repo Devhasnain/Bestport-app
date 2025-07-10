@@ -15,6 +15,7 @@ import colors from '@config/Colors';
 import fonts from '@config/Fonts';
 import images from '@config/Images';
 import Typography from '@components/ui/Typography';
+import { isIOS } from '@rneui/base';
 
 type Props = {
   value: string;
@@ -116,7 +117,7 @@ const timeStampToISOString = (timestamp: string) => {
 const container = (error: any): ViewStyle => ({
   width: '100%',
   backgroundColor: colors.white,
-  borderWidth: 1.5,
+  borderWidth: isIOS ? 1: 1.5,
   borderRadius: 12,
   borderColor: error ? colors.activeInputBorderColor : colors.inputBorder,
   display: 'flex',

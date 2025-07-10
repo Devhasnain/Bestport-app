@@ -15,7 +15,7 @@ import {
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import {BottomSheetDefaultBackdropProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
-import {ScreenHeight} from '@rneui/base';
+import {isIOS, ScreenHeight} from '@rneui/base';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import Typography from '@components/ui/Typography';
@@ -182,7 +182,7 @@ const SingleSelect = ({
 
 const dropdownButton = (error: any): ViewStyle => ({
   padding: 14,
-  borderWidth: 1.5,
+  borderWidth: isIOS ? 1: 1.5,
   borderColor: error ? colors.activeInputBorderColor : colors.inputBorder,
   borderRadius: 12,
   backgroundColor: colors.btnSecondary,

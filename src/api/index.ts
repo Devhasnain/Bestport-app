@@ -9,8 +9,7 @@ import endpoints from './endpoints';
 const live = `https://bestport-backend-production.up.railway.app/api/v1`;
 const dev = 'http://192.168.1.104:3000/api/v1';
 
-export const socketUrl = 'http://192.168.1.104:3000';
-// 'https://bestport-backend-production.up.railway.app'
+export const socketUrl = 'https://bestport-backend-production.up.railway.app'
 
 const baseApi = axios.create({
   baseURL: `${live}`,

@@ -13,6 +13,7 @@ import { Divider } from '@rneui/themed';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
+import { showToast } from '@utils/showToast';
 
 
 const tabs = [
@@ -158,7 +159,8 @@ type InputBtnProps = {
 const InputBtn = memo(({title, value, redirect}: InputBtnProps) => {
   const navigation = useNavigation<any>();
   const handleRedirect = useCallback(() => {
-    navigation.navigate(redirect);
+    showToast("Test Notification")
+    // navigation.navigate(redirect);
   }, [redirect]);
   return (
     <View style={{display: 'flex', flexDirection: 'column', gap: 3}}>

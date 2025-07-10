@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getJobs, setJobs} from '@store/jobSlice';
 import {getUser} from '@store/authSlice';
 import UserGreeting from '@components/userGreeting/UserGreeting';
+import { isIOS } from '@rneui/base';
 
 const Home = () => {
   const user = useSelector(getUser);
@@ -72,7 +73,7 @@ const Home = () => {
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingHorizontal: 12,
-            paddingTop: 45,
+            paddingTop: isIOS ? 50 : 45,
             paddingBottom: 16,
           }}>
           <Image source={images.appIcon} style={{width: 50, height: 50}} />

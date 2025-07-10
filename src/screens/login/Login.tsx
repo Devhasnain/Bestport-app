@@ -15,10 +15,10 @@ import {loginSchema} from '@utils/schemas';
 import styles from './Login.style';
 import {usePost} from '@hooks/usePost';
 import endpoints from '@api/endpoints';
-import Toast from 'react-native-simple-toast';
 import getErrorMessage from '@utils/getErrorMessage';
 import {useDispatch} from 'react-redux';
 import {setToken} from '@store/authSlice';
+import { showToast } from '@utils/showToast';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const Login = () => {
       const res = await request({payload: values});
       dispatch(setToken(res?.data?.token));
     } catch (error) {
-      Toast.show(getErrorMessage(error), 1000);
+     showToast(getErrorMessage(error));
     }
   }, []);
 

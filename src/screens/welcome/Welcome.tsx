@@ -8,6 +8,7 @@ import { Button } from '@rneui/themed';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
+import { ScreenHeight } from '@rneui/base';
 
 
 // const config = {
@@ -41,11 +42,13 @@ const Welcome = () => {
     <BackgroundImgContainer>
       <View
         style={{
-          height: 320,
+          height: ScreenHeight/2,
+          // borderWidth:1,
           display: 'flex',
           flexDirection: 'column',
           paddingTop: 100,
           alignItems: 'center',
+          justifyContent:"flex-end"
         }}>
         <View
           style={{
@@ -71,12 +74,15 @@ const Welcome = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: 16,
-          paddingVertical: 50,
           alignItems: 'center',
           justifyContent: 'center',
           paddingHorizontal: 45,
+          flex:1,
+          paddingTop:20,
         }}>
         <GoogleAuthBtn />
+        {/* <GoogleAuthBtn /> */}
+
 
         <Button
           onPress={handleRedirect}

@@ -11,6 +11,7 @@ import { Button } from '@rneui/themed';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
+import { showToast } from '@utils/showToast';
 
 
 GoogleSignin.configure({
@@ -42,10 +43,10 @@ const GoogleAuthBtn = ({title = 'Continue with Google'}: Props) => {
           },
         });
         dispatch(setToken(res?.data?.token));
-        Toast.show('Login successfull', 1000);
+        showToast('Login successfull');
       }
     } catch (error: any) {
-      Toast.show('Google Sign-In error', 1000);
+      showToast('Google Sign-In error');
     }
   }, []);
 

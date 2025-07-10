@@ -1,15 +1,17 @@
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
+import { isIOS } from '@rneui/base';
 import { StyleSheet } from 'react-native';
 
 const Styles = StyleSheet.create({
   inputContainerStyle: {
-    borderWidth: 1.5,
+    borderWidth: isIOS ? 1: 1.5,
     borderRadius: 12,
     borderColor: colors.inputBorder,
     paddingHorizontal: 10,
     backgroundColor: colors.btnSecondary,
-    borderBottomWidth:1.5,
+    borderBottomWidth:isIOS ? 1.2: 1.5,
+    minHeight:50
   },
   containerStyle: {
     paddingHorizontal: 0,
