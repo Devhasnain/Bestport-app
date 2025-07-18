@@ -1,11 +1,12 @@
-import React, { memo, ReactNode, useCallback, useState } from 'react';
 import { Image, ImageSourcePropType, KeyboardTypeOptions, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
-import { Input } from '@rneui/themed';
+import React, { memo, ReactNode, useCallback, useState } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
-
-import Styles from './input.style';
-import InputErrorMessage from './InputErrorMessage';
+import { Input } from '@rneui/themed';
 import colors from '@config/Colors';
+
+import InputErrorMessage from './InputErrorMessage';
+import Styles from './input.style';
+
 
 interface InputFieldProps {
   label?: string;
@@ -154,7 +155,7 @@ const InputField: React.FC<InputFieldProps> = ({
             onPress={() => setSecureText(!secureText)}
             name={secureText ? 'eye' : 'eye-off'}
             size={20}
-            color={colors.primaryTextLight}
+            color={colors.inputplaceholder}
           />
         ) : (
           leftIcon && renderRightIcon()

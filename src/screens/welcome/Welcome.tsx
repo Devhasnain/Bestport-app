@@ -1,14 +1,13 @@
-import { BackgroundImgContainer, Ionicons, Typography } from '@components/index';
 import GoogleAuthBtn from '@components/auth/GoogleAuthBtn';
 import { navigate } from '@navigation/NavigationService';
-import { authorize } from 'react-native-app-auth';
+import { Ionicons, Typography } from '@components/index';
 import React, { useCallback } from 'react';
 import { View, Image } from 'react-native';
+import { ScreenHeight } from '@rneui/base';
 import { Button } from '@rneui/themed';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
-import { ScreenHeight } from '@rneui/base';
 
 
 // const config = {
@@ -39,7 +38,7 @@ const Welcome = () => {
   const handleRedirect = useCallback(() => navigate('Login'), []);
 
   return (
-    <BackgroundImgContainer>
+    <>
       <View
         style={{
           height: ScreenHeight/2,
@@ -68,7 +67,6 @@ const Welcome = () => {
           </Typography>
         </View>
       </View>
-
       <View
         style={{
           display: 'flex',
@@ -76,7 +74,7 @@ const Welcome = () => {
           gap: 16,
           alignItems: 'center',
           justifyContent: 'center',
-          paddingHorizontal: 45,
+          paddingHorizontal: 55,
           flex:1,
           paddingTop:20,
         }}>
@@ -109,7 +107,7 @@ const Welcome = () => {
           </Typography>
         </Button>
       </View>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

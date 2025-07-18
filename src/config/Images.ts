@@ -1,5 +1,5 @@
 const images = {
-    appBackground: require("@assets/images/appBackgroundImg.png"),
+    appBackground: require("@assets/images/appBg.png"),
     appLogo: require("@assets/images/app-logo.png"),
     appIcon: require("@assets/images/app-icon.png"),
 

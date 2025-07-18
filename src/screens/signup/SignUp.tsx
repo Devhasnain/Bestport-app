@@ -1,19 +1,21 @@
-import {View} from 'react-native';
-import React, {useCallback} from 'react';
-import styles from './SignUp.style';
-import {navigate} from '@navigation/NavigationService';
-import {Formik} from 'formik';
-import {Input, AuthLayoutContainer, HaveAnAccount} from '@components/index';
-import {Button} from '@rneui/themed';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
-import {registerSchema} from '@utils/schemas';
-import {useDispatch} from 'react-redux';
-import {usePost} from '@hooks/usePost';
-import endpoints from '@api/endpoints';
-import {setToken} from '@store/authSlice';
+import { Input, AuthLayoutContainer, HaveAnAccount } from '@components/index';
+import { navigate } from '@navigation/NavigationService';
 import getErrorMessage from '@utils/getErrorMessage';
+import { registerSchema } from '@utils/schemas';
 import { showToast } from '@utils/showToast';
+import { setToken } from '@store/authSlice';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { usePost } from '@hooks/usePost';
+import endpoints from '@api/endpoints';
+import { Button } from '@rneui/themed';
+import colors from '@config/Colors';
+import { View } from 'react-native';
+import fonts from '@config/Fonts';
+import { Formik } from 'formik';
+
+import styles from './SignUp.style';
+
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const SignUp = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    // confirmPassword: '',
   };
   const redirectToLogin = useCallback(() => navigate('Login'), []);
   const handleSignUp = useCallback(async (values: any) => {
@@ -68,16 +70,16 @@ const SignUp = () => {
               onChange={handleChange('password')}
               error={touched?.password && errors?.password}
             />
-            <Input
+            {/* <Input
               placeholder="Confirm password"
               inputType="password"
               value={values.confirmPassword}
               onChange={handleChange('confirmPassword')}
               error={touched?.confirmPassword && errors?.confirmPassword}
-            />
+            /> */}
 
             <Button
-            disabledStyle={{backgroundColor:colors.messageBox}}
+              disabledStyle={{backgroundColor: colors.messageBox}}
               disabled={loading}
               loading={loading}
               title={'Submit'}
@@ -92,12 +94,20 @@ const SignUp = () => {
           </View>
         )}
       </Formik>
-
-      <HaveAnAccount
-        text="Already have an account?"
-        linkTitle="Login"
-        onPress={redirectToLogin}
-      />
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: 20,
+        }}>
+        <HaveAnAccount
+          text="Already have an account?"
+          linkTitle="Login"
+          onPress={redirectToLogin}
+        />
+      </View>
     </AuthLayoutContainer>
   );
 };

@@ -1,24 +1,21 @@
-import {View, TouchableOpacity} from 'react-native';
-import React, {useCallback} from 'react';
-import {
-  AuthLayoutContainer,
-  Input,
-  HaveAnAccount,
-  Typography,
-} from '@components/index';
-import {navigate} from '@navigation/NavigationService';
-import {Formik} from 'formik';
-import {Button} from '@rneui/themed';
+import { AuthLayoutContainer, Input, HaveAnAccount, Typography, } from '@components/index';
+import { navigate } from '@navigation/NavigationService';
+import { View, TouchableOpacity } from 'react-native';
+import getErrorMessage from '@utils/getErrorMessage';
+import { showToast } from '@utils/showToast';
+import { loginSchema } from '@utils/schemas';
+import { setToken } from '@store/authSlice';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { usePost } from '@hooks/usePost';
+import endpoints from '@api/endpoints';
+import { Button } from '@rneui/themed';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
-import {loginSchema} from '@utils/schemas';
+import { Formik } from 'formik';
+
 import styles from './Login.style';
-import {usePost} from '@hooks/usePost';
-import endpoints from '@api/endpoints';
-import getErrorMessage from '@utils/getErrorMessage';
-import {useDispatch} from 'react-redux';
-import {setToken} from '@store/authSlice';
-import { showToast } from '@utils/showToast';
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -34,7 +31,7 @@ const Login = () => {
       const res = await request({payload: values});
       dispatch(setToken(res?.data?.token));
     } catch (error) {
-     showToast(getErrorMessage(error));
+      showToast(getErrorMessage(error));
     }
   }, []);
 
@@ -66,7 +63,7 @@ const Login = () => {
                 onChange={handleChange('password')}
                 error={touched?.password && errors.password}
               />
-              <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
+              {/* <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
                 <Typography
                   color={colors.authLinkText}
                   fontSize={15}
@@ -78,7 +75,7 @@ const Login = () => {
                   }}>
                   Forget password?
                 </Typography>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             <Button
@@ -97,8 +94,29 @@ const Login = () => {
           </View>
         )}
       </Formik>
-
-      <HaveAnAccount onPress={redirectToSignUp} />
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical:20
+        }}>
+        <HaveAnAccount onPress={redirectToSignUp} />
+        <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
+          <Typography
+            color={colors.authLinkText}
+            fontSize={15}
+            lineHeight={20}
+            style={{
+              textDecorationLine: 'underline',
+              marginTop: 8,
+              textAlign: 'right',
+            }}>
+            Forget password?
+          </Typography>
+        </TouchableOpacity>
+      </View>
     </AuthLayoutContainer>
   );
 };

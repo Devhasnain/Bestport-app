@@ -40,7 +40,7 @@ export const registerSchema = Yup.object().shape({
   name: nameSchema,
   email: emailSchema,
   password: passwordSchema,
-  confirmPassword: confirmPasswordSchema,
+  // confirmPassword: confirmPasswordSchema,
 });
 
 export const loginSchema = Yup.object().shape({

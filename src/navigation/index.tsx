@@ -3,6 +3,7 @@ import CustomerSupport from '@screens/customerSupport/CustomerSupport';
 import SetNewPassword from '@screens/setNewPassword/SetNewPassword';
 import ForgetPassword from '@screens/forgetPassword/ForgetPassword';
 import PrivacyPolicy from '@screens/privacyPolicy/PrivacyPolicy';
+import { BackgroundImgContainer } from '@components/index';
 import EditPassword from '@screens/profile/EditPassword';
 import VerifyOtp from '@screens/verifyOtp/VerifyOtp';
 import JobDetail from '@screens/jobDetail/JobDetail';
@@ -20,89 +21,97 @@ import BottomTabNavigator from './BottomTabNavigator';
 
 const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShown: false,
-  animation: 'fade_from_bottom',
+  animation: "simple_push",
 };
 
 const RootStack = createNativeStackNavigator();
 const RootNavigation = () => {
   return (
-    <RootStack.Navigator initialRouteName="Welcome">
-      <RootStack.Screen
-        name="App"
-        component={BottomTabNavigator}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="EditName"
-        component={EditName}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="EditEmail"
-        component={EditEmail}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="EditPassword"
-        component={EditPassword}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="CreateJob"
-        component={CreateJob}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="JobDetail"
-        component={JobDetail}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="Faqs"
-        component={Faqs}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="CustomerSupport"
-        component={CustomerSupport}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="PrivacyPolicy"
-        component={PrivacyPolicy}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="Welcome"
-        component={Welcome}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="Login"
-        component={Login}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="ForgetPassword"
-        component={ForgetPassword}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="VerifyOtp"
-        component={VerifyOtp}
-        options={defaultScreenOptions}
-      />
-      <RootStack.Screen
-        name="SetNewPassword"
-        component={SetNewPassword}
-        options={defaultScreenOptions}
-      />
-    </RootStack.Navigator>
+    <BackgroundImgContainer>
+      <RootStack.Navigator initialRouteName="Welcome"
+      screenOptions={{
+        contentStyle:{
+          backgroundColor:"transparent"
+        }
+      }}
+      >
+        <RootStack.Screen
+          name="App"
+          component={BottomTabNavigator}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="EditName"
+          component={EditName}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="EditEmail"
+          component={EditEmail}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="EditPassword"
+          component={EditPassword}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="CreateJob"
+          component={CreateJob}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="JobDetail"
+          component={JobDetail}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="Faqs"
+          component={Faqs}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="CustomerSupport"
+          component={CustomerSupport}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="PrivacyPolicy"
+          component={PrivacyPolicy}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="Welcome"
+          component={Welcome}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="Login"
+          component={Login}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="ForgetPassword"
+          component={ForgetPassword}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="VerifyOtp"
+          component={VerifyOtp}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="SetNewPassword"
+          component={SetNewPassword}
+          options={defaultScreenOptions}
+        />
+      </RootStack.Navigator>
+    </BackgroundImgContainer>
   );
 };
 
