@@ -6,10 +6,10 @@ import endpoints from './endpoints';
 
 
 // Base URLs
-const live = `https://bestport-backend-production.up.railway.app/api/v1`;
+const live = `https://bestport-e2da7425a372.herokuapp.com/api/v1`;
 const dev = 'http://192.168.1.104:3000/api/v1';
 
-export const socketUrl = 'https://bestport-backend-production.up.railway.app'
+export const socketUrl = 'https://bestport-e2da7425a372.herokuapp.com'
 
 const baseApi = axios.create({
   baseURL: `${live}`,
