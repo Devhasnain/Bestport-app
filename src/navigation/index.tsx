@@ -3,8 +3,8 @@ import CustomerSupport from '@screens/customerSupport/CustomerSupport';
 import SetNewPassword from '@screens/setNewPassword/SetNewPassword';
 import ForgetPassword from '@screens/forgetPassword/ForgetPassword';
 import PrivacyPolicy from '@screens/privacyPolicy/PrivacyPolicy';
-import { BackgroundImgContainer } from '@components/index';
 import EditPassword from '@screens/profile/EditPassword';
+import { BackgroundImgContainer } from '@components/index';
 import VerifyOtp from '@screens/verifyOtp/VerifyOtp';
 import JobDetail from '@screens/jobDetail/JobDetail';
 import CreateJob from '@screens/createJob/CreateJob';
@@ -21,20 +21,20 @@ import BottomTabNavigator from './BottomTabNavigator';
 
 const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShown: false,
-  animation: "simple_push",
+  // animation: "simple_push",
 };
 
 const RootStack = createNativeStackNavigator();
 const RootNavigation = () => {
   return (
     <BackgroundImgContainer>
-      <RootStack.Navigator initialRouteName="Welcome"
-      screenOptions={{
-        contentStyle:{
-          backgroundColor:"transparent"
-        }
-      }}
-      >
+      <RootStack.Navigator
+        initialRouteName="Welcome"
+        screenOptions={{
+          contentStyle: {
+            backgroundColor: 'transparent',
+          },
+        }}>
         <RootStack.Screen
           name="App"
           component={BottomTabNavigator}
@@ -83,32 +83,32 @@ const RootNavigation = () => {
         <RootStack.Screen
           name="Welcome"
           component={Welcome}
-          options={defaultScreenOptions}
+          options={{...defaultScreenOptions, animation: 'none'}}
         />
         <RootStack.Screen
           name="Login"
           component={Login}
-          options={defaultScreenOptions}
+          options={{...defaultScreenOptions, animation: 'none'}}
         />
         <RootStack.Screen
           name="SignUp"
           component={SignUp}
-          options={defaultScreenOptions}
+          options={{...defaultScreenOptions, animation: 'none'}}
         />
         <RootStack.Screen
           name="ForgetPassword"
           component={ForgetPassword}
-          options={defaultScreenOptions}
+          options={{...defaultScreenOptions, animation: 'none'}}
         />
         <RootStack.Screen
           name="VerifyOtp"
           component={VerifyOtp}
-          options={defaultScreenOptions}
+          options={{...defaultScreenOptions, animation: 'none'}}
         />
         <RootStack.Screen
           name="SetNewPassword"
           component={SetNewPassword}
-          options={defaultScreenOptions}
+          options={{...defaultScreenOptions, animation: 'none'}}
         />
       </RootStack.Navigator>
     </BackgroundImgContainer>

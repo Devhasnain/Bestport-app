@@ -7,12 +7,12 @@ import endpoints from './endpoints';
 
 // Base URLs
 const live = `https://bestport-e2da7425a372.herokuapp.com/api/v1`;
-const dev = 'http://192.168.1.104:3000/api/v1';
+const dev = 'http://192.168.100.186:3000/api/v1';
 
 export const socketUrl = 'https://bestport-e2da7425a372.herokuapp.com'
 
 const baseApi = axios.create({
-  baseURL: `${live}`,
+  baseURL: `${dev}`,
   timeout: 20000,
   timeoutErrorMessage: 'Request timeout.',
   headers: {

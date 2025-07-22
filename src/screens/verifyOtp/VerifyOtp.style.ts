@@ -1,6 +1,7 @@
+import { StyleSheet } from 'react-native';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
-import { StyleSheet } from 'react-native';
+
 
 const styles = StyleSheet.create({
   text: {
@@ -10,7 +11,8 @@ const styles = StyleSheet.create({
     color: colors.primaryTextLight,
   },
   otpInputContainerStyle: {
-    paddingVertical: 25,
+    paddingTop:25,
+    paddingBottom:15,
   },
   pinCodeContainerStyle: {
     borderWidth: 2,

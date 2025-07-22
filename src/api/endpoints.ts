@@ -10,6 +10,10 @@ const endpoints = {
     editName:'/auth/edit-name',
     editEmail:'/auth/edit-email',
     updatePassword:'/auth/edit-password',
+    sendMailOtp:'/auth/send-otp',
+    verifyMailOtp:'/auth/verify-otp',
+    setNewPassword:'/auth/set-new-password',
+    
 };
 
 export default endpoints;

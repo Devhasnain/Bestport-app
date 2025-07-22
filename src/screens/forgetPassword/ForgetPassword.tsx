@@ -1,28 +1,34 @@
-import React, {useCallback} from 'react';
-import {
-  BackgroundImgContainer,
-  Header,
-  Input,
-  KeyboardAvoidingView,
-  Typography,
-} from '@components/index';
-import {View} from 'react-native';
-import fonts from '@config/Fonts';
-import colors from '@config/Colors';
-import {Formik} from 'formik';
-import {Button} from '@rneui/themed';
-import {forgetPasswordSchema} from '@utils/schemas';
+import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import { navigate } from '@navigation/NavigationService';
+import getErrorMessage from '@utils/getErrorMessage';
+import { forgetPasswordSchema } from '@utils/schemas';
+import { showToast } from '@utils/showToast';
+import React, { useCallback } from 'react';
+import endpoints from '@api/endpoints';
+import { usePost } from '@hooks/usePost';
+import { Button } from '@rneui/themed';
+import colors from '@config/Colors';
+import fonts from '@config/Fonts';
+import { View } from 'react-native';
+import { Formik } from 'formik';
+
 
 const ForgetPassword = () => {
+  const sendOtpApi = usePost(endpoints.sendMailOtp);
   const handleOnSubmit = useCallback(async (values: any) => {
-    navigate("VerifyOtp")
+    try {
+      await sendOtpApi.request({payload: values});
+      navigate('VerifyOtp', {email: values?.email});
+    } catch (error) {
+      showToast(getErrorMessage(error));
+    }
   }, []);
 
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon />
-      <KeyboardAvoidingView contentContainerStyle={{paddingTop: 5, paddingHorizontal:12}}>
+      <KeyboardAvoidingView
+        contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12}}>
         <Typography fontFamily={fonts.poppinsSemiBold} fontSize={21}>
           Forget password?
         </Typography>
@@ -30,8 +36,7 @@ const ForgetPassword = () => {
           fontFamily={fonts.poppinsRegular}
           color={colors.primaryTextLight}
           style={{paddingTop: 8}}
-          fontSize={15}
-          >
+          fontSize={15}>
           Please enter your registered email address. An OTP will be sent to
           this address to initiate the password reset process.
         </Typography>
@@ -41,9 +46,15 @@ const ForgetPassword = () => {
           validationSchema={forgetPasswordSchema}
           onSubmit={handleOnSubmit}>
           {({handleChange, handleSubmit, values, errors, touched}) => (
-            <View style={{display: 'flex', flexDirection: 'column', gap: 12,paddingTop:30}}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12,
+                paddingTop: 30,
+              }}>
               <Input
-              placeholder='Email address'
+                placeholder="Email address"
                 value={values.email}
                 onChange={handleChange('email')}
                 error={touched?.email && errors?.email}
@@ -51,8 +62,8 @@ const ForgetPassword = () => {
 
               <Button
                 disabledStyle={{backgroundColor: colors.messageBox}}
-                // disabled={loading}
-                // loading={loading}
+                disabled={sendOtpApi.loading}
+                loading={sendOtpApi.loading}
                 onPress={() => handleSubmit()}
                 title={'Submit'}
                 buttonStyle={{
@@ -66,7 +77,7 @@ const ForgetPassword = () => {
           )}
         </Formik>
       </KeyboardAvoidingView>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

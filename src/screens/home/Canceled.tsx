@@ -1,8 +1,9 @@
-import React, {useCallback} from 'react';
-import {JobCard} from '@components/index';
 import AppFlatlist from '@components/appFlatlist/AppFlatlist';
-import {useSelector} from 'react-redux';
-import {getCancelledJobs} from '@store/jobSlice';
+import { getCancelledJobs } from '@store/jobSlice';
+import React, { memo, useCallback } from 'react';
+import { JobCard } from '@components/index';
+import { useSelector } from 'react-redux';
+
 
 type Props = {
   refreshing?: boolean;
@@ -33,4 +34,4 @@ const Canceled = ({refreshing, onRefresh}: Props) => {
   );
 };
 
-export default Canceled;
+export default memo(Canceled);

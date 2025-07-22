@@ -1,23 +1,25 @@
-import React, {useEffect, useMemo} from 'react';
-import {BackgroundImgContainer, TabBar} from '@components/index';
-import Pending from './Pending';
-import Assigned from './Assigned';
+import UserGreeting from '@components/userGreeting/UserGreeting';
+import { navigate } from '@navigation/NavigationService';
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobs, setJobs } from '@store/jobSlice';
+import React, { useEffect, useMemo } from 'react';
+import { TabBar } from '@components/index';
+import { Image, View } from 'react-native';
+import { getUser } from '@store/authSlice';
+import endpoints from '@api/endpoints';
+import { useGet } from '@hooks/useGet';
+import { Button } from '@rneui/themed';
+import images from '@config/Images';
+import colors from '@config/Colors';
+import { isIOS } from '@rneui/base';
+import fonts from '@config/Fonts';
+
 import InProgress from './InProgress';
 import Completed from './Completed';
 import Canceled from './Canceled';
-import {Image, View} from 'react-native';
-import images from '@config/Images';
-import {Button} from '@rneui/themed';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
-import {navigate} from '@navigation/NavigationService';
-import {useGet} from '@hooks/useGet';
-import endpoints from '@api/endpoints';
-import {useDispatch, useSelector} from 'react-redux';
-import {getJobs, setJobs} from '@store/jobSlice';
-import {getUser} from '@store/authSlice';
-import UserGreeting from '@components/userGreeting/UserGreeting';
-import { isIOS } from '@rneui/base';
+import Assigned from './Assigned';
+import Pending from './Pending';
+
 
 const Home = () => {
   const user = useSelector(getUser);
@@ -64,7 +66,7 @@ const Home = () => {
   }, [data]);
 
   return (
-    <BackgroundImgContainer>
+    <>
       {isCustomer && (
         <View
           style={{
@@ -97,7 +99,7 @@ const Home = () => {
       )}
       {user?.role === 'employee' && <UserGreeting />}
       <TabBar tabs={userTabs ?? []} />
-    </BackgroundImgContainer>
+    </>
   );
 };
 

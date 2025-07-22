@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '@store/index';
+
 import { Job } from '../types/job';
 
 
@@ -30,19 +31,19 @@ addJob
 
 export const getJobs = (state: RootState) => state?.job?.jobs;
 export const getPendingJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item)=>item.status === "pending");
+    return state?.job?.jobs?.filter((item)=>item.status === "pending") ?? [];
 };
 export const getAssignedJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item)=>item.status === "assigned");
+    return state?.job?.jobs?.filter((item)=>item.status === "assigned") ?? [];
 };
 export const getInProgressJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item)=>item.status === "in-progress");
+    return state?.job?.jobs?.filter((item)=>item.status === "in-progress") ?? [];
 };
 export const getCompletedJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item)=>item.status === "completed");
+    return state?.job?.jobs?.filter((item)=>item.status === "completed") ?? [];
 };
 export const getCancelledJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item)=>item.status === "cancelled");
+    return state?.job?.jobs?.filter((item)=>item.status === "cancelled") ?? [];
 };
 
 export default jobSlice.reducer;

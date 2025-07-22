@@ -1,28 +1,38 @@
-import React, {useCallback} from 'react';
-import {
-  BackgroundImgContainer,
-  Header,
-  Input,
-  KeyboardAvoidingView,
-  Typography,
-} from '@components/index';
-import {View} from 'react-native';
-import fonts from '@config/Fonts';
+import { BackgroundImgContainer, Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
+import { navigate } from '@navigation/NavigationService';
+import { setNewPasswordSchema } from '@utils/schemas';
+import getErrorMessage from '@utils/getErrorMessage';
+import { showToast } from '@utils/showToast';
+import React, { useCallback } from 'react';
+import { usePost } from '@hooks/usePost';
+import endpoints from '@api/endpoints';
+import { Button } from '@rneui/themed';
 import colors from '@config/Colors';
-import {Formik} from 'formik';
-import {Button} from '@rneui/themed';
-import {navigate} from '@navigation/NavigationService';
-import {setNewPasswordSchema} from '@utils/schemas';
+import { View } from 'react-native';
+import fonts from '@config/Fonts';
+import { Formik } from 'formik';
 
-const SetNewPassword = () => {
+
+const SetNewPassword = ({route}: any) => {
+  const setPasswordApi = usePost(endpoints.setNewPassword);
+
   const handleOnSubmit = useCallback(async (values: any) => {
-    navigate('Login');
+    try {
+      await setPasswordApi.request({
+        payload: {token: route?.params?.token, password: values?.password},
+      });
+      navigate('Login');
+      showToast("Password updated successfully")
+    } catch (error) {
+      showToast(getErrorMessage(error));
+    }
   }, []);
 
   return (
     <BackgroundImgContainer>
       <Header leftIcon />
-      <KeyboardAvoidingView contentContainerStyle={{paddingTop: 5, paddingHorizontal:12}}>
+      <KeyboardAvoidingView
+        contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12}}>
         <Typography fontFamily={fonts.poppinsSemiBold} fontSize={21}>
           Set New Password
         </Typography>
@@ -65,8 +75,8 @@ const SetNewPassword = () => {
 
               <Button
                 disabledStyle={{backgroundColor: colors.messageBox}}
-                // disabled={loading}
-                // loading={loading}
+                disabled={setPasswordApi.loading}
+                loading={setPasswordApi.loading}
                 onPress={() => handleSubmit()}
                 title={'Submit'}
                 buttonStyle={{

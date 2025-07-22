@@ -1,10 +1,11 @@
-import messaging from '@react-native-firebase/messaging';
-import baseApi, { endpoints } from '@api/index';
-import { store } from '@store/index';
 import notifee, { EventType } from '@notifee/react-native';
+import messaging from '@react-native-firebase/messaging';
 import { navigate } from '@navigation/NavigationService';
-import { isIOS } from '@rneui/base';
+import baseApi, { endpoints } from '@api/index';
 import { Platform } from 'react-native';
+import { store } from '@store/index';
+import { isIOS } from '@rneui/base';
+
 
 /**
  * Request user permission for notifications (iOS only).
@@ -31,6 +32,9 @@ export const getFcmToken = async (): Promise<string | null> => {
         await messaging().registerDeviceForRemoteMessages();
       }
     }
+
+    let a = await messaging().app;
+    console.log(a)
 
     const token = await messaging().getToken();
     if (token) {

@@ -1,8 +1,9 @@
-import React, {useCallback} from 'react';
 import AppFlatlist from '@components/appFlatlist/AppFlatlist';
-import {JobCard} from '@components/index';
-import {useSelector} from 'react-redux';
-import {getPendingJobs} from '@store/jobSlice';
+import React, { memo, useCallback } from 'react';
+import { getPendingJobs } from '@store/jobSlice';
+import { JobCard } from '@components/index';
+import { useSelector } from 'react-redux';
+
 
 type Props = {
   refreshing?: boolean;
@@ -32,4 +33,4 @@ const Pending = ({refreshing, onRefresh}: Props) => {
   );
 };
 
-export default Pending;
+export default memo(Pending);

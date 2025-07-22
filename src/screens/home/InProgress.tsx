@@ -1,8 +1,10 @@
-import React, {useCallback} from 'react';
-import {JobCard} from '@components/index';
 import AppFlatlist from '@components/appFlatlist/AppFlatlist';
-import {useSelector} from 'react-redux';
-import {getInProgressJobs} from '@store/jobSlice';
+import { getInProgressJobs } from '@store/jobSlice';
+import React, { memo, useCallback } from 'react';
+import { JobCard } from '@components/index';
+import { useSelector } from 'react-redux';
+
+
 type Props = {
   refreshing?: boolean;
   onRefresh?: () => void;
@@ -31,4 +33,4 @@ const InProgress = ({refreshing, onRefresh}: Props) => {
   );
 };
 
-export default InProgress;
+export default memo(InProgress);

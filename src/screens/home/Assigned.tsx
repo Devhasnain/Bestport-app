@@ -1,11 +1,12 @@
-import React, {useCallback} from 'react';
-import {JobCard, NoResultsFound, Typography} from '@components/index';
+import { JobCard, NoResultsFound, Typography } from '@components/index';
 import AppFlatlist from '@components/appFlatlist/AppFlatlist';
-import {useSelector} from 'react-redux';
-import {getAssignedJobs} from '@store/jobSlice';
-import {View} from 'react-native';
+import { getAssignedJobs } from '@store/jobSlice';
+import React, { memo, useCallback } from 'react';
+import { getUser } from '@store/authSlice';
+import { useSelector } from 'react-redux';
 import fonts from '@config/Fonts';
-import {getUser} from '@store/authSlice';
+import { View } from 'react-native';
+
 
 type Props = {
   refreshing?: boolean;
@@ -65,4 +66,4 @@ const Assigned = ({refreshing, onRefresh}: Props) => {
   );
 };
 
-export default Assigned;
+export default memo(Assigned);

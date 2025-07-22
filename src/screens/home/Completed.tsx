@@ -1,8 +1,10 @@
-import React, {useCallback} from 'react';
-import {JobCard} from '@components/index';
 import AppFlatlist from '@components/appFlatlist/AppFlatlist';
-import {useSelector} from 'react-redux';
-import {getCompletedJobs} from '@store/jobSlice';
+import { getCompletedJobs } from '@store/jobSlice';
+import React, { memo, useCallback } from 'react';
+import { JobCard } from '@components/index';
+import { useSelector } from 'react-redux';
+
+
 type Props = {
   refreshing?: boolean;
   onRefresh?: () => void;
@@ -31,4 +33,4 @@ const Completed = ({refreshing, onRefresh}: Props) => {
   );
 };
 
-export default Completed;
+export default memo(Completed);
