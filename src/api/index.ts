@@ -12,7 +12,7 @@ const dev = 'http://192.168.100.186:3000/api/v1';
 export const socketUrl = 'https://bestport-e2da7425a372.herokuapp.com'
 
 const baseApi = axios.create({
-  baseURL: `${dev}`,
+  baseURL: `${live}`,
   timeout: 20000,
   timeoutErrorMessage: 'Request timeout.',
   headers: {
