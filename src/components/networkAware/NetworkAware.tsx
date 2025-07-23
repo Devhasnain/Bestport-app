@@ -1,11 +1,12 @@
 import Feather from 'react-native-vector-icons/Feather';
+import React, { memo, useEffect, useState } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import React, {memo, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import {Dialog} from '@rneui/themed';
+import { Text, View } from 'react-native';
+import { Dialog } from '@rneui/themed';
+import colors from '@config/Colors';
 
 import styles from './NetworkAware.style';
-import colors from '@config/Colors';
+
 
 const NetworkAware = () => {
   const [isConnected, setIsConnected] = useState(true);
@@ -30,13 +31,13 @@ const NetworkAware = () => {
             statusBarTranslucent={true}>
             <Feather
               name="wifi-off"
-              size={40}
+              size={30}
               color={colors.primaryTextLight}
               style={{marginBottom: 15}}
             />
-            <Text style={styles.title}>You're offline</Text>
+            <Text style={styles.title}>No Internet Connection</Text>
             <Text style={styles.text}>
-              Please check your internet connection.
+              Please check your connection and try again.
             </Text>
           </Dialog>
         </View>

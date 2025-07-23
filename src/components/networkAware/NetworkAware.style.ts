@@ -1,5 +1,6 @@
-import fonts from '@config/Fonts';
 import { StyleSheet } from 'react-native';
+import fonts from '@config/Fonts';
+
 
 const styles = StyleSheet.create({
   modelContainer:{
@@ -10,25 +11,26 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   overlayStyle: {
-    width: '90%',
+    width: '80%',
     borderRadius: 20,
     elevation: 20,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 30,
-    paddingHorizontal: 25,
+    // paddingVertical: 30,
+    // paddingHorizontal: 25,
   },
   title: {
     fontFamily: fonts.poppinsBold,
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
   },
   text: {
     fontFamily: fonts.poppinsRegular,
     fontSize: 14,
     textAlign: 'center',
+    paddingHorizontal:5
   },
 });
 

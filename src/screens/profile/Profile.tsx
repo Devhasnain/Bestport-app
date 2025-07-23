@@ -1,5 +1,5 @@
-import { BackgroundImgContainer, Typography, Header, UserProfileImagePicker, } from '@components/index';
 import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal';
+import { Typography, Header, UserProfileImagePicker } from '@components/index';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { getUser, setToken, setUser } from '@store/authSlice';
@@ -38,12 +38,12 @@ const Profile = ({navigation}: any) => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   const handleLogout = useCallback(async () => {
+    navigate('Welcome');
     const socket = getSocket();
     socket?.disconnect();
     dispatch(setToken(null));
     dispatch(setUser(null));
     toggleModal();
-    navigate('Welcome');
     await GoogleSignin.signOut();
   }, []);
 
@@ -53,92 +53,87 @@ const Profile = ({navigation}: any) => {
 
   return (
     <>
-      <BackgroundImgContainer>
-        <Header title="Profile" titleFontSize={21} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 12}}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 18,
-              backgroundColor: colors.primary,
-              padding: 16,
-              borderRadius: 12,
-            }}>
-            <UserProfileImagePicker user={user} />
-            <View>
-              <Typography
-                fontFamily={fonts.poppinsMedium}
-                fontSize={16}
-                color={colors.white}>
-                {user?.name}
-              </Typography>
-              <Typography
-                fontFamily={fonts.poppinsRegular}
-                fontSize={14}
-                color={colors.white}>
-                {user?.email}
-              </Typography>
-            </View>
+      <Header title="Profile" titleFontSize={21} />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingHorizontal: 12, paddingBottom: 90}}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 18,
+            backgroundColor: colors.primary,
+            padding: 16,
+            borderRadius: 12,
+          }}>
+          <UserProfileImagePicker user={user} />
+          <View>
+            <Typography
+              fontFamily={fonts.poppinsMedium}
+              fontSize={16}
+              color={colors.white}>
+              {user?.name}
+            </Typography>
+            <Typography
+              fontFamily={fonts.poppinsRegular}
+              fontSize={14}
+              color={colors.white}>
+              {user?.email}
+            </Typography>
           </View>
+        </View>
 
-          <View
-            style={{
-              paddingTop: 25,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 10,
-            }}>
-            <InputBtn title="Name" value={user?.name} redirect="EditName" />
-            <InputBtn title="Email" value={user?.email} redirect="EditEmail" />
-            <InputBtn
-              title="Password"
-              value={'***********'}
-              redirect="EditPassword"
-            />
+        <View
+          style={{
+            paddingTop: 25,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}>
+          <InputBtn title="Name" value={user?.name} redirect="EditName" />
+          <InputBtn title="Email" value={user?.email} redirect="EditEmail" />
+          <InputBtn
+            title="Password"
+            value={'***********'}
+            redirect="EditPassword"
+          />
 
-            <Divider orientation="horizontal" style={{marginVertical: 12}} />
-            <View style={{display: 'flex', flexDirection: 'column', gap: 20}}>
-              {tabs.map((item, index) => (
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => handleRedirect(item.label)}
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 12,
-                  }}>
-                  {item.image && (
-                    <Image source={item.image} tintColor={colors.btnPrimary} />
-                  )}
-                  <Typography fontSize={15}>{item?.title}</Typography>
-                </TouchableOpacity>
-              ))}
-
+          <Divider orientation="horizontal" style={{marginVertical: 12}} />
+          <View style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+            {tabs.map((item, index) => (
               <TouchableOpacity
-                onPress={toggleModal}
                 activeOpacity={0.8}
+                onPress={() => handleRedirect(item.label)}
+                key={index}
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
                   gap: 12,
                 }}>
-                <Image
-                  source={images.logoutIcon}
-                  tintColor={colors.btnPrimary}
-                />
-                <Typography fontSize={15}>Logout</Typography>
+                {item.image && (
+                  <Image source={item.image} tintColor={colors.btnPrimary} />
+                )}
+                <Typography fontSize={15}>{item?.title}</Typography>
               </TouchableOpacity>
-            </View>
+            ))}
+
+            <TouchableOpacity
+              onPress={toggleModal}
+              activeOpacity={0.8}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 12,
+              }}>
+              <Image source={images.logoutIcon} tintColor={colors.btnPrimary} />
+              <Typography fontSize={15}>Logout</Typography>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </BackgroundImgContainer>
+        </View>
+      </ScrollView>
       <ConfirmationModal
         isOpen={isOpen}
         title="Are you sure, You want to logout?"

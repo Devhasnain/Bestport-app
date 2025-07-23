@@ -1,20 +1,24 @@
-import {View, TouchableOpacity} from 'react-native';
-import React, {memo} from 'react';
-import {navigate} from '@navigation/NavigationService';
+import { formatToFull12HourDateTime, getTicketExpiryText, getTimeAgo, } from '@utils/DateFormat';
+import { navigate } from '@navigation/NavigationService';
+import { View, TouchableOpacity } from 'react-native';
+import { urgencyLevelText } from '@config/Constants';
 import Typography from '@components/ui/Typography';
-import fonts from '@config/Fonts';
+import { Feather } from '@components/index';
+import { Avatar } from '@rneui/themed';
+import React, { memo } from 'react';
 import colors from '@config/Colors';
-import {Feather} from '@components/index';
-import {formatToFull12HourDateTime, getTimeAgo} from '@utils/DateFormat';
-import {urgencyLevelText} from '@config/Constants';
-import {Avatar} from '@rneui/themed';
-import {Job} from '../../types/job';
+import fonts from '@config/Fonts';
+
+import { Job } from '../../types/job';
+
 
 type Props = {
   item: Job;
+  canLike?: boolean;
+  expiredIn?: Date;
 };
 
-const JobCard = ({item}: Props) => {
+const JobCard = ({item, canLike, expiredIn}: Props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -133,7 +137,7 @@ const JobCard = ({item}: Props) => {
             }}>
             <Avatar
               source={{uri: item?.assigned_to?.profile_img}}
-              title={item?.assigned_to?.name}
+              title={item?.assigned_to?.name[0]?.toUpperCase()}
               titleStyle={{
                 color: colors.primaryTextLight,
                 fontFamily: fonts.poppinsSemiBold,
@@ -157,17 +161,14 @@ const JobCard = ({item}: Props) => {
             fontSize={11.5}
             color={colors.primaryTextLight}
             lineHeight={14}>
-            {getTimeAgo(item?.createdAt?.toString())}
+            {expiredIn
+              ? getTicketExpiryText(expiredIn)
+              : getTimeAgo(item?.createdAt?.toString())}
           </Typography>
         )}
-
-        <TouchableOpacity
-          style={{
-            paddingVertical: 5,
-          }}
-          activeOpacity={0.7}>
+        {canLike && (
           <Feather name="heart" size={20} color={colors.primaryTextLight} />
-        </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );

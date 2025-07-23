@@ -1,4 +1,4 @@
-import { BackgroundImgContainer, Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
+import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import { navigate } from '@navigation/NavigationService';
 import { setNewPasswordSchema } from '@utils/schemas';
 import getErrorMessage from '@utils/getErrorMessage';
@@ -29,7 +29,7 @@ const SetNewPassword = ({route}: any) => {
   }, []);
 
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon />
       <KeyboardAvoidingView
         contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12}}>
@@ -90,7 +90,7 @@ const SetNewPassword = ({route}: any) => {
           )}
         </Formik>
       </KeyboardAvoidingView>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

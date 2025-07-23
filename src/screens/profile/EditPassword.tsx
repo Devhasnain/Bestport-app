@@ -1,4 +1,4 @@
-import { BackgroundImgContainer, Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
+import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import { editPasswordSchema } from '@utils/schemas';
 import React, { useCallback } from 'react';
 import { Button } from '@rneui/themed';
@@ -11,7 +11,7 @@ import { Formik } from 'formik';
 const EditPassword = () => {
   const handleOnSubmit = useCallback(async (values: any) => {}, []);
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon title="Edit password" />
       <KeyboardAvoidingView
         contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12}}>
@@ -81,7 +81,7 @@ const EditPassword = () => {
           )}
         </Formik>
       </KeyboardAvoidingView>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

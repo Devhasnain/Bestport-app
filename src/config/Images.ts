@@ -20,6 +20,8 @@ const images = {
     homeIcon: require("@assets/images/home2.png"),
     userIcon: require("@assets/images/profile.png"),
     notificationIcon: require("@assets/images/notification2.png"),
+    appLogoName: require("@assets/images/logo-name.png"),
+
 };
 
 export default images

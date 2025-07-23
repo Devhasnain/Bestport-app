@@ -1,4 +1,4 @@
-import { AppFlatlist, BackgroundImgContainer, Header, SearchBar, FontAwesome, Typography, } from '@components/index';
+import { AppFlatlist, Header, SearchBar, FontAwesome, Typography, } from '@components/index';
 import { TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { faqs } from '@config/Constants';
@@ -42,7 +42,7 @@ const Faqs = () => {
   );
 
   return (
-    <BackgroundImgContainer>
+    <>
       <Header title="Faqs" leftIcon />
       <SearchBar value={search} setValue={setSearch} placeholder="Search faq" />
       <AppFlatlist
@@ -51,7 +51,7 @@ const Faqs = () => {
         contentContainerStyle={styles.listContainer}
         renderItem={renderItem}
       />
-    </BackgroundImgContainer>
+    </>
   );
 };
 

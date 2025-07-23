@@ -1,7 +1,7 @@
-import { BackgroundImgContainer, Typography } from '@components/index';
 import AppFlatlist from '@components/appFlatlist/AppFlatlist';
 import { View, TouchableOpacity, Image } from 'react-native';
 import Header from '@components/header/Header';
+import { Typography } from '@components/index';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
 import React from 'react';
@@ -72,7 +72,7 @@ const notifications = [
 
 const Notifications = () => {
   return (
-    <BackgroundImgContainer>
+    <>
       <Header title="Notifications" titleFontSize={21}/>
       <AppFlatlist
         contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12, gap: 12}}
@@ -113,7 +113,7 @@ const Notifications = () => {
           </TouchableOpacity>
         )}
       />
-    </BackgroundImgContainer>
+    </>
   );
 };
 

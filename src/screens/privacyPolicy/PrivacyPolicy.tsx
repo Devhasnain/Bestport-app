@@ -1,4 +1,4 @@
-import { AppFlatlist, BackgroundImgContainer, Header, Typography } from '@components/index';
+import { AppFlatlist, Header, Typography } from '@components/index';
 import { privacyPolicy } from '@config/Constants';
 import { View } from 'react-native';
 import fonts from '@config/Fonts';
@@ -7,7 +7,7 @@ import React from 'react';
 
 const PrivacyPolicy = () => {
   return (
-    <BackgroundImgContainer>
+    <>
         <Header leftIcon title='Pivacy policy' />
 
         <AppFlatlist
@@ -23,7 +23,7 @@ const PrivacyPolicy = () => {
           </View>
         )}
         />
-    </BackgroundImgContainer>
+    </>
   )
 }
 

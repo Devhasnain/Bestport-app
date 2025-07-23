@@ -1,4 +1,4 @@
-import { BackgroundImgContainer, Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
+import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import { Button } from '@rneui/themed';
 import colors from '@config/Colors';
 import { View } from 'react-native';
@@ -9,7 +9,7 @@ import React from 'react';
 
 const CustomerSupport = () => {
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon title="Customer support" />
       <KeyboardAvoidingView
         contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12}}>
@@ -64,7 +64,7 @@ const CustomerSupport = () => {
           )}
         </Formik>
       </KeyboardAvoidingView>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

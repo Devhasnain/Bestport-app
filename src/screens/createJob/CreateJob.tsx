@@ -1,25 +1,21 @@
-import React, {useCallback} from 'react';
-import {
-  BackgroundImgContainer,
-  Header,
-  Input,
-  KeyboardAvoidingView,
-  Typography,
-} from '@components/index';
-import {ScrollView, View} from 'react-native';
-import {Formik} from 'formik';
+import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import SingleSelector from '@components/singleSelector/SingleSelector';
-import {serviceTypes, urgencyLevel} from '@config/Constants';
+import { serviceTypes, urgencyLevel } from '@config/Constants';
 import DateInput from '@components/dateInput/DateInput';
-import {Button} from '@rneui/themed';
-import colors from '@config/Colors';
-import {createJobSchema} from '@utils/schemas';
-import {usePost} from '@hooks/usePost';
-import endpoints from '@api/endpoints';
-import {useDispatch} from 'react-redux';
 import getErrorMessage from '@utils/getErrorMessage';
-import {addJob} from '@store/jobSlice';
+import { createJobSchema } from '@utils/schemas';
+import { ScrollView, View } from 'react-native';
 import { showToast } from '@utils/showToast';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import endpoints from '@api/endpoints';
+import { usePost } from '@hooks/usePost';
+import { addJob } from '@store/jobSlice';
+import { Button } from '@rneui/themed';
+import colors from '@config/Colors';
+import { Formik } from 'formik';
+
+
 const CreateJob = () => {
   const dispatch = useDispatch();
   const {request, loading} = usePost(endpoints.createJob);
@@ -45,7 +41,7 @@ const CreateJob = () => {
     }
   }, []);
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon title="Create job" />
       <KeyboardAvoidingView
         contentContainerStyle={{paddingHorizontal: 12}}
@@ -168,7 +164,7 @@ const CreateJob = () => {
           </Formik>
         </ScrollView>
       </KeyboardAvoidingView>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

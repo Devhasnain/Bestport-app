@@ -1,8 +1,9 @@
-import { BackgroundImgContainer, Header, Input, Toast, Typography, } from '@components/index';
+import { Header, Input, Toast, Typography, } from '@components/index';
 import { useDispatch, useSelector } from 'react-redux';
 import getErrorMessage from '@utils/getErrorMessage';
 import { getUser, setUser } from '@store/authSlice';
 import { editNameSchema } from '@utils/schemas';
+import { showToast } from '@utils/showToast';
 import React, { useCallback } from 'react';
 import endpoints from '@api/endpoints';
 import { usePut } from '@hooks/usePut';
@@ -11,7 +12,6 @@ import colors from '@config/Colors';
 import { View } from 'react-native';
 import fonts from '@config/Fonts';
 import { Formik } from 'formik';
-import { showToast } from '@utils/showToast';
 
 
 const EditName = () => {
@@ -28,7 +28,7 @@ const EditName = () => {
     }
   }, []);
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon title="Edit name" />
       <Typography
         fontFamily={fonts.poppinsRegular}
@@ -81,7 +81,7 @@ const EditName = () => {
           </View>
         )}
       </Formik>
-    </BackgroundImgContainer>
+    </>
   );
 };
 

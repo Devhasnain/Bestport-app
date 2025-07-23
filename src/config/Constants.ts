@@ -392,7 +392,6 @@ export const urgencyLevelText = (urgency: string) => {
 export function formatJobStatus(status: JobStatus): string {
   const map: Record<JobStatus, string> = {
     pending: 'Pending',
-    assigned: 'Assigned',
     'in-progress': 'In Progress',
     completed: 'Completed',
     cancelled: 'Cancelled',
@@ -405,7 +404,6 @@ export function formatJobStatus(status: JobStatus): string {
 export function getStatusColor(status: JobStatus): string {
   const colorMap: Record<JobStatus, string> = {
     pending: '#facc15',        // Yellow
-    assigned: '#3b82f6',       // Blue
     'in-progress': '#06b6d4',  // Cyan
     completed: '#22c55e',      // Green
     cancelled: '#ef4444',      // Red

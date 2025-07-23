@@ -1,34 +1,41 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Notifications from '@screens/notifications/Notifications';
 import { Feather, Typography } from '@components/index';
-import { TouchableOpacity } from 'react-native';
 import Profile from '@screens/profile/Profile';
-import React, { memo } from 'react';
-import images from '@config/Images';
+import { TouchableOpacity } from 'react-native';
+import EmployeeHome from '@screens/employee';
+import CustomerHome from '@screens/customer';
+import { getUser } from '@store/authSlice';
+import { useSelector } from 'react-redux';
 import colors from '@config/Colors';
+import React, { memo } from 'react';
 import fonts from '@config/Fonts';
-import Home from '@screens/home';
 import { isIOS } from '@rneui/base';
 
 
 const TabStack = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
+  const user = useSelector(getUser);
+
   return (
     <TabStack.Navigator
       screenOptions={{
+        sceneStyle: {
+          backgroundColor: 'transparent',
+        },
         animation: 'fade',
         tabBarStyle: {
           height: isIOS ? 90 : 75,
-          paddingTop:15,
-          borderTopWidth:0.3,
+          borderTopWidth: 0.3,
           elevation: 0,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
         },
-      }}
-    >
+      }}>
       <TabStack.Screen
         name="Home"
-        component={Home}
+        component={user?.role === 'customer' ? CustomerHome : EmployeeHome}
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => <TabIcon focused={focused} icon="home" />,
@@ -89,7 +96,7 @@ const TabLabel = memo(({focused, label}: TabLabelProps) => {
     <Typography
       fontFamily={focused ? fonts.poppinsMedium : fonts.poppinsRegular}
       fontSize={13}
-      color={focused ? colors?.activeTabText : colors.primaryTextLight}>
+      color={focused ? colors?.activeTabIcon : colors.primaryTextLight}>
       {label}
     </Typography>
   );

@@ -33,4 +33,4 @@ export type Job = {
     createdAt: string;
 };
 
-export type JobStatus = 'pending' | 'assigned' | 'in-progress' | 'completed' | 'cancelled';
+export type JobStatus = 'pending' | 'in-progress' | 'completed' | 'cancelled';

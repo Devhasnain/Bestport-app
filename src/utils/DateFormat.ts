@@ -73,3 +73,35 @@ export const formatToFull12HourDateTime = (isoString:string) => {
 
   return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
 };
+
+
+export const getTicketExpiryText = (createdAt:Date) => {
+  if (!createdAt) return "Invalid time";
+
+  const createdTime = new Date(createdAt);
+  const now = new Date();
+  const diffMs = Number(now) - Number(createdTime);
+  const diffMins = Math.floor(diffMs / 60000); // convert ms to minutes
+
+  if (diffMins >= 15) {
+    return "Ticket expired";
+  } else {
+    const remaining = 15 - diffMins;
+    return `Expires in ${remaining} minute${remaining !== 1 ? 's' : ''}`;
+  }
+};
+
+export const isTicketExpired = (createdAt:Date) => {
+  if (!createdAt) return true;
+
+  const createdTime = new Date(createdAt);
+  const now = new Date();
+  const diffMs = Number(now) - Number(createdTime);
+  const diffMins = Math.floor(diffMs / 60000);
+
+  if (diffMins >= 15) {
+    return true;
+  } else {
+    return false
+  }
+};

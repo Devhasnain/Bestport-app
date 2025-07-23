@@ -1,30 +1,30 @@
-import React, {memo, ReactNode, useEffect, useState} from 'react';
-import {
-  BackgroundImgContainer,
-  Header,
-  NoResultsFound,
-  Typography,
-} from '@components/index';
-import fonts from '@config/Fonts';
-import {RefreshControl, ScrollView, View} from 'react-native';
-import colors from '@config/Colors';
-import {Divider} from '@rneui/themed';
-import {formatToFull12HourDateTime, getTimeAgo} from '@utils/DateFormat';
-import {useGet} from '@hooks/useGet';
+import { formatToFull12HourDateTime, getTimeAgo, isTicketExpired, } from '@utils/DateFormat';
+import { formatJobStatus, getStatusColor, urgencyLevelText, } from '@config/Constants';
+import { Header, NoResultsFound, Typography } from '@components/index';
+import React, { memo, ReactNode, useEffect, useState } from 'react';
+import { addEmployeeJobs, removeJobTicket } from '@store/jobSlice';
+import { RefreshControl, ScrollView, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import getErrorMessage from '@utils/getErrorMessage';
+import { Button, Divider } from '@rneui/themed';
+import { showToast } from '@utils/showToast';
+import { getUser } from '@store/authSlice';
 import endpoints from '@api/endpoints';
-import {Job} from '../../types/job';
-import {
-  formatJobStatus,
-  getStatusColor,
-  urgencyLevelText,
-} from '@config/Constants';
+import { usePut } from '@hooks/usePut';
+import { useGet } from '@hooks/useGet';
+import colors from '@config/Colors';
+import fonts from '@config/Fonts';
+
+import { Job } from '../../types/job';
+
 
 const JobDetail = ({route}: any) => {
+  const user = useSelector(getUser);
   const {id} = route?.params;
   const [job, setJob] = useState<Job>();
   const {data, request, loading} = useGet({
     endpoint: `${endpoints.jobs}/${id}`,
-    autoFetch: id,
+    autoFetch: id && !job,
   });
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const JobDetail = ({route}: any) => {
   }, [data]);
 
   return (
-    <BackgroundImgContainer>
+    <>
       <Header leftIcon style={{justifyContent: 'space-between'}}>
         <View style={{display: 'flex', flexDirection: 'row', gap: 5}}>
           {job?.createdAt && (
@@ -156,7 +156,9 @@ const JobDetail = ({route}: any) => {
           <></>
         )}
       </ScrollView>
-    </BackgroundImgContainer>
+
+      {user?.role === 'employee' && <AcceptJobTicket job={job} />}
+    </>
   );
 };
 
@@ -199,5 +201,74 @@ const Row = memo(({children}: any) => (
     {children}
   </View>
 ));
+
+const AcceptJobTicket = memo(({job}: {job?: Job}) => {
+  const dispatch = useDispatch();
+  const [ticket, setTicket] = useState<any>(null);
+  const getTicketApi = useGet({
+    endpoint: `${endpoints.getTicketByJob}?job=${job?._id}`,
+    autoFetch: job && !ticket,
+  });
+  const acceptJobTicketApi = usePut();
+
+  const handleAcceptJob = async () => {
+    try {
+      if (!ticket?._id) {
+        throw new Error('Job ticket was expired or not available');
+      }
+
+      await acceptJobTicketApi.request({
+        path: `${endpoints.AcceptJobTicket}?ticketId=${ticket._id}`,
+      });
+      dispatch(removeJobTicket(ticket?._id));
+      dispatch(addEmployeeJobs({key: 'in_progress', value: job}));
+      setTicket((pre:any)=>({...pre,status:"accepted"}))
+      showToast("Job ticket accept successfully")
+    } catch (error) {
+      showToast(getErrorMessage(error));
+    }
+  };
+
+  useEffect(() => {
+    if (getTicketApi?.data) {
+      setTicket(getTicketApi?.data?.data?.ticket);
+    }
+  }, [getTicketApi?.data]);
+
+  return (
+    <>
+      {ticket && ticket?.status !== 'accepted' ? (
+        <View
+          style={{
+            paddingVertical: 14,
+            paddingHorizontal: 12,
+            backgroundColor: colors.white,
+          }}>
+          <Button
+            onPress={handleAcceptJob}
+            disabledStyle={{backgroundColor: colors.btnDisabled}}
+            loading={acceptJobTicketApi.loading}
+            disabled={
+              isTicketExpired(ticket?.createdAt) || getTicketApi?.loading || acceptJobTicketApi.loading
+            }
+            disabledTitleStyle={{color: colors.white}}
+            title={
+              isTicketExpired(ticket?.createdAt)
+                ? 'Job ticket expired'
+                : 'Accept job ticket'
+            }
+            buttonStyle={{
+              backgroundColor: colors.btnPrimary,
+              borderRadius: 12,
+              minHeight: 50,
+            }}
+          />
+        </View>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+});
 
 export default JobDetail;
