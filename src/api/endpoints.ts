@@ -3,7 +3,7 @@ const endpoints = {
     login: "/auth/login",
     googleLogin: "/auth/google-auth",
     profile: "/auth/me",
-    setFcm: "/auth/set-fcm",
+    registerDevice: "/auth/register-device",
     getFcm: "/auth/fcm",
     createJob: "/job/create",
     jobs: '/job',

@@ -8,9 +8,9 @@ import { ScrollView, View } from 'react-native';
 import { showToast } from '@utils/showToast';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import endpoints from '@api/endpoints';
 import { usePost } from '@hooks/usePost';
 import { addJob } from '@store/jobSlice';
+import endpoints from '@api/endpoints';
 import { Button } from '@rneui/themed';
 import colors from '@config/Colors';
 import { Formik } from 'formik';
@@ -21,21 +21,21 @@ const CreateJob = () => {
   const {request, loading} = usePost(endpoints.createJob);
   const initialValues = {
     service_type: '',
-    title: '',
-    description: '',
+    title: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
+    description: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkfkjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
     preferred_date: '',
     urgency: '',
-    city: '',
-    post_code: '',
-    address: '',
-    instructions: '',
+    city: 'Karachi',
+    post_code: '12342',
+    address: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
+    instructions: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
   };
   const handleSubmit = useCallback(async (values: any, {resetForm}: any) => {
     try {
       const res = await request({payload: values});
       dispatch(addJob(res.data));
       showToast('Job has been submitted successfully.');
-      resetForm();
+      // resetForm();
     } catch (error) {
       showToast(getErrorMessage(error));
     }
@@ -149,6 +149,7 @@ const CreateJob = () => {
                 />
 
                 <Button
+                disabledTitleStyle={{backgroundColor:colors.btnDisabled}}
                   loading={loading}
                   disabled={loading}
                   onPress={() => handleSubmit()}

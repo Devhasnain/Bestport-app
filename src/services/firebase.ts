@@ -1,8 +1,9 @@
 import notifee, { EventType } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import { navigate } from '@navigation/NavigationService';
+import DeviceInfo from 'react-native-device-info';
+import { AppState, Platform } from 'react-native';
 import baseApi, { endpoints } from '@api/index';
-import { Platform } from 'react-native';
 import { store } from '@store/index';
 import { isIOS } from '@rneui/base';
 
@@ -55,7 +56,24 @@ export const getFcmToken = async (): Promise<string | null> => {
  */
 export const sendFcmTokenToServer = async (token: string) => {
   try {
-    const response = await baseApi.put(`${endpoints.setFcm}/${token}`, {}, { headers: { Authorization: `Bearer ${store.getState().auth.token}` } });
+    const device_id = await DeviceInfo.getUniqueId();
+    const app_version = DeviceInfo.getVersion();
+    const os_version = DeviceInfo.getSystemVersion();
+    const device_type = Platform.OS;
+    const brand = DeviceInfo.getBrand();
+    const device_name = await DeviceInfo.getDeviceName();
+    const ip_address = await DeviceInfo.getIpAddress();
+
+    const response = await baseApi.put(endpoints.registerDevice, {
+      fcm_token: token,
+      device_id,
+      app_version,
+      os_version,
+      device_type,
+      brand,
+      device_name,
+      ip_address
+    }, { headers: { Authorization: `Bearer ${store.getState().auth.token}` } });
     if (response.data?.success) {
       console.log('FCM token sent to server successfully');
     } else {
@@ -105,10 +123,14 @@ const notifeeHandler = async (remoteMessage: any) => {
     android: {
       channelId,
       smallIcon: 'ic_stat_ic_notification',
-      pressAction: {
-        id: 'default',
-      },
     },
+    ios: {
+    foregroundPresentationOptions: {
+      alert: true,
+      badge: true,
+      sound: true,
+    },
+  },
   });
 };
 //Notifee Foreground notification listener to display
@@ -119,17 +141,22 @@ export const onForeGroundNotification = async () => {
 };
 //Notifee Background notification listener to display
 export const onBackGroundNotification = async () => {
+  if(AppState.currentState !== "active"){
   notifee.onBackgroundEvent(async ({ type, detail }) => {
     handleNotificationEvents(type, detail);
   });
+  }
 };
 //Nofitication handler when user press or cancel
 const handleNotificationEvents = (type: any, detail: any) => {
+  const screen = detail?.notification?.data?.redirect?.split("_")[0];
+  const id = detail?.notification?.data?.redirect?.split("_")[1];
   switch (type) {
     case EventType.DISMISSED:
+      navigate("App");
       break;
     case EventType.PRESS:
-      navigate('Notifications');
+      navigate(screen,{id});
       break;
   }
 };
