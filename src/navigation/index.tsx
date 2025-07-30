@@ -14,7 +14,6 @@ import Welcome from '@screens/welcome/Welcome';
 import SignUp from '@screens/signup/SignUp';
 import Login from '@screens/login/Login';
 import Faqs from '@screens/faqs/Faqs';
-import { isIOS } from '@rneui/base';
 import React from 'react';
 
 import BottomTabNavigator from './BottomTabNavigator';
@@ -25,7 +24,7 @@ const defaultScreenOptions: NativeStackNavigationOptions = {
   contentStyle: {
     backgroundColor: 'transparent',
   },
-  animation: isIOS ? 'none' : "fade",
+  animation: 'slide_from_right',
 };
 
 const RootStack = createNativeStackNavigator();
@@ -87,50 +86,32 @@ const RootNavigation = () => {
         <RootStack.Screen
           name="Welcome"
           component={Welcome}
-          options={{
-            ...defaultScreenOptions,
-            animation: isIOS ? 'none' : 'simple_push',
-          }}
+          options={defaultScreenOptions}
         />
         <RootStack.Screen
           name="Login"
           component={Login}
-          options={{
-            ...defaultScreenOptions,
-            animation: isIOS ? 'none' : 'simple_push',
-          }}
+          options={defaultScreenOptions}
         />
         <RootStack.Screen
           name="SignUp"
           component={SignUp}
-          options={{
-            ...defaultScreenOptions,
-            animation: isIOS ? 'none' : 'simple_push',
-          }}
+          options={defaultScreenOptions}
         />
         <RootStack.Screen
           name="ForgetPassword"
           component={ForgetPassword}
-          options={{
-            ...defaultScreenOptions,
-            animation: isIOS ? 'none' : 'simple_push',
-          }}
+          options={defaultScreenOptions}
         />
         <RootStack.Screen
           name="VerifyOtp"
           component={VerifyOtp}
-          options={{
-            ...defaultScreenOptions,
-            animation: isIOS ? 'none' : 'simple_push',
-          }}
+          options={defaultScreenOptions}
         />
         <RootStack.Screen
           name="SetNewPassword"
           component={SetNewPassword}
-          options={{
-            ...defaultScreenOptions,
-            animation: isIOS ? 'none' : 'simple_push',
-          }}
+          options={defaultScreenOptions}
         />
       </RootStack.Navigator>
     </BackgroundImgContainer>
