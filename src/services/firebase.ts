@@ -1,8 +1,8 @@
+import { AppState, PermissionsAndroid, Platform } from 'react-native';
 import notifee, { EventType } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import { navigate } from '@navigation/NavigationService';
 import DeviceInfo from 'react-native-device-info';
-import { AppState, Platform } from 'react-native';
 import baseApi, { endpoints } from '@api/index';
 import { store } from '@store/index';
 import { isIOS } from '@rneui/base';
@@ -12,15 +12,27 @@ import { isIOS } from '@rneui/base';
  * Request user permission for notifications (iOS only).
  */
 export const requestUserPermission = async () => {
-  if (isIOS && !messaging().isDeviceRegisteredForRemoteMessages) {
-    await messaging().registerDeviceForRemoteMessages();
+  try {
+    if (Platform.OS === 'ios') {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      return enabled;
+    } else {
+      // For Android 13+ (API 33), request notification permission
+      if (Number(Platform.Version) >= 33) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      }
+      return true;
+    }
+  } catch (error) {
+    console.log('Notification permission error:', error);
+    return false;
   }
-  const authStatus = await messaging().requestPermission();
-  const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  return enabled;
 };
 
 /**
@@ -28,21 +40,22 @@ export const requestUserPermission = async () => {
  */
 export const getFcmToken = async (): Promise<string | null> => {
   try {
+    const isPermission = await requestUserPermission();
     if (Platform.OS === 'ios') {
       if (messaging().isDeviceRegisteredForRemoteMessages) {
         await messaging().registerDeviceForRemoteMessages();
       }
     }
+    if (isPermission) {
 
-    let a = await messaging().app;
-    console.log(a)
-
-    const token = await messaging().getToken();
-    if (token) {
-      console.log('FCM Token:', token);
-      return token;
+      const token = await messaging().getToken();
+      if (token) {
+        console.log('FCM Token:', token);
+        return token;
+      } else return null
+    } else {
+      return null;
     }
-    return null;
   } catch (error) {
     console.error('Error getting FCM token:', error);
     return null;
@@ -125,12 +138,12 @@ const notifeeHandler = async (remoteMessage: any) => {
       smallIcon: 'ic_stat_ic_notification',
     },
     ios: {
-    foregroundPresentationOptions: {
-      alert: true,
-      badge: true,
-      sound: true,
+      foregroundPresentationOptions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
     },
-  },
   });
 };
 //Notifee Foreground notification listener to display
@@ -141,10 +154,10 @@ export const onForeGroundNotification = async () => {
 };
 //Notifee Background notification listener to display
 export const onBackGroundNotification = async () => {
-  if(AppState.currentState !== "active"){
-  notifee.onBackgroundEvent(async ({ type, detail }) => {
-    handleNotificationEvents(type, detail);
-  });
+  if (AppState.currentState !== "active") {
+    notifee.onBackgroundEvent(async ({ type, detail }) => {
+      handleNotificationEvents(type, detail);
+    });
   }
 };
 //Nofitication handler when user press or cancel
@@ -156,7 +169,7 @@ const handleNotificationEvents = (type: any, detail: any) => {
       navigate("App");
       break;
     case EventType.PRESS:
-      navigate(screen,{id});
+      navigate(screen, { id });
       break;
   }
 };
