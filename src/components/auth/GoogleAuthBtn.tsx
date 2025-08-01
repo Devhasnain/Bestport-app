@@ -2,16 +2,16 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image, ActivityIndicator } from 'react-native';
 import Typography from '@components/ui/Typography';
 import Toast from 'react-native-simple-toast';
+import { showToast } from '@utils/showToast';
 import { setToken } from '@store/authSlice';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import endpoints from '@api/endpoints';
 import { usePost } from '@hooks/usePost';
+import endpoints from '@api/endpoints';
 import { Button } from '@rneui/themed';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
-import { showToast } from '@utils/showToast';
 
 
 GoogleSignin.configure({
@@ -62,6 +62,10 @@ const GoogleAuthBtn = ({title = 'Continue with Google'}: Props) => {
         borderColor: colors.gray,
         borderRadius: 12,
         paddingVertical: 12,
+        position:"relative",
+        display:"flex",
+        flexDirection:"row",
+        alignItems:"center"
       }}>
       <Image source={images.googleIcon} style={{height: 23, width: 23}} />
       <Typography
@@ -70,7 +74,7 @@ const GoogleAuthBtn = ({title = 'Continue with Google'}: Props) => {
         color={colors.primaryTextLight}>
         {title}
       </Typography>
-      {loading && <ActivityIndicator color={colors.primary} size={18} />}
+      {loading && <ActivityIndicator style={{position:"absolute"}}  color={colors.primary} size={18} />}
     </Button>
   );
 };

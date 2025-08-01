@@ -7,35 +7,21 @@ import EmployeeHome from '@screens/employee';
 import CustomerHome from '@screens/customer';
 import { getUser } from '@store/authSlice';
 import { useSelector } from 'react-redux';
-import colors from '@config/Colors';
+import styles from '@assets/style';
 import React, { memo } from 'react';
-import fonts from '@config/Fonts';
-import { isIOS } from '@rneui/base';
 
 
-const TabStack = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const user = useSelector(getUser);
+  const isCustomer = user?.role === 'customer';
 
   return (
-    <TabStack.Navigator
-      screenOptions={{
-        sceneStyle: {
-          backgroundColor: 'transparent',
-        },
-        animation: 'fade',
-        tabBarStyle: {
-          height: isIOS ? 90 : 75,
-          borderTopWidth: 0.3,
-          elevation: 0,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-        },
-      }}>
-      <TabStack.Screen
+    <Tab.Navigator screenOptions={styles.screenOptions}>
+      <Tab.Screen
         name="Home"
-        component={user?.role === 'customer' ? CustomerHome : EmployeeHome}
+        component={isCustomer ? CustomerHome : EmployeeHome}
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => <TabIcon focused={focused} icon="home" />,
@@ -45,19 +31,19 @@ const BottomTabNavigator = () => {
           tabBarButton: props => <TabItem {...props} />,
         }}
       />
-      <TabStack.Screen
+      <Tab.Screen
         name="Notifications"
         component={Notifications}
         options={{
           headerShown: false,
-          tabBarIcon: ({focused}) => <TabIcon icon="bell" focused={focused} />,
+          tabBarIcon: ({focused}) => <TabIcon focused={focused} icon="bell" />,
           tabBarLabel: ({focused}) => (
             <TabLabel focused={focused} label="Notifications" />
           ),
           tabBarButton: props => <TabItem {...props} />,
         }}
       />
-      <TabStack.Screen
+      <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
@@ -69,55 +55,41 @@ const BottomTabNavigator = () => {
           tabBarButton: props => <TabItem {...props} />,
         }}
       />
-    </TabStack.Navigator>
+    </Tab.Navigator>
   );
 };
+
+export default BottomTabNavigator;
 
 type TabIconProps = {
   focused: boolean;
   icon: string;
 };
-const TabIcon = memo(({focused, icon}: TabIconProps) => {
-  return (
-    <Feather
-      color={focused ? colors?.activeTabIcon : colors.tabBarItem}
-      name={icon}
-      size={24}
-    />
-  );
-});
+
+const TabIcon = memo(({focused, icon}: TabIconProps) => (
+  <Feather
+    color={focused ? styles.activeIconColor : styles.inactiveIconColor}
+    name={icon}
+    size={24}
+  />
+));
 
 type TabLabelProps = {
   focused: boolean;
   label: string;
 };
-const TabLabel = memo(({focused, label}: TabLabelProps) => {
-  return (
-    <Typography
-      fontFamily={focused ? fonts.poppinsMedium : fonts.poppinsRegular}
-      fontSize={13}
-      color={focused ? colors?.activeTabIcon : colors.primaryTextLight}>
-      {label}
-    </Typography>
-  );
-});
 
-const TabItem = memo((props: any) => {
-  return (
-    <TouchableOpacity
-      onPress={props.onPress}
-      activeOpacity={0.8}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-        gap: 3,
-      }}>
-      {props.children}
-    </TouchableOpacity>
-  );
-});
+const TabLabel = memo(({focused, label}: TabLabelProps) => (
+  <Typography
+    fontFamily={focused ? styles.activeFont : styles.inactiveFont}
+    fontSize={13}
+    color={focused ? styles.activeIconColor : styles.inactiveTextColor}>
+    {label}
+  </Typography>
+));
 
-export default BottomTabNavigator;
+const TabItem = memo((props: any) => (
+  <TouchableOpacity {...props} activeOpacity={0.8} style={styles.tabItem}>
+    {props.children}
+  </TouchableOpacity>
+));
