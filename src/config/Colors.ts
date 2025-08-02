@@ -3,6 +3,7 @@ const colors = {
   primary: '#fe6313',         // Main orange from logo
   secondary: '#231F20',       // Deep black for contrast
   white: '#FFFFFF',           // White for background and contrast
+  white50: '#faf8f8ff',           // White for background and contrast
 
   // Text Colors
   primaryText: '#231F20',     // Dark charcoal for readability

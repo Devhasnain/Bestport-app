@@ -1,16 +1,16 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Notifications from '@screens/notifications/Notifications';
 import { Feather, Typography } from '@components/index';
-import Profile from '@screens/profile/Profile';
 import { TouchableOpacity } from 'react-native';
+import Profile from '@screens/profile/Profile';
 import EmployeeHome from '@screens/employee';
 import CustomerHome from '@screens/customer';
 import { getUser } from '@store/authSlice';
 import { useSelector } from 'react-redux';
-import colors from '@config/Colors';
 import React, { memo } from 'react';
-import fonts from '@config/Fonts';
+import colors from '@config/Colors';
 import { isIOS } from '@rneui/base';
+import fonts from '@config/Fonts';
 
 
 const TabStack = createBottomTabNavigator();
@@ -24,7 +24,7 @@ const BottomTabNavigator = () => {
         sceneStyle: {
           backgroundColor: 'transparent',
         },
-        animation: 'fade',
+        animation: "none",
         tabBarStyle: {
           height: isIOS ? 90 : 75,
           borderTopWidth: 0.3,

@@ -2,14 +2,13 @@ const images = {
     appBackground: require("@assets/images/appBg.png"),
     appLogo: require("@assets/images/app-logo.png"),
     appIcon: require("@assets/images/app-icon.png"),
+    appLogoLg: require("@assets/images/logo-lg.png"),
 
 
     imageNotFound: require("@assets/images/image-not-found.png"),
     cameraIcon: require('@assets/images/camera.png'),
     logoutIcon: require('@assets/images/logout.png'),
     documentIcon: require('@assets/images/document.png'),
-    customerServicesIcon: require('@assets/images/customer-service-2-line.png'),
-    termsIcon: require('@assets/images/terms.png'),
     templateIcon: require('@assets/images/template.png'),
     googleIcon: require('@assets/images/google.png'),
     angleDownImage: require('@assets/images/dropdown.png'),

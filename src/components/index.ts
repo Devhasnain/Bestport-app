@@ -20,6 +20,7 @@ export { default as UserProfileImagePicker } from "./userProfileImagePicker/User
 export {default as NoResultsFound} from "./NoResultsFound";
 export {default as JobCard} from "./jobCard/JobCard";
 export {default as UserGreeting} from "./userGreeting/UserGreeting";
+export {default as TextAccordion} from "./textAccordion/TextAccordion";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

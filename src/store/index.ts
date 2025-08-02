@@ -1,16 +1,19 @@
+import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
-import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
+import notificationReducer from './notificationSlice';
 import authReducer from './authSlice';
 import jobReducer from './jobSlice';
+
 
 // Combine reducers
 const rootReducer = combineReducers({
     auth: authReducer,
     job: jobReducer,
+    notification: notificationReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

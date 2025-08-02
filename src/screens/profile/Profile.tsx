@@ -1,5 +1,5 @@
+import { Typography, Header, UserProfileImagePicker, Feather } from '@components/index';
 import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal';
-import { Typography, Header, UserProfileImagePicker } from '@components/index';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { getUser, setToken, setUser } from '@store/authSlice';
@@ -19,17 +19,17 @@ const tabs = [
   {
     title: 'Privacy policy',
     label: 'PrivacyPolicy',
-    image: images.termsIcon,
+    icon:<Feather name='file-text' color={colors.primary} size={23} />
   },
   {
     title: 'Faqs',
     label: 'Faqs',
-    image: images.termsIcon,
+    icon:<Feather name='message-square' color={colors.primary} size={23} />
   },
   {
     title: 'Customer Support',
     label: 'CustomerSupport',
-    image: images.customerServicesIcon,
+    icon:<Feather name='help-circle' color={colors.primary} size={23} />
   },
 ];
 
@@ -112,8 +112,8 @@ const Profile = ({navigation}: any) => {
                   alignItems: 'center',
                   gap: 12,
                 }}>
-                {item.image && (
-                  <Image source={item.image} tintColor={colors.btnPrimary} />
+                {item?.icon && (
+                  item?.icon
                 )}
                 <Typography fontSize={15}>{item?.title}</Typography>
               </TouchableOpacity>
