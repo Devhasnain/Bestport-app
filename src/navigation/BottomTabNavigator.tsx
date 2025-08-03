@@ -1,14 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Notifications from '@screens/notifications/Notifications';
 import { Feather, Typography } from '@components/index';
-import Profile from '@screens/profile/Profile';
 import { TouchableOpacity } from 'react-native';
+import Profile from '@screens/profile/Profile';
 import EmployeeHome from '@screens/employee';
 import CustomerHome from '@screens/customer';
 import { getUser } from '@store/authSlice';
 import { useSelector } from 'react-redux';
-import styles from '@assets/style';
 import React, { memo } from 'react';
+import { isIOS } from '@rneui/base';
+import styles from '@assets/style';
 
 
 const Tab = createBottomTabNavigator();
@@ -18,7 +19,20 @@ const BottomTabNavigator = () => {
   const isCustomer = user?.role === 'customer';
 
   return (
-    <Tab.Navigator screenOptions={styles.screenOptions}>
+    <Tab.Navigator
+      screenOptions={{
+        sceneStyle: {
+          backgroundColor: 'transparent',
+        },
+        animation: 'none',
+        tabBarStyle: {
+          height: isIOS ? 90 : 75,
+          borderTopWidth: 0.3,
+          elevation: 0,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        },
+      }}>
       <Tab.Screen
         name="Home"
         component={isCustomer ? CustomerHome : EmployeeHome}

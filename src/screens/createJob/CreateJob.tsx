@@ -1,6 +1,7 @@
 import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import SingleSelector from '@components/singleSelector/SingleSelector';
 import { serviceTypes, urgencyLevel } from '@config/Constants';
+import { navigationRef } from '@navigation/NavigationService';
 import DateInput from '@components/dateInput/DateInput';
 import getErrorMessage from '@utils/getErrorMessage';
 import { createJobSchema } from '@utils/schemas';
@@ -16,7 +17,7 @@ import colors from '@config/Colors';
 import { Formik } from 'formik';
 
 
-const CreateJob = () => {
+const CreateJob = ({navigation}:any) => {
   const dispatch = useDispatch();
   const {request, loading} = usePost(endpoints.createJob);
   const initialValues = {
@@ -35,6 +36,7 @@ const CreateJob = () => {
       const res = await request({payload: values});
       dispatch(addJob(res.data));
       showToast('Job has been submitted successfully.');
+      navigation?.goBack();
       // resetForm();
     } catch (error) {
       showToast(getErrorMessage(error));
