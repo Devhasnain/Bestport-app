@@ -66,6 +66,9 @@ export const getPendingJobs = (state: RootState) => {
 export const getInProgressJobs = (state: RootState) => {
     return state?.job?.jobs?.filter((item) => item.status === "in-progress") ?? [];
 };
+export const getEmployeeInProgressJobs = (state: RootState) => {
+    return state?.job?.employee.in_progress
+};
 export const getCompletedJobs = (state: RootState) => {
     return state?.job?.jobs?.filter((item) => item.status === "completed") ?? [];
 };

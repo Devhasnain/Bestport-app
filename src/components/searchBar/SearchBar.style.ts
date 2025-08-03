@@ -13,18 +13,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     marginBottom: 10,
-    borderWidth:0.5,
+    borderWidth:0.4,
     borderColor:colors.inputplaceholder,
-    marginHorizontal:14
+    marginHorizontal:12
   },
   searchInput: {
     flex:1,
-    paddingBottom:10,
+    paddingBottom:6,
     fontSize: 15,
     lineHeight:20,
     verticalAlign:"middle",
     color: colors.secondary,
-    minHeight:50,
+    minHeight:47,
     fontFamily: fonts.poppinsRegular,
   },
 });

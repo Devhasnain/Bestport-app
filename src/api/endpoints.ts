@@ -16,8 +16,10 @@ const endpoints = {
     jobTickets: "/ticket/all",
     getTicketByJob: "/ticket/by-job",
     AcceptJobTicket: "/ticket/accept",
+    rejectJobTicket: "/ticket/reject",
     getNotifications: "/notification",
     readNotification: "/notification/seen",
+    getProducts:"/product/all"
 
 };
 

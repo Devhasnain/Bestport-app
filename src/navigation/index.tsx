@@ -5,12 +5,14 @@ import SetNewPassword from '@screens/setNewPassword/SetNewPassword';
 import ForgetPassword from '@screens/forgetPassword/ForgetPassword';
 import PrivacyPolicy from '@screens/privacyPolicy/PrivacyPolicy';
 import EditPassword from '@screens/profile/EditPassword';
+import EmployeeProfile from '@screens/employeeProfile';
 import VerifyOtp from '@screens/verifyOtp/VerifyOtp';
 import JobDetail from '@screens/jobDetail/JobDetail';
 import CreateJob from '@screens/createJob/CreateJob';
 import EditEmail from '@screens/profile/EditEmail';
 import EditName from '@screens/profile/EditName';
 import Welcome from '@screens/welcome/Welcome';
+import CompleteJob from '@screens/completeJob';
 import SignUp from '@screens/signup/SignUp';
 import Login from '@screens/login/Login';
 import Faqs from '@screens/faqs/Faqs';
@@ -66,6 +68,16 @@ const RootNavigation = () => {
         <RootStack.Screen
           name="JobDetail"
           component={JobDetail}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="EmployeeProfile"
+          component={EmployeeProfile}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="CompleteJob"
+          component={CompleteJob}
           options={defaultScreenOptions}
         />
         <RootStack.Screen

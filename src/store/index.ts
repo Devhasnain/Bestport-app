@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 import notificationReducer from './notificationSlice';
+import productsReducer from './productsSlice';
 import authReducer from './authSlice';
 import jobReducer from './jobSlice';
 
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     job: jobReducer,
     notification: notificationReducer,
+    products:productsReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

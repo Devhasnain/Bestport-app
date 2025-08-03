@@ -31,6 +31,7 @@ export type Job = {
         };
     } | null;
     createdAt: string;
+    assigned_candidates:any
 };
 
 export type JobStatus = 'pending' | 'in-progress' | 'completed' | 'cancelled';

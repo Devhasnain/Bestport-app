@@ -3,7 +3,10 @@ import { navigate } from '@navigation/NavigationService';
 import { View, TouchableOpacity } from 'react-native';
 import { urgencyLevelText } from '@config/Constants';
 import Typography from '@components/ui/Typography';
+import UserAvatar from '@components/UserAvatar';
 import { Feather } from '@components/index';
+import { getUser } from '@store/authSlice';
+import { useSelector } from 'react-redux';
 import { Avatar } from '@rneui/themed';
 import React, { memo } from 'react';
 import colors from '@config/Colors';
@@ -19,6 +22,7 @@ type Props = {
 };
 
 const JobCard = ({item, canLike, expiredIn}: Props) => {
+  const user = useSelector(getUser);
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -126,7 +130,7 @@ const JobCard = ({item, canLike, expiredIn}: Props) => {
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        {item?.assigned_to ? (
+        {item?.assigned_to && user?.role === "customer" ? (
           <View
             style={{
               display: 'flex',
@@ -135,16 +139,11 @@ const JobCard = ({item, canLike, expiredIn}: Props) => {
               gap: 10,
               flex: 1,
             }}>
-            <Avatar
-              source={{uri: item?.assigned_to?.profile_img}}
-              title={item?.assigned_to?.name[0]?.toUpperCase()}
-              titleStyle={{
-                color: colors.primaryTextLight,
-                fontFamily: fonts.poppinsSemiBold,
-                lineHeight: 20,
-              }}
-              containerStyle={{backgroundColor: colors.gray}}
-              rounded
+            <UserAvatar
+              image={item?.assigned_to?.profile_img}
+              name={item?.assigned_to?.name}
+              size={37}
+              fontSize={18}
             />
             <View>
               <Typography fontSize={13}>{item?.assigned_to?.name}</Typography>
