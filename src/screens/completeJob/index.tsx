@@ -1,28 +1,95 @@
 import { AppFlatlist, Feather, FontAwesome, Header, SearchBar, Typography, } from '@components/index';
+import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { changeStack, navigate } from '@navigation/NavigationService';
 import { getProducts, setProducts } from '@store/productsSlice';
-import { navigate } from '@navigation/NavigationService';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import getErrorMessage from '@utils/getErrorMessage';
+import { empMarkJobComplete } from '@store/jobSlice';
+import { showToast } from '@utils/showToast';
+import { useModal } from '@hooks/useModal';
 import { ScreenWidth } from '@rneui/base';
 import endpoints from '@api/endpoints';
+import { usePut } from '@hooks/usePut';
 import { useGet } from '@hooks/useGet';
+import { Button } from '@rneui/themed';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
 
 
-const CompleteJob = () => {
+type SelectedProduct = {
+  product:string;
+  quantity:number
+}
+
+
+const CompleteJob = ({route}:any) => {
+  const confirmModal = useModal();
+  const completeSuccessModal = useModal();
+  const [search, setSearch] = useState('');
   const dispatch = useDispatch();
   const products = useSelector(getProducts);
   const getProductsApi = useGet({
     endpoint: endpoints.getProducts,
     autoFetch: !products?.length,
   });
-  const [selectedProducts, setSelectedProducts] = useState<any[] | []>([]);
+  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[] | []>([]);
+
+  const completeJobApi = usePut(endpoints.completedJob(route?.params?.id))
+
+  const filteredProducts = useMemo(() => {
+    return search?.trim()?.length
+      ? products?.filter((item: any) =>
+          item?.title?.toLowerCase()?.includes(search?.toLowerCase()),
+        )
+      : products;
+  }, [search, products]);
 
   const isSelected = useCallback(
     (id: string) => {
-      return selectedProducts?.find(item => item?._id === id);
+      return selectedProducts?.find(item => item?.product === id);
+    },
+    [selectedProducts],
+  );
+
+  const incrementQuantity = useCallback(
+    (id: string) => {
+      setSelectedProducts((pre) =>
+        pre?.map((item) => {
+          if (item?.product === id) {
+            return {...item, quantity: item?.quantity + 1};
+          } else return item;
+        }),
+      );
+    },
+    [selectedProducts],
+  );
+
+  const decrementQuantity = useCallback(
+    (id: string) => {
+      setSelectedProducts((pre) =>
+        pre?.map((item) => {
+          if (item?.product === id) {
+            if (item?.quantity > 1) {
+              return {...item, quantity: item?.quantity - 1};
+            } else {
+              return {...item, quantity: 1};
+            }
+          } else return item;
+        }),
+      );
+    },
+    [selectedProducts],
+  );
+
+  const handleSelectProduct = useCallback(
+    (product: any) => {
+      setSelectedProducts((pre) =>
+        pre?.find((item) => item?.product === product?._id)
+          ? pre?.filter((item) => item?.product !== product?._id)
+          : [{product:product?._id, quantity: 1}, ...pre],
+      );
     },
     [selectedProducts],
   );
@@ -114,6 +181,8 @@ const CompleteJob = () => {
                 alignItems: 'center',
               }}>
               <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => decrementQuantity(item?._id)}
                 style={{
                   height: 28,
                   width: 28,
@@ -131,8 +200,10 @@ const CompleteJob = () => {
                   color={colors.primaryTextLight}
                 />
               </TouchableOpacity>
-              <Typography>2</Typography>
+              <Typography>{isSelected(item?._id)?.quantity}</Typography>
               <TouchableOpacity
+                onPress={() => incrementQuantity(item?._id)}
+                activeOpacity={0.8}
                 style={{
                   height: 28,
                   width: 28,
@@ -155,6 +226,7 @@ const CompleteJob = () => {
         </View>
 
         <FontAwesome
+          onPress={() => handleSelectProduct(item)}
           style={{
             position: 'absolute',
             top: 10,
@@ -166,8 +238,24 @@ const CompleteJob = () => {
         />
       </View>
     ),
-    [products],
+    [products, selectedProducts],
   );
+
+  const handleConfirmComplete = useCallback(async()=>{
+    try {
+      await completeJobApi.request({payload:{products:selectedProducts}});
+      confirmModal.closeModal();
+      dispatch(empMarkJobComplete(route?.params?.id));
+      completeSuccessModal.openModal();
+    } catch (error) {
+      showToast(getErrorMessage(error));
+    }
+  },[selectedProducts,confirmModal]);
+
+  const closeSuccessModal = useCallback(()=>{
+    completeSuccessModal.closeModal();
+    changeStack("App");
+  },[selectedProducts,completeSuccessModal]);
 
   useEffect(() => {
     if (getProductsApi.data) {
@@ -195,18 +283,56 @@ const CompleteJob = () => {
       </View>
 
       <View style={{paddingTop: 16, paddingBottom: 0}}>
-        <SearchBar value="" setValue={() => {}} placeholder="Search products" />
+        <SearchBar
+          value={search}
+          setValue={setSearch}
+          placeholder="Search products"
+        />
       </View>
 
       <AppFlatlist
         refreshing={getProductsApi.loading}
         onRefresh={getProductsApi.request}
-        data={products}
+        data={filteredProducts}
         renderItem={renderItem}
         contentContainerStyle={{
           gap: 14,
         }}
         paddingBottom={20}
+      />
+
+      <View style={{paddingVertical: 10, paddingHorizontal: 14}}>
+        <Button
+          title={'Continue'}
+          disabledTitleStyle={{backgroundColor: colors.btnDisabled}}
+          // loading={loading}
+          // disabled={loading}
+          onPress={confirmModal.openModal}
+          buttonStyle={{
+            minHeight: 50,
+            borderRadius: 12,
+            backgroundColor: colors.btnPrimary,
+          }}
+        />
+      </View>
+
+      <ConfirmationModal
+      loading={completeJobApi.loading}
+      isOpen={confirmModal.isOpen}
+      onCancel={confirmModal.closeModal}
+      onConfirm={handleConfirmComplete}
+      width={"90%"}
+      title='Mark Job as Completed'
+      description='Are you sure you’ve finished this job? This will notify the customer and admin that the work is complete.'
+      />
+
+       <ConfirmationModal
+      isOpen={completeSuccessModal.isOpen}
+      onConfirm={closeSuccessModal}
+      confirmTitle='Home'
+      width={"90%"}
+      title='Job Completed Successfully'
+      description='You’ve marked this job as completed. The customer and admin have been notified. Great work!'
       />
     </>
   );

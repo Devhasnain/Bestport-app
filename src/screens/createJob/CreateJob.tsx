@@ -17,19 +17,20 @@ import colors from '@config/Colors';
 import { Formik } from 'formik';
 
 
-const CreateJob = ({navigation}:any) => {
+const CreateJob = ({navigation}: any) => {
   const dispatch = useDispatch();
   const {request, loading} = usePost(endpoints.createJob);
   const initialValues = {
     service_type: '',
-    title: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
-    description: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkfkjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
+    title: 'Ac needs to be repair',
+    description:
+      'My job description',
     preferred_date: '',
     urgency: '',
     city: 'Karachi',
     post_code: '12342',
-    address: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
-    instructions: 'kjdhfad akdfhakdsj fhakjdfhkj hkjahdkf',
+    address: 'My address',
+    instructions: '',
   };
   const handleSubmit = useCallback(async (values: any, {resetForm}: any) => {
     try {
@@ -151,7 +152,7 @@ const CreateJob = ({navigation}:any) => {
                 />
 
                 <Button
-                disabledTitleStyle={{backgroundColor:colors.btnDisabled}}
+                  disabledTitleStyle={{backgroundColor: colors.btnDisabled}}
                   loading={loading}
                   disabled={loading}
                   onPress={() => handleSubmit()}

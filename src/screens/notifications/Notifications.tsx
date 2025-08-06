@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
 import getErrorMessage from '@utils/getErrorMessage';
 import Header from '@components/header/Header';
+import { getTimeAgo } from '@utils/DateFormat';
 import { showToast } from '@utils/showToast';
 import endpoints from '@api/endpoints';
 import { usePut } from '@hooks/usePut';
@@ -78,7 +79,7 @@ const NotificationCard = ({item, onPress}: any) => {
         display: 'flex',
         flexDirection: 'row',
       }}>
-      <View style={{width: '15%'}}>
+      <View style={{width: '16%'}}>
         <Image
           source={item?.image ? {uri: item.image} : images.appLogoLg}
           style={{
@@ -99,10 +100,10 @@ const NotificationCard = ({item, onPress}: any) => {
         </Typography>
         <TextAccordion
           text={item?.description}
-          charLimit={80}
+          charLimit={60}
           textStyle={{fontSize: 13}}
         />
-        <Typography fontSize={11} color={colors.primaryTextLight} lineHeight={14} style={{textAlign:"right"}}>2d ago</Typography>
+        <Typography fontSize={11} color={colors.primaryTextLight} lineHeight={14} style={{textAlign:"right"}}>{getTimeAgo(item?.createdAt)}</Typography>
       </View>
     </TouchableOpacity>
   );

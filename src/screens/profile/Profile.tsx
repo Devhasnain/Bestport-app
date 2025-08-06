@@ -62,9 +62,10 @@ const Profile = ({navigation}: any) => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            gap: 18,
+            gap: 15,
             backgroundColor: colors.primary,
-            padding: 16,
+            paddingVertical: 14,
+            paddingHorizontal:16,
             borderRadius: 12,
           }}>
           <UserProfileImagePicker user={user} />
@@ -78,7 +79,10 @@ const Profile = ({navigation}: any) => {
             <Typography
               fontFamily={fonts.poppinsRegular}
               fontSize={14}
-              color={colors.white}>
+              color={colors.white}
+              numberOfLines={1}
+              style={{maxWidth:"90%"}}
+              >
               {user?.email}
             </Typography>
           </View>

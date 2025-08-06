@@ -62,7 +62,6 @@ export const createJobSchema = Yup.object().shape({
   service_type: Yup.string()
     .min(3, 'Service type must be at least 3 characters')
     .max(50, 'Service type cannot exceed 50 characters')
-    .matches(allowedTextRegex, 'Service type contains invalid characters')
     .required('Service type is required'),
 
   title: Yup.string()

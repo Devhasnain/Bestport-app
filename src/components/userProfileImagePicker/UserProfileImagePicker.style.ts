@@ -1,10 +1,11 @@
-import colors from '@config/Colors';
 import { StyleSheet } from 'react-native';
+import colors from '@config/Colors';
+
 
 const styles = StyleSheet.create({
   profileImgLinearBg: {
-    width: 80,
-    height: 80,
+    width: 70,
+    height: 70,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',

@@ -71,7 +71,7 @@ export const formatToFull12HourDateTime = (isoString:string) => {
   hours = hours % 12;
   hours = hours ? hours : 12;
 
-  return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
+  return `${day}-${month}-${year}, ${hours}:${minutes} ${ampm}`;
 };
 
 

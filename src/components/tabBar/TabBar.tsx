@@ -1,17 +1,11 @@
-import {
-  View,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  ViewStyle,
-} from 'react-native';
-import React, {memo, useCallback, useRef, useState, useMemo} from 'react';
-import fonts from '../../config/Fonts';
-import styles from './TabBar.style';
+import { View, ScrollView, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, ViewStyle, } from 'react-native';
+import React, { memo, useCallback, useRef, useState, useMemo } from 'react';
 import Typography from '@components/ui/Typography';
 import colors from '@config/Colors';
+
+import fonts from '../../config/Fonts';
+import styles from './TabBar.style';
+
 
 const {width} = Dimensions.get('window');
 const TAB_WIDTH = 105;
@@ -84,15 +78,7 @@ const TabBar = ({tabs = [], containerStyle}: Props) => {
     () =>
       tabs.map((tab, index) => (
         <View key={index.toString()} style={[{width, flex: 1}, containerStyle]}>
-          {activeTab === index ? (
-            tab.component
-          ) : (
-            <ActivityIndicator
-              size={30}
-              //   style={globalStyle.marginTop(50)}
-              color={colors.primary}
-            />
-          )}
+           {tab.component}
         </View>
       )),
     [tabs, activeTab, containerStyle],

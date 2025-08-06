@@ -30,8 +30,12 @@ const JobDetail = ({route}: any) => {
   });
 
   const viewEmployeeProfile = useCallback(() => {
-    navigate('EmployeeProfile', {id: job?.assigned_to?._id});
-  }, [job?.assigned_to]);
+    if (user?.role === 'employee') {
+      navigate('Profile');
+    } else {
+      navigate('EmployeeProfile', {id: job?.assigned_to?._id});
+    }
+  }, [job?.assigned_to, user]);
 
   const canEmployeeIntract = useMemo(() => {
     return (
@@ -44,12 +48,22 @@ const JobDetail = ({route}: any) => {
   }, [job, user]);
 
   const canCompleteJob = useMemo(() => {
-    return job?.status === 'in-progress';
-  }, [job?.status]);
+    if (!user?._id || !job?.status) {
+      return false;
+    } else {
+      return (
+        job?.status === 'in-progress' && job?.assigned_to?._id === user?._id
+      );
+    }
+  }, [job?.status, user?._id]);
 
-  const redirectToComplete = useCallback(()=>{
-    navigate("CompleteJob")
-  },[job]);
+  const canReviewJob = useMemo(()=>{
+    return job?.status === "completed" && job.customer._id === user?._id;
+  },[job,user]);
+
+  const redirectToComplete = useCallback(() => {
+    navigate('CompleteJob', {id: job?._id});
+  }, [job]);
 
   useEffect(() => {
     if (data?.data) {
@@ -90,7 +104,7 @@ const JobDetail = ({route}: any) => {
                 alignItems: 'center',
                 gap: 6,
               }}>
-              <Typography fontSize={12.5} color={colors.primaryTextLight}>
+              <Typography fontSize={12.5} color={colors.white}>
                 {formatJobStatus(job?.status)}
               </Typography>
             </View>
@@ -219,25 +233,45 @@ const JobDetail = ({route}: any) => {
             paddingVertical: 14,
             paddingHorizontal: 12,
             backgroundColor: colors.white,
-            elevation:20
+            elevation: 20,
           }}>
-
-            <Button
-              onPress={redirectToComplete}
-              disabledStyle={{backgroundColor: colors.btnDisabled}}
-              disabledTitleStyle={{color: colors.white}}
-              title={"Complete job"}
-              buttonStyle={{
-                backgroundColor: colors.btnPrimary,
-                borderRadius: 12,
-                minHeight: 50,
-              }}
-            />
-
-          </View>
+          <Button
+            onPress={redirectToComplete}
+            disabledStyle={{backgroundColor: colors.btnDisabled}}
+            disabledTitleStyle={{color: colors.white}}
+            title={'Complete job'}
+            buttonStyle={{
+              backgroundColor: colors.btnPrimary,
+              borderRadius: 12,
+              minHeight: 50,
+            }}
+          />
+        </View>
       )}
 
       {canEmployeeIntract && <AcceptJobTicket job={job} setJob={setJob} />}
+
+      {canReviewJob && (
+        <View
+          style={{
+            paddingVertical: 14,
+            paddingHorizontal: 12,
+            backgroundColor: colors.white,
+            elevation: 20,
+          }}>
+          <Button
+            onPress={redirectToComplete}
+            disabledStyle={{backgroundColor: colors.btnDisabled}}
+            disabledTitleStyle={{color: colors.white}}
+            title={'Review'}
+            buttonStyle={{
+              backgroundColor: colors.btnPrimary,
+              borderRadius: 12,
+              minHeight: 50,
+            }}
+          />
+        </View>
+      )}
     </>
   );
 };
@@ -344,7 +378,7 @@ const AcceptJobTicket = memo(
               display: 'flex',
               flexDirection: 'column',
               gap: 10,
-            elevation:20
+              elevation: 20,
             }}>
             <Button
               onPress={handleAcceptJob}

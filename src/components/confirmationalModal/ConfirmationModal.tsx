@@ -1,9 +1,9 @@
 import { View, DimensionValue } from 'react-native';
 import Typography from '@components/ui/Typography';
 import { Button, Dialog } from '@rneui/themed';
+import React, { memo } from 'react';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
-import React from 'react';
 
 
 type Props = {
@@ -11,9 +11,11 @@ type Props = {
   title: string;
   description?: string;
   isOpen: boolean;
-  onCancel: () => void;
+  onCancel?: () => void;
   onConfirm: () => void;
   width?: DimensionValue | undefined;
+  cancelTitle?:string;
+  confirmTitle?:string;
 };
 
 const ConfirmationModal = ({
@@ -24,6 +26,8 @@ const ConfirmationModal = ({
   onCancel,
   onConfirm,
   width,
+  cancelTitle="Cancel",
+  confirmTitle="Confirm"
 }: Props) => {
   return (
     <Dialog
@@ -56,9 +60,9 @@ const ConfirmationModal = ({
           justifyContent: 'flex-end',
           gap: 10,
         }}>
-        <Button
+        {onCancel && <Button
           onPress={onCancel}
-          title={'Cancel'}
+          title={cancelTitle}
           buttonStyle={{
             borderWidth: 1.2,
             borderColor: colors.inputplaceholder,
@@ -72,12 +76,13 @@ const ConfirmationModal = ({
             fontFamily: fonts.poppinsRegular,
             lineHeight: 16,
           }}
-        />
+        />}
         <Button
           onPress={onConfirm}
           disabled={loading}
           loading={loading}
-          title={'Confirm'}
+          title={confirmTitle}
+          disabledStyle={{borderColor:"white",backgroundColor:colors.btnDisabled}}
           buttonStyle={{
             borderWidth: 1.2,
             borderColor: colors.btnPrimary,
@@ -97,4 +102,4 @@ const ConfirmationModal = ({
   );
 };
 
-export default ConfirmationModal;
+export default memo(ConfirmationModal);

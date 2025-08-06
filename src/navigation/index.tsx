@@ -9,6 +9,7 @@ import EmployeeProfile from '@screens/employeeProfile';
 import VerifyOtp from '@screens/verifyOtp/VerifyOtp';
 import JobDetail from '@screens/jobDetail/JobDetail';
 import CreateJob from '@screens/createJob/CreateJob';
+import ProductDetail from '@screens/productDetail';
 import EditEmail from '@screens/profile/EditEmail';
 import EditName from '@screens/profile/EditName';
 import Welcome from '@screens/welcome/Welcome';
@@ -118,6 +119,11 @@ const RootNavigation = () => {
         <RootStack.Screen
           name="VerifyOtp"
           component={VerifyOtp}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="Product"
+          component={ProductDetail}
           options={defaultScreenOptions}
         />
         <RootStack.Screen

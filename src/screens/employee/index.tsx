@@ -1,8 +1,7 @@
 import { TabBar, UserGreeting } from '@components/index';
 import React from 'react';
 
-import InProgress from './InProgress';
-import Completed from './Completed';
+import DynamicTab from './DynamicTab';
 import Assigned from './Assigned';
 
 
@@ -13,11 +12,11 @@ const tabs = [
   },
   {
     title: 'In progress',
-    component: <InProgress />,
+    component: <DynamicTab status='in_progress' />,
   },
   {
     title: 'Completed',
-    component: <Completed />,
+    component: <DynamicTab status='completed' />,
   },
 ];
 
