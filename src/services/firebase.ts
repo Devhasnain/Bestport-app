@@ -1,5 +1,5 @@
+import notifee, { AndroidStyle, EventType } from '@notifee/react-native';
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
-import notifee, { EventType } from '@notifee/react-native';
 import messaging from '@react-native-firebase/messaging';
 import { navigate } from '@navigation/NavigationService';
 import DeviceInfo from 'react-native-device-info';
@@ -11,6 +11,7 @@ import { isIOS } from '@rneui/base';
 /**
  * Request user permission for notifications (iOS only).
  */
+
 export const requestUserPermission = async () => {
   try {
     if (Platform.OS === 'ios') {
@@ -116,19 +117,18 @@ export const onBackGroundListener = async () => {
     notifeeHandler(remoteMessage);
   });
 };
-
 //Notifee handler function
 const notifeeHandler = async (remoteMessage: any) => {
   const { notification, data } = remoteMessage;
   const { body, title } = notification;
   // Request permissions (required for iOS)
   await notifee.requestPermission();
-  // Create a channel (required for Android)
+  
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
   });
-  // Display a notification
+
   await notifee.displayNotification({
     title: title,
     body: body,
@@ -136,6 +136,7 @@ const notifeeHandler = async (remoteMessage: any) => {
     android: {
       channelId,
       smallIcon: 'ic_stat_ic_notification',
+      showTimestamp:true,
     },
     ios: {
       foregroundPresentationOptions: {
