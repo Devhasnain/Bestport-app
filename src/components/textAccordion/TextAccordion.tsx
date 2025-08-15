@@ -31,12 +31,19 @@ const TextAccordion = ({
     <View>
       <Text style={[styles.reviewText, textStyle]}>
         {displayText}
-        {isLongText && (
+        {isLongText && !expanded ? (
           <Text onPress={() => setExpanded(!expanded)} style={[styles.btnText]}>
-          {expanded ? ` ${readLessText}` : `${readMoreText}`}
+            {readMoreText}
           </Text>
+        ) : (
+          <></>
         )}
       </Text>
+      {expanded && (
+        <Text onPress={() => setExpanded(!expanded)} style={[styles.btnText]}>
+          {readLessText}
+        </Text>
+      )}
     </View>
   );
 };

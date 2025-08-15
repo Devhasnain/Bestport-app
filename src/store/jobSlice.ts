@@ -70,10 +70,10 @@ export const {
 
 export const getJobs = (state: RootState) => state?.job?.jobs;
 export const getPendingJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item) => item.status === "pending") ?? [];
+    return state?.job?.jobs?.filter((item) => item?.status === "pending") ?? [];
 };
 export const getInProgressJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item) => item.status === "in-progress") ?? [];
+    return state?.job?.jobs?.filter((item) => item?.status === "in-progress") ?? [];
 };
 export const getEmployeeInProgressJobs = (state: RootState) => {
     return state?.job?.employee.in_progress
@@ -82,10 +82,10 @@ export const getEmployeeCompletedJobs = (state: RootState) => {
     return state?.job?.employee.completed
 };
 export const getCompletedJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item) => item.status === "completed") ?? [];
+    return state?.job?.jobs?.filter((item) => item?.status === "completed") ?? [];
 };
 export const getCancelledJobs = (state: RootState) => {
-    return state?.job?.jobs?.filter((item) => item.status === "cancelled") ?? [];
+    return state?.job?.jobs?.filter((item) => item?.status === "cancelled") ?? [];
 };
 export const getJobTickets = (state: RootState) => {
     return state?.job?.employee?.assigned ?? [];

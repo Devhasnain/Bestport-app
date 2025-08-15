@@ -140,7 +140,7 @@ const JobCard = ({item, canLike, expiredIn}: Props) => {
               flex: 1,
             }}>
             <UserAvatar
-              image={item?.assigned_to?.profile_img}
+              image={item?.assigned_to?.profile_img?.path}
               name={item?.assigned_to?.name}
               size={37}
               fontSize={18}

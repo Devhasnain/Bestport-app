@@ -32,7 +32,7 @@ const UserProfileImagePicker = ({
             selectedImage?.uri
               ? {uri: selectedImage?.uri}
               : user && user?.profile_img
-              ? {uri: user?.profile_img}
+              ? {uri: user?.profile_img?.path}
               : images.imageNotFound
           }
           style={styles.img}

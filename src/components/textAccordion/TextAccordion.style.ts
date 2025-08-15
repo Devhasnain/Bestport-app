@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.poppinsRegular,
     fontSize: 15,
     color: colors.primaryTextLight,
+    display:"flex",
+    flexDirection:"column"
   },
   btnText: {
     fontFamily: fonts.poppinsRegular,

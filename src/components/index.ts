@@ -26,6 +26,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Octicons from 'react-native-vector-icons/Octicons';
 import Toast from 'react-native-simple-toast';
 
-export { AntDesign, Fontisto, FontAwesome, Ionicons,Toast, MaterialIcons }
+export { Octicons,AntDesign, Fontisto, FontAwesome, Ionicons,Toast, MaterialIcons }

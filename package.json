@@ -25,6 +25,7 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.9.0",
     "formik": "^2.4.6",
+    "libphonenumber-js": "^1.12.12",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "react-native-app-auth": "^8.0.3",

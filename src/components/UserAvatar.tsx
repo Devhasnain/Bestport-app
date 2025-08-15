@@ -19,6 +19,7 @@ const UserAvatar = ({image='', name='', size = 45, fontSize = 20}) => {
       width:size,
       height:size,
       borderRadius:100,
+      overflow:"hidden",
       backgroundColor:colors.btnDisabled
     }}
     >

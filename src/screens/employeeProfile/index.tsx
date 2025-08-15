@@ -49,7 +49,7 @@ const EmployeeProfile = ({route}: any) => {
                 gap: 10,
               }}>
               <UserAvatar
-                image={employeeProfile?.profile_img}
+                image={employeeProfile?.profile_img?.path}
                 name={employeeProfile?.name}
                 size={100}
                 fontSize={28}

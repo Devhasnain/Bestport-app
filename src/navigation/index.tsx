@@ -7,6 +7,7 @@ import PrivacyPolicy from '@screens/privacyPolicy/PrivacyPolicy';
 import EditPassword from '@screens/profile/EditPassword';
 import EmployeeProfile from '@screens/employeeProfile';
 import VerifyOtp from '@screens/verifyOtp/VerifyOtp';
+import ReviewJob from '@screens/reviewJob/ReviewJob';
 import JobDetail from '@screens/jobDetail/JobDetail';
 import CreateJob from '@screens/createJob/CreateJob';
 import ProductDetail from '@screens/productDetail';
@@ -129,6 +130,11 @@ const RootNavigation = () => {
         <RootStack.Screen
           name="SetNewPassword"
           component={SetNewPassword}
+          options={defaultScreenOptions}
+        />
+        <RootStack.Screen
+          name="ReviewJob"
+          component={ReviewJob}
           options={defaultScreenOptions}
         />
       </RootStack.Navigator>

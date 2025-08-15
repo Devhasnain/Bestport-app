@@ -12,12 +12,12 @@ export type Job = {
     customer: {
         _id: string;
         name: string;
-        profile_img?: string;
+        profile_img?: {path?:string};
     };
     assigned_to: {
         _id: string;
         name: string;
-        profile_img?: string;
+        profile_img?: {path?:string};
     } | null;
     status: JobStatus;
     review: {

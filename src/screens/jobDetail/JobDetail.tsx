@@ -65,6 +65,12 @@ const JobDetail = ({route}: any) => {
     navigate('CompleteJob', {id: job?._id});
   }, [job]);
 
+    const redirectToReview = useCallback(() => {
+    navigate('ReviewJob', {employee:job?.assigned_to});
+  }, [job]);
+
+  
+
   useEffect(() => {
     if (data?.data) {
       setJob(data?.data);
@@ -162,7 +168,7 @@ const JobDetail = ({route}: any) => {
                       gap: 8,
                     }}>
                     <UserAvatar
-                      image={job?.assigned_to?.profile_img}
+                      image={job?.assigned_to?.profile_img?.path}
                       name={job?.assigned_to?.name}
                       size={35}
                       fontSize={15}
@@ -260,7 +266,7 @@ const JobDetail = ({route}: any) => {
             elevation: 20,
           }}>
           <Button
-            onPress={redirectToComplete}
+            onPress={redirectToReview}
             disabledStyle={{backgroundColor: colors.btnDisabled}}
             disabledTitleStyle={{color: colors.white}}
             title={'Review'}
