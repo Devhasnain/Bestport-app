@@ -39,6 +39,18 @@ const jobSlice = createSlice({
         addJob: (state, action) => {
             state.jobs = [action.payload, ...state.jobs]
         },
+        updateJob:(state,action)=>{
+            state.jobs = state.jobs.map((item)=>{
+                if(item?._id === action.payload._id){
+                    return {
+                        ...item,
+                        ...action.payload.data
+                    }
+                }else{
+                    item
+                }
+            })
+        },
         setEmployeeJobs: (state, action: setEmpJobType) => {
             state.employee[action.payload.key] = action.payload.value
         },
@@ -65,7 +77,8 @@ export const {
     setEmployeeJobs,
     removeJobTicket,
     addEmployeeJobs,
-    empMarkJobComplete
+    empMarkJobComplete,
+    updateJob
 } = jobSlice?.actions;
 
 export const getJobs = (state: RootState) => state?.job?.jobs;

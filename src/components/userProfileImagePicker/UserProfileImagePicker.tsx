@@ -1,5 +1,6 @@
 import { ActivityIndicator, Image, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import UserAvatar from '@components/UserAvatar';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import React from 'react';
@@ -27,7 +28,8 @@ const UserProfileImagePicker = ({
             style={{position: 'absolute', zIndex: 999}}
           />
         )}
-        <Image
+        <UserAvatar/>
+        {/* <Image
           source={
             selectedImage?.uri
               ? {uri: selectedImage?.uri}
@@ -37,7 +39,7 @@ const UserProfileImagePicker = ({
           }
           style={styles.img}
           resizeMode="cover"
-        />
+        /> */}
       </View>
       {/* <UploadImageBtn
         disabled={loading}

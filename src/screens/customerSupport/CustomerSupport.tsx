@@ -13,7 +13,7 @@ const CustomerSupport = () => {
       <Header leftIcon title="Customer support" />
       <KeyboardAvoidingView
         contentContainerStyle={{paddingTop: 5, paddingHorizontal: 12}}>
-        <Typography fontFamily={fonts.poppinsSemiBold} fontSize={21}>
+        <Typography fontFamily={fonts.poppinsSemiBold} fontSize={18}>
           Need help or have a question?
         </Typography>
         <Typography

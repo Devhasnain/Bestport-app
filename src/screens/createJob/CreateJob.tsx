@@ -1,14 +1,16 @@
-import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import SingleSelector from '@components/singleSelector/SingleSelector';
+import PhoneNumInput from '@components/phoneNumInput/PhoneNumInput';
 import { serviceTypes, urgencyLevel } from '@config/Constants';
-import { navigationRef } from '@navigation/NavigationService';
+import { Header, Input, Typography, } from '@components/index';
 import DateInput from '@components/dateInput/DateInput';
+import { useDispatch, useSelector } from 'react-redux';
 import getErrorMessage from '@utils/getErrorMessage';
+import { useKeyboard } from '@hooks/useKeyboard';
 import { createJobSchema } from '@utils/schemas';
 import { ScrollView, View } from 'react-native';
 import { showToast } from '@utils/showToast';
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { getUser } from '@store/authSlice';
 import { usePost } from '@hooks/usePost';
 import { addJob } from '@store/jobSlice';
 import endpoints from '@api/endpoints';
@@ -18,19 +20,21 @@ import { Formik } from 'formik';
 
 
 const CreateJob = ({navigation}: any) => {
+  const keyboard = useKeyboard();
+  const user = useSelector(getUser);
   const dispatch = useDispatch();
   const {request, loading} = usePost(endpoints.createJob);
   const initialValues = {
     service_type: '',
-    title: 'Ac needs to be repair',
-    description:
-      'My job description',
+    title: '',
+    description:'',
     preferred_date: '',
     urgency: '',
-    city: 'Karachi',
-    post_code: '12342',
-    address: 'My address',
+    city: '',
+    post_code: '',
+    address: '',
     instructions: '',
+    contact_no:user?.phone ??""
   };
   const handleSubmit = useCallback(async (values: any, {resetForm}: any) => {
     try {
@@ -38,7 +42,7 @@ const CreateJob = ({navigation}: any) => {
       dispatch(addJob(res.data));
       showToast('Job has been submitted successfully.');
       navigation?.goBack();
-      // resetForm();
+      resetForm();
     } catch (error) {
       showToast(getErrorMessage(error));
     }
@@ -46,12 +50,10 @@ const CreateJob = ({navigation}: any) => {
   return (
     <>
       <Header leftIcon title="Create job" />
-      <KeyboardAvoidingView
-        contentContainerStyle={{paddingHorizontal: 12}}
-        extraScrollHeight={100}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: 20}}>
+          contentContainerStyle={{paddingBottom: 20,paddingHorizontal:14}}
+          >
           <Formik
             initialValues={initialValues}
             validationSchema={createJobSchema}
@@ -121,6 +123,11 @@ const CreateJob = ({navigation}: any) => {
                     return {label: item, value: item};
                   })}
                 />
+                <PhoneNumInput
+                value={values?.contact_no}
+                onChange={handleChange("contact_no")}
+                error={touched?.contact_no && errors?.contact_no}
+                />
                 <View
                   style={{
                     display: 'flex',
@@ -152,6 +159,7 @@ const CreateJob = ({navigation}: any) => {
                 />
 
                 <Button
+                disabledStyle={{backgroundColor:colors.btnDisabled}}
                   disabledTitleStyle={{backgroundColor: colors.btnDisabled}}
                   loading={loading}
                   disabled={loading}
@@ -166,8 +174,10 @@ const CreateJob = ({navigation}: any) => {
               </View>
             )}
           </Formik>
+          {
+            keyboard.isKeyboardActive && <View style={{height:240}} />
+          }
         </ScrollView>
-      </KeyboardAvoidingView>
     </>
   );
 };

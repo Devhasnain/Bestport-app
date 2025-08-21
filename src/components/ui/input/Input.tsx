@@ -1,8 +1,9 @@
-import { Image, ImageSourcePropType, KeyboardTypeOptions, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { Image, ImageSourcePropType, KeyboardTypeOptions, StyleProp, TextStyle, TouchableOpacity, ViewStyle, } from 'react-native';
 import React, { memo, ReactNode, useCallback, useState } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import { Input } from '@rneui/themed';
 import colors from '@config/Colors';
+import fonts from '@config/Fonts';
 
 import InputErrorMessage from './InputErrorMessage';
 import Styles from './input.style';
@@ -36,7 +37,14 @@ interface InputFieldProps {
   error?: any;
   numberOfLines?: number;
   multiline?: boolean;
-  inputMode?: 'text' | 'numeric' | 'decimal' | 'email' | 'tel' | 'url' | undefined;
+  inputMode?:
+    | 'text'
+    | 'numeric'
+    | 'decimal'
+    | 'email'
+    | 'tel'
+    | 'url'
+    | undefined;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -118,6 +126,13 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <Input
+      label={label ?? placeholder}
+      labelStyle={{
+        fontSize: 13.5,
+        fontFamily: fonts.poppinsRegular,
+        fontWeight: '500',
+        color: colors.primaryTextLight,
+      }}
       value={value}
       placeholder={placeholder}
       placeholderTextColor={placeholderTextColor}
@@ -132,9 +147,11 @@ const InputField: React.FC<InputFieldProps> = ({
       inputContainerStyle={[
         inputContainerStyle,
         inputAdditionalStyle,
-        error ? { borderColor: 'red', marginBottom: -3 } : {},
-        isFocused ? { borderColor: colors.activeInputBorderColor, borderWidth: 1.5 } : {},
-        multiline ? {paddingTop:3, paddingBottom:8} : {}
+        error ? {borderColor: 'red', marginBottom: -3} : {},
+        isFocused
+          ? {borderColor: colors.activeInputBorderColor, borderWidth: 1.5}
+          : {},
+        multiline ? {paddingTop: 3, paddingBottom: 8} : {},
       ]}
       numberOfLines={numberOfLines}
       multiline={multiline}
@@ -162,7 +179,7 @@ const InputField: React.FC<InputFieldProps> = ({
         )
       }
       errorMessage={error}
-      errorStyle={{ color: colors.authLinkText }}
+      errorStyle={{color: colors.authLinkText}}
       ErrorComponent={() => <>{error && <InputErrorMessage error={error} />}</>}
     />
   );

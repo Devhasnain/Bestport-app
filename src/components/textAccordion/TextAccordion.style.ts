@@ -13,8 +13,9 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontFamily: fonts.poppinsRegular,
-    fontSize: 13,
+    fontSize: 12,
     color: colors.btnPrimary,
+    lineHeight:14
   }
 });
 

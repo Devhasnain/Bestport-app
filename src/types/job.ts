@@ -12,12 +12,12 @@ export type Job = {
     customer: {
         _id: string;
         name: string;
-        profile_img?: {path?:string};
+        profile_img?: { path?: string };
     };
     assigned_to: {
         _id: string;
         name: string;
-        profile_img?: {path?:string};
+        profile_img?: { path?: string };
     } | null;
     status: JobStatus;
     review: {
@@ -31,7 +31,12 @@ export type Job = {
         };
     } | null;
     createdAt: string;
-    assigned_candidates:any
+    assigned_candidates: any
 };
 
 export type JobStatus = 'pending' | 'in-progress' | 'completed' | 'cancelled';
+export type JobMeta = {
+    canCompleteJob: boolean,
+    canEmployeeIntract: boolean,
+    canReviewJob: boolean
+}

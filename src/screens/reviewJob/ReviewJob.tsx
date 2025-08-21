@@ -1,64 +1,105 @@
 import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
 import RatingStars from '@components/ratingStars/RatingStars';
-import React, { memo, useState } from 'react';
-import { ScreenHeight } from '@rneui/base';
+import { useNavigation } from '@react-navigation/native';
+import getErrorMessage from '@utils/getErrorMessage';
+import { reviewSchema } from '@utils/schemas';
+import { showToast } from '@utils/showToast';
+import { usePost } from '@hooks/usePost';
+import endpoints from '@api/endpoints';
 import { Button } from '@rneui/themed';
+import React, { memo } from 'react';
 import colors from '@config/Colors';
 import { View } from 'react-native';
+import fonts from '@config/Fonts';
+import { Formik } from 'formik';
 
 
 const ReviewJob = ({route}: any) => {
-  const employee = route?.params?.employee;
-  const [form, setForm] = useState({
-    rating: 1,
-    comment: '',
-  });
-  const handleReview = (e: Number) => {
-    setForm((pre: any) => ({...pre, rating: e}));
+  const params = route?.params;
+  // const dispatch = useDispatch();
+  const createReviewApi = usePost();
+  const navigation = useNavigation();
+
+  const handleSubmit = async (values: {rating: number; comment: string},{resetForm}:any) => {
+    try {
+     await createReviewApi.request({
+        payload: values,
+        path: endpoints.createJobReview(params?.jobId, params?.employee?._id),
+      });
+      showToast('Job reviewed successfully');
+      resetForm();
+    } catch (err) {
+      showToast(getErrorMessage(err));
+    }
   };
+
   return (
     <>
-      <Header leftIcon title="Rate Your Experience" titleFontSize={21} />
+      <Header leftIcon />
       <KeyboardAvoidingView
-        contentContainerStyle={{paddingHorizontal: 14, paddingTop: 10}}>
-        
-            <Typography fontSize={15} color={colors.primaryTextLight}>
-              Tell us how your experience was with {employee?.name}. Your
-              feedback helps them grow and helps others make informed choices.
-              Please rate their work and leave a short review.
-            </Typography>
+        contentContainerStyle={{paddingHorizontal: 14, paddingTop: 5}}>
+        <Typography
+          fontSize={20}
+          fontFamily={fonts.poppinsSemiBold}
+          style={{marginBottom: 8}}>
+          Rate Your Experience
+        </Typography>
 
-            <RatingStars onChange={handleReview} />
+        <Typography fontSize={15} color={colors.primaryTextLight}>
+          Tell us how your experience was with {params?.employee?.name}. Your
+          feedback helps them grow and helps others make informed choices.
+          Please rate their work and leave a short review.
+        </Typography>
 
-            <Input
-              placeholder="Review"
-              multiline={true}
-              numberOfLines={5}
-              inputMode="text"
-              value={form.comment}
-              onChange={e => setForm(pre => ({...pre, comment: e}))}
-            />
+        <Formik
+          initialValues={{rating: 1, comment: ''}}
+          validationSchema={reviewSchema}
+          onSubmit={handleSubmit}>
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleSubmit,
+            setFieldValue,
+            isSubmitting,
+          }) => (
+            <>
+              <RatingStars
+                onChange={(val: number) => setFieldValue('rating', val)}
+              />
 
-<View
-style={{
-    paddingTop:20
-}}
->
+              <Input
+                label="Write your review"
+                placeholder="Review..."
+                multiline
+                numberOfLines={5}
+                inputMode="text"
+                value={values.comment}
+                onChange={handleChange('comment')}
+                error={
+                  touched.comment && errors.comment ? errors.comment : undefined
+                }
+              />
 
-          <Button
-          disabled={!form.rating || !form.comment?.trim()?.length}
-            // onPress={redirectToReview}
-            disabledStyle={{backgroundColor: colors.btnDisabled}}
-            disabledTitleStyle={{color: colors.white}}
-            title={'Submit'}
-            buttonStyle={{
-              backgroundColor: colors.btnPrimary,
-              borderRadius: 12,
-              minHeight: 50,
-            }}
-          />
-</View>
-
+              <View style={{paddingTop: 20}}>
+                <Button
+                  onPress={() => handleSubmit()}
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                  title={'Submit'}
+                  buttonStyle={{
+                    backgroundColor: colors.btnPrimary,
+                    borderRadius: 12,
+                    minHeight: 50,
+                  }}
+                  disabledStyle={{backgroundColor: colors.btnDisabled}}
+                  disabledTitleStyle={{color: colors.white}}
+                />
+              </View>
+            </>
+          )}
+        </Formik>
       </KeyboardAvoidingView>
     </>
   );

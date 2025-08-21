@@ -1,26 +1,14 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  ViewStyle,
-  Keyboard,
-} from 'react-native';
-import React, {memo, useMemo, useState, useCallback, useRef} from 'react';
-
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
-import {BottomSheetDefaultBackdropProps} from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
-import {isIOS, ScreenHeight} from '@rneui/base';
+import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, ViewStyle, Keyboard, } from 'react-native';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView, } from '@gorhom/bottom-sheet';
+import React, { memo, useMemo, useState, useCallback, useRef } from 'react';
+import { FontAwesome, NoResultsFound } from '@components/index';
+import Typography from '@components/ui/Typography';
+import { isIOS, ScreenHeight } from '@rneui/base';
 import images from '@config/Images';
 import colors from '@config/Colors';
-import Typography from '@components/ui/Typography';
 import fonts from '@config/Fonts';
-import {FontAwesome, NoResultsFound} from '@components/index';
+
 
 type Props = {
   loading?: boolean;
@@ -94,6 +82,16 @@ const SingleSelect = ({
 
   return (
     <View style={[containerStyles]}>
+      <Typography
+      fontFamily={fonts.poppinsRegular}
+      color={colors.primaryTextLight}
+      fontSize={13.5}
+      style={{
+        marginBottom:4
+      }}
+      >
+        {placeholder}
+      </Typography>
       <>
         <TouchableOpacity
           disabled={loading}
