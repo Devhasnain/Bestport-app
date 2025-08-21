@@ -1,21 +1,15 @@
-import {formatTo12HourTime, formatToDMY, formatToFull12HourDateTime} from '@utils/DateFormat';
-import {
-  TouchableOpacity,
-  Image,
-  Text,
-  View,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
-import React, {memo, useCallback, useState} from 'react';
+import { TouchableOpacity, Image, Text, View, ViewStyle, TextStyle, } from 'react-native';
+import { formatTo12HourTime, formatToDMY, formatToFull12HourDateTime } from '@utils/DateFormat';
+import React, { memo, useCallback, useState } from 'react';
+import Typography from '@components/ui/Typography';
 import DatePicker from 'react-native-date-picker';
+import images from '@config/Images';
+import colors from '@config/Colors';
+import { isIOS } from '@rneui/base';
+import fonts from '@config/Fonts';
 
 import styles from './DateInput.style';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
-import images from '@config/Images';
-import Typography from '@components/ui/Typography';
-import { isIOS } from '@rneui/base';
+
 
 type Props = {
   value: string;
@@ -60,6 +54,16 @@ const DateInput = ({
 
   return (
     <View style={[styles.parentContainer, additionlStyle]}>
+      <Typography
+      fontFamily={fonts.poppinsRegular}
+      color={colors.primaryTextLight}
+      fontSize={13.5}
+      style={{
+        marginBottom:4
+      }}
+      >
+        {placeholder}
+      </Typography>
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() => setDateOpen(!dateOpen)}

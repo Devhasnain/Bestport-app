@@ -1,3 +1,5 @@
+import parsePhoneNumberFromString from 'libphonenumber-js';
+import { postcodeValidator } from 'postcode-validator';
 import * as Yup from 'yup';
 
 
@@ -92,8 +94,13 @@ export const createJobSchema = Yup.object().shape({
     .required('City is required'),
 
   post_code: Yup.string()
-    .matches(/^\d{4,6}$/, 'Post code must be 4 to 6 digits')
-    .required('Post code is required'),
+    .transform(value => (value ? value.trim() : ''))
+    .test("is-valid-postcode", "Invalid postcode", (value) => {
+      return value ? postcodeValidator(value?.toUpperCase(), "UK") : false;
+    })
+    .required('Post code is required')
+    .matches(allowedTextRegex, 'Special characters not allowed')
+    .max(15, "Post code can't be too long."),
 
   address: Yup.string()
     .min(5, 'Address must be at least 5 characters')
@@ -106,6 +113,25 @@ export const createJobSchema = Yup.object().shape({
     .max(500, 'Instructions cannot exceed 500 characters')
     .matches(allowedTextRegex, 'Instructions contain invalid characters')
     .optional(),
+
+  contact_no: Yup.string()
+    .transform(value => (value ? value.trim() : ''))
+    .matches(/^\d{10}$/, 'Enter a valid mobile number')
+    .test("is-valid-uk-number", "Please enter a valid number", (value) => {
+      if (!value) return false;
+
+      try {
+        let nationalNumber = value;
+        if (/^\d{10}$/.test(nationalNumber) && !nationalNumber.startsWith("0")) {
+          nationalNumber = "0" + nationalNumber;
+        }
+        const phoneNumber = parsePhoneNumberFromString(nationalNumber, 'GB');
+        return phoneNumber ? phoneNumber.isValid() : false;
+      } catch {
+        return false;
+      }
+    })
+    .required('Contact number is required')
 });
 
 export const editNameSchema = Yup.object().shape({
@@ -136,4 +162,17 @@ export const editPasswordSchema = Yup.object().shape({
     .transform(value => (value ? value.trim() : ''))
     .oneOf([Yup.ref('newPassword')], 'Password must match')
     .required('Confirm password is required.')
+});
+
+export const reviewSchema = Yup.object().shape({
+  rating: Yup.number()
+    .min(1, 'Rating must be at least 1')
+    .max(5, 'Rating cannot exceed 5')
+    .required('Rating is required'),
+  comment: Yup.string()
+    .trim()
+    .matches(allowedTextRegex, `Special characters are not allowed`)
+    .min(10, 'Comment must be at least 10 characters')
+    .max(300, 'Comment cannot exceed 300 characters')
+    .required('Comment is required'),
 });

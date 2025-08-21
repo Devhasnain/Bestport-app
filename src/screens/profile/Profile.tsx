@@ -1,12 +1,13 @@
-import { Typography, Header, UserProfileImagePicker, Feather } from '@components/index';
 import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Typography, Header, Feather } from '@components/index';
 import { getUser, setToken, setUser } from '@store/authSlice';
+import React, { memo, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { navigate } from '@navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { memo, useCallback } from 'react';
+import UserAvatar from '@components/UserAvatar';
 import { getSocket } from '@services/socket';
 import { useModal } from '@hooks/useModal';
 import { Divider } from '@rneui/themed';
@@ -37,6 +38,11 @@ const Profile = ({navigation}: any) => {
   const {isOpen, toggleModal} = useModal();
   const user = useSelector(getUser);
   const dispatch = useDispatch();
+
+  const userName= useMemo(()=>{
+    return `${user?.name[0]?.toUpperCase()}${user?.name?.slice(1,user?.name?.length)}`
+  },[user?.name])
+
   const handleLogout = useCallback(async () => {
     navigate('Welcome');
     const socket = getSocket();
@@ -68,18 +74,25 @@ const Profile = ({navigation}: any) => {
             paddingHorizontal:16,
             borderRadius: 12,
           }}>
-          <UserProfileImagePicker user={user} />
+          {/* <UserProfileImagePicker user={user} /> */}
+          <UserAvatar
+          image={user?.profile_img?.path}
+          name={user?.name}
+          size={60}
+          />
           <View>
             <Typography
               fontFamily={fonts.poppinsMedium}
-              fontSize={16}
+              fontSize={18}
+              numberOfLines={1}
               color={colors.white}>
-              {user?.name}
+              {userName}
             </Typography>
             <Typography
               fontFamily={fonts.poppinsRegular}
               fontSize={14}
               color={colors.white}
+              lineHeight={18}
               numberOfLines={1}
               style={{maxWidth:"90%"}}
               >

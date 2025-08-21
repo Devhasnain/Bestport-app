@@ -4,5 +4,9 @@ export type User = {
     _id: string;
     createdAt: Date;
     role: "employee" | "customer",
-    rating: 0
+    rating: 0,
+    profile_img?:{
+        path:string
+    },
+    phone?:string
 }

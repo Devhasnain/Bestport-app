@@ -17,13 +17,14 @@ import { useGet } from '@hooks/useGet';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
 
-import { Job } from '../../types/job';
+import { Job, JobMeta } from '../../types/job';
 
 
 const JobDetail = ({route}: any) => {
   const user = useSelector(getUser);
   const {id} = route?.params;
   const [job, setJob] = useState<Job>();
+  const [jobMeta, setJobMeta] = useState<JobMeta>();
   const {data, request, loading} = useGet({
     endpoint: `${endpoints.jobs}/${id}`,
     autoFetch: id && !job,
@@ -37,43 +38,18 @@ const JobDetail = ({route}: any) => {
     }
   }, [job?.assigned_to, user]);
 
-  const canEmployeeIntract = useMemo(() => {
-    return (
-      user &&
-      job?.assigned_candidates?.length &&
-      user.role === 'employee' &&
-      !job?.assigned_to &&
-      job?.assigned_candidates?.includes(user?._id)
-    );
-  }, [job, user]);
-
-  const canCompleteJob = useMemo(() => {
-    if (!user?._id || !job?.status) {
-      return false;
-    } else {
-      return (
-        job?.status === 'in-progress' && job?.assigned_to?._id === user?._id
-      );
-    }
-  }, [job?.status, user?._id]);
-
-  const canReviewJob = useMemo(()=>{
-    return job?.status === "completed" && job.customer._id === user?._id;
-  },[job,user]);
-
   const redirectToComplete = useCallback(() => {
     navigate('CompleteJob', {id: job?._id});
   }, [job]);
 
-    const redirectToReview = useCallback(() => {
-    navigate('ReviewJob', {employee:job?.assigned_to});
+  const redirectToReview = useCallback(() => {
+    navigate('ReviewJob', {employee: job?.assigned_to, jobId:job?._id});
   }, [job]);
-
-  
 
   useEffect(() => {
     if (data?.data) {
-      setJob(data?.data);
+      setJob(data?.data?.job);
+      setJobMeta(data?.data?.meta);
     }
   }, [data]);
 
@@ -233,7 +209,7 @@ const JobDetail = ({route}: any) => {
         )}
       </ScrollView>
 
-      {canCompleteJob && (
+      {jobMeta?.canCompleteJob && (
         <View
           style={{
             paddingVertical: 14,
@@ -255,9 +231,11 @@ const JobDetail = ({route}: any) => {
         </View>
       )}
 
-      {canEmployeeIntract && <AcceptJobTicket job={job} setJob={setJob} />}
+      {jobMeta?.canEmployeeIntract && (
+        <AcceptJobTicket job={job} setJob={setJob} />
+      )}
 
-      {canReviewJob && (
+      {jobMeta?.canReviewJob && (
         <View
           style={{
             paddingVertical: 14,
