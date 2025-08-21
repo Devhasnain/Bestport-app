@@ -81,7 +81,6 @@ const Profile = ({navigation}: any) => {
               fontSize={14}
               color={colors.white}
               numberOfLines={1}
-              style={{maxWidth:"90%"}}
               >
               {user?.email}
             </Typography>

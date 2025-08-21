@@ -26,11 +26,12 @@ const BottomTabNavigator = () => {
         },
         animation: 'none',
         tabBarStyle: {
-          height: isIOS ? 90 : 75,
+          height: isIOS ? 100 : 75,
           borderTopWidth: 0,
           elevation: 15,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
+          paddingTop:isIOS ? 10 : 0
         },
       }}>
       <Tab.Screen

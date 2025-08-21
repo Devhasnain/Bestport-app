@@ -1,11 +1,10 @@
-import React from 'react';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import Login from '@screens/login/Login';
-import SignUp from '@screens/signup/SignUp';
+import { createNativeStackNavigator, NativeStackNavigationOptions, } from '@react-navigation/native-stack';
 import Welcome from '@screens/welcome/Welcome';
+import SignUp from '@screens/signup/SignUp';
+import Login from '@screens/login/Login';
+import { isIOS } from '@rneui/base';
+import React from 'react';
+
 
 const AuthenticationStack = createNativeStackNavigator();
 
@@ -16,7 +15,7 @@ const defaultScreenOptions: NativeStackNavigationOptions = {
 const AuthStack = () => {
   return (
     <AuthenticationStack.Navigator
-      screenOptions={{animation: 'fade_from_bottom'}}>
+      screenOptions={{animation: isIOS? "none": 'fade_from_bottom'}}>
       <AuthenticationStack.Screen
         name="Welcome"
         component={Welcome}

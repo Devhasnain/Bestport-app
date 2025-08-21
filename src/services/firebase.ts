@@ -174,3 +174,54 @@ const handleNotificationEvents = (type: any, detail: any) => {
       break;
   }
 };
+
+
+// fcmSetup.ts
+export const initFCMListeners = async () => {
+  if (isIOS && !messaging().isDeviceRegisteredForRemoteMessages) {
+    await messaging().registerDeviceForRemoteMessages();
+  }
+
+  const permissionGranted = await requestUserPermission();
+  if (!permissionGranted) return () => {};
+
+  const fcmToken = await getFcmToken();
+  if (fcmToken) {
+    await sendFcmTokenToServer(fcmToken);
+  }
+
+  // Attach all listeners and store unsubscribes
+  const unsubscribers: any[] = [];
+
+  // Foreground message
+  const fgMsgUnsub = messaging().onMessage(async remoteMessage => {
+    console.log(remoteMessage, 'Foreground MSG11');
+    notifeeHandler(remoteMessage);
+  });
+  unsubscribers.push(fgMsgUnsub);
+
+  // Background message (no unsubscribe available)
+  messaging().setBackgroundMessageHandler(async remoteMessage => {
+    console.log(remoteMessage, 'Background MSG11');
+    notifeeHandler(remoteMessage);
+  });
+
+  // Foreground notification
+  const fgNotifUnsub = onForeGroundNotification?.();
+  if (fgNotifUnsub) unsubscribers.push(fgNotifUnsub);
+
+  // Background notification
+  const bgNotifUnsub = onBackGroundNotification?.();
+  if (bgNotifUnsub) unsubscribers.push(bgNotifUnsub);
+
+  // Return cleanup function
+  return () => {
+    unsubscribers.forEach(unsub => {
+      try {
+        unsub();
+      } catch (err) {
+        console.warn('Error unsubscribing listener:', err);
+      }
+    });
+  };
+};

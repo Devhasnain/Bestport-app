@@ -18,6 +18,7 @@ import CompleteJob from '@screens/completeJob';
 import SignUp from '@screens/signup/SignUp';
 import Login from '@screens/login/Login';
 import Faqs from '@screens/faqs/Faqs';
+import { isIOS } from '@rneui/base';
 import React from 'react';
 
 import BottomTabNavigator from './BottomTabNavigator';
@@ -28,7 +29,7 @@ const defaultScreenOptions: NativeStackNavigationOptions = {
   contentStyle: {
     backgroundColor: 'transparent',
   },
-  animation: 'slide_from_right',
+  animation: isIOS ? "none": 'slide_from_right',
 };
 
 const RootStack = createNativeStackNavigator();

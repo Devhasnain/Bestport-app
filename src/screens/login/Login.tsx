@@ -21,8 +21,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const {request, loading} = usePost(endpoints.login);
   const initialValues = {
-    email: 'alt.gq-cc90zb8@yopmail.com',
-    password: 'Test@123',
+    email: '',
+    password: '',
   };
 
   const redirectToSignUp = useCallback(() => navigate('SignUp'), []);
