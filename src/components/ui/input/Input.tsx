@@ -126,11 +126,11 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <Input
-      label={label ?? placeholder}
+      label={label ? label : placeholder}
       labelStyle={{
         fontSize: 13.5,
-        fontFamily: fonts.poppinsRegular,
-        fontWeight: '500',
+        fontFamily: fonts.poppinsMedium,
+        fontWeight: '600',
         color: colors.primaryTextLight,
       }}
       value={value}

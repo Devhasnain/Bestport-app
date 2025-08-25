@@ -23,7 +23,7 @@ const EmployeeProfile = ({route}: any) => {
       setEmployeeProfile(getEmployeeProfileApi.data.data ?? null);
     }
   }, [getEmployeeProfileApi.data]);
-
+  console.log(employeeProfile);
   return (
     <>
       <Header leftIcon />
@@ -37,7 +37,7 @@ const EmployeeProfile = ({route}: any) => {
             colors={[colors.primary]}
           />
         }
-        contentContainerStyle={{paddingTop: 30, gap: 25}}>
+        contentContainerStyle={{paddingTop: 30, gap: 25, paddingBottom:20}}>
         {!getEmployeeProfileApi.loading && employeeProfile ? (
           <>
             <View
@@ -136,6 +136,55 @@ const EmployeeProfile = ({route}: any) => {
                 </View>
               </View>
             </SectionCard>
+
+            {employeeProfile?.reviews?.map((item: any, index: number) => (
+              <SectionCard key={index}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 14,
+                    }}>
+                    <UserAvatar
+                      size={40}
+                      image={item?.customer?.profile_img}
+                      name={item?.customer?.name}
+                    />
+                    <Typography fontSize={15} fontFamily={fonts.poppinsMedium}>
+                      {item?.customer?.name}
+                    </Typography>
+                  </View>
+                  <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 5,
+                  }}>
+                  <FontAwesome
+                    size={18}
+                    name="star"
+                    color={colors.ratingStarColor}
+                  />
+                  <Typography color={colors.primaryTextLight} fontSize={15}>
+                    ({item?.rating ?? 0})
+                  </Typography>
+                </View>
+                </View>
+                <TextAccordion 
+                text={item?.comment}
+                charLimit={100}
+                />
+              </SectionCard>
+            ))}
           </>
         ) : (
           <></>
@@ -156,7 +205,7 @@ const SectionCard = memo(({children}: any) => (
       borderRadius: 12,
       display: 'flex',
       flexDirection: 'column',
-      gap: 8,
+      gap: 14,
     }}>
     {children}
   </View>

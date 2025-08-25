@@ -1,34 +1,48 @@
-import {View} from 'react-native';
-import React, {memo, useCallback, useState} from 'react';
-
-import styles from './UserGreeting.style';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { connectSocket, getSocket } from '@services/socket';
+import { getUser, setUser } from '@store/authSlice';
 import Typography from '@components/ui/Typography';
-import {useSelector} from 'react-redux';
-import {getUser} from '@store/authSlice';
-import fonts from '@config/Fonts';
-import {Switch} from '@rneui/themed';
-import colors from '@config/Colors';
-import {connectSocket, getSocket} from '@services/socket';
-import Toast from 'react-native-simple-toast';
-import { isIOS } from '@rneui/base';
 import { showToast } from '@utils/showToast';
+import { useSelector } from 'react-redux';
+import { Switch } from '@rneui/themed';
+import colors from '@config/Colors';
+import { View } from 'react-native';
+import { isIOS } from '@rneui/base';
+import fonts from '@config/Fonts';
+
+import { useOnlineUsersContext } from '../../context/OnlineUsersContext';
+import styles from './UserGreeting.style';
+
 
 const UserGreeting = () => {
+  const {users} = useOnlineUsersContext();
   const user = useSelector(getUser);
   const [isEnabled, setIsEnabled] = useState(false);
   const socket = getSocket();
   const toggleSwitch = useCallback(() => {
     if (isEnabled) {
       socket?.disconnect();
-      showToast('Your are offline now');
+      setUser([]);
     } else {
-      if (socket?.connected) connectSocket();
+      if (!socket?.connected) connectSocket();
       socket?.connect();
       socket?.emit('online');
-      showToast('Back online');
+      showToast('You are now available to receive tasks from the admin.');
     }
     setIsEnabled(previousState => !previousState);
   }, [isEnabled]);
+
+  useEffect(() => {
+    if (users?.length) {
+      if (users?.includes(user?._id)) {
+        setIsEnabled(true);
+      } else {
+        setIsEnabled(false);
+      }
+    }else{
+      setIsEnabled(false)
+    }
+  }, [users]);
 
   return (
     <View

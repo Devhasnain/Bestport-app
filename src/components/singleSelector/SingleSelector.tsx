@@ -83,7 +83,7 @@ const SingleSelect = ({
   return (
     <View style={[containerStyles]}>
       <Typography
-      fontFamily={fonts.poppinsRegular}
+      fontFamily={fonts.poppinsMedium}
       color={colors.primaryTextLight}
       fontSize={13.5}
       style={{

@@ -1,6 +1,7 @@
+import { io, Socket } from 'socket.io-client';
 import { socketUrl } from '@api/index';
 import { store } from '@store/index';
-import { io, Socket } from 'socket.io-client';
+
 
 let socket: Socket | null = null;
 
@@ -12,7 +13,10 @@ export const connectSocket = () => {
             auth: { token: store.getState()?.auth?.token },
             query: { token: store.getState()?.auth?.token },
             withCredentials: true,
-            transports: ["websocket"]
+            transports: ["websocket"],
+            extraHeaders:{
+                "access-key": "12345"
+            }
         });
     }
     return socket;
