@@ -1,35 +1,50 @@
-// import { connectSocket } from '@services/socket';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { connectSocket } from '@services/socket';
+import { handleNewJob } from '@store/jobSlice';
 import { getUser } from '@store/authSlice';
-import { useSelector } from 'react-redux';
+
+import { useOnlineUsersContext } from '../context/OnlineUsersContext';
 
 
 const SocketProvider = ({children}: {children: ReactNode}) => {
+  const {setUsers} = useOnlineUsersContext();
   const user = useSelector(getUser);
-  // useEffect(() => {
-  //   if(!user) return;
-  //   const socket = connectSocket();
+  const dispatch = useDispatch();
 
-  //   // Optional: Listen for connection errors
-  //   socket.on('connect_error', err => {
-  //     console.error('Socket connect_error:', err.message);
-  //   });
+  useEffect(() => {
+    if (!user) return;
+    const socket = connectSocket();
 
-  //   // Connect the socket
-  //   socket.connect();
+    // Optional: Listen for connection errors
+    socket.on('connect_error', err => {
+      console.error('Socket connect_error:', err.message);
+      setUsers([])
+    });
 
-  //   // Log successful connection
-  //   socket.on('connect', () => {
-  //     console.log('Connected to socket server:', socket.id);
-  //   });
+    // Connect the socket
+    socket.connect();
 
-  //   // Cleanup
-  //   return () => {
-  //     socket.off('connect');
-  //     socket.disconnect();
-  //     console.log('Socket disconnected');
-  //   };
-  // }, [user]);
+    // Log successful connection
+    socket.on('connect', () => {
+      console.log('Connected to socket server:', socket.id);
+    });
+
+    socket.on('get-online-employees', payload => {
+      setUsers(payload?.employees ?? [])
+    });
+
+    socket.on("jobAssigned",payload=>{
+      dispatch(handleNewJob(payload))
+    })
+
+    // Cleanup
+    return () => {
+      socket.off('connect');
+      socket.disconnect();
+      console.log('Socket disconnected');
+    };
+  }, [user]);
   return <>{children}</>;
 };
 

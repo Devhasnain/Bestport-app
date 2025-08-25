@@ -69,7 +69,7 @@ const Assigned = () => {
               Stay active to receive tasks.
             </Typography>
             <Typography fontSize={14} style={{textAlign: 'center'}}>
-              When your status is set to "Available for Jobs", tasks assigned by
+              When your status is set to "Available for Tasks", tasks assigned by
               the admin will appear here. You’ll receive notifications whenever
               a new job is assigned to you.
             </Typography>

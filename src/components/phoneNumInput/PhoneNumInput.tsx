@@ -20,14 +20,13 @@ const PhoneNumInput = ({label="Contact Number",value = '', onChange, error = ''}
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 1,
       }}>
         <Typography
-      fontFamily={fonts.poppinsRegular}
+      fontFamily={fonts.poppinsMedium}
       color={colors.primaryTextLight}
       fontSize={13.5}
       style={{
-        marginBottom:4
+        marginBottom:2.5
       }}
       >
         {label}

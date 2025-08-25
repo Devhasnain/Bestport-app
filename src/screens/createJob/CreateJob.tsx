@@ -83,6 +83,7 @@ const CreateJob = ({navigation}: any) => {
                   error={touched.service_type && errors.service_type}
                 />
                 <Input
+                label='Title'
                   placeholder="Title"
                   value={values.title}
                   onChange={handleChange('title')}

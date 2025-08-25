@@ -39,14 +39,14 @@ const jobSlice = createSlice({
         addJob: (state, action) => {
             state.jobs = [action.payload, ...state.jobs]
         },
-        updateJob:(state,action)=>{
-            state.jobs = state.jobs.map((item)=>{
-                if(item?._id === action.payload._id){
+        updateJob: (state, action) => {
+            state.jobs = state.jobs.map((item) => {
+                if (item?._id === action.payload._id) {
                     return {
                         ...item,
                         ...action.payload.data
                     }
-                }else{
+                } else {
                     item
                 }
             })
@@ -57,16 +57,30 @@ const jobSlice = createSlice({
         addEmployeeJobs: (state, action: setEmpJobType) => {
             state.employee[action.payload.key] = [action.payload.value, ...state.employee[action.payload.key]]
         },
-        empMarkJobComplete:(state,action)=>{
-            const job = state.employee.in_progress.find((item)=>item._id === action.payload);
-            state.employee.in_progress = state.employee.in_progress.filter((item)=>item._id !== action.payload);
-            if(job){
-            state.employee.completed = [job,...state.employee.completed]
+        empMarkJobComplete: (state, action) => {
+            const job = state.employee.in_progress.find((item) => item._id === action.payload);
+            state.employee.in_progress = state.employee.in_progress.filter((item) => item._id !== action.payload);
+            if (job) {
+                state.employee.completed = [job, ...state.employee.completed]
             }
 
         },
         removeJobTicket: (state, action) => {
             state.employee.assigned = state.employee.assigned?.filter((item) => item?._id !== action.payload)
+        },
+        handleNewJob: (state, action) => {
+            if (state.employee.assigned?.length) {
+
+                state.employee.assigned = state.employee.assigned?.map((item) => {
+                    if (item?._id === action.payload._id) {
+                        return item
+                    } else {
+                        return action.payload
+                    }
+                });
+            } else {
+                state.employee.assigned = [action.payload]
+            }
         }
     },
 });
@@ -78,7 +92,8 @@ export const {
     removeJobTicket,
     addEmployeeJobs,
     empMarkJobComplete,
-    updateJob
+    updateJob,
+    handleNewJob
 } = jobSlice?.actions;
 
 export const getJobs = (state: RootState) => state?.job?.jobs;
