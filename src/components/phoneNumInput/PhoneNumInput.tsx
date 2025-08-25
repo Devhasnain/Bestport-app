@@ -26,7 +26,8 @@ const PhoneNumInput = ({label="Contact Number",value = '', onChange, error = ''}
       color={colors.primaryTextLight}
       fontSize={13.5}
       style={{
-        marginBottom:2.5
+        fontWeight:"600",
+        marginBottom:1
       }}
       >
         {label}
@@ -64,12 +65,12 @@ const PhoneNumInput = ({label="Contact Number",value = '', onChange, error = ''}
           onChangeText={onChange}
           style={{
             flex: 1,
-            paddingBottom: 6,
+            paddingBottom: isIOS ? 0: 6,
             fontFamily: fonts.poppinsRegular,
             fontSize: 14.5,
             color: colors.primaryText,
           }}
-          placeholder="00-000-000-000"
+          placeholder="00 000 000 000"
           placeholderTextColor={colors.primaryTextLight}
           cursorColor={colors.primaryTextLight}
         />

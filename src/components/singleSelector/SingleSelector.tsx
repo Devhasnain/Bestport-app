@@ -87,7 +87,8 @@ const SingleSelect = ({
       color={colors.primaryTextLight}
       fontSize={13.5}
       style={{
-        marginBottom:4
+        fontWeight:"600",
+        marginBottom:1
       }}
       >
         {placeholder}

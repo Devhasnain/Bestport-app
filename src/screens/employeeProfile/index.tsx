@@ -23,7 +23,6 @@ const EmployeeProfile = ({route}: any) => {
       setEmployeeProfile(getEmployeeProfileApi.data.data ?? null);
     }
   }, [getEmployeeProfileApi.data]);
-  console.log(employeeProfile);
   return (
     <>
       <Header leftIcon />
@@ -200,6 +199,13 @@ const SectionCard = memo(({children}: any) => (
       padding: 14,
       backgroundColor: colors.white,
       elevation: 8,
+      shadowColor: "#000",
+      shadowOffset: {
+      width: 0,
+      height: 2,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 4.65,
       width: ScreenWidth - 28,
       marginHorizontal: 'auto',
       borderRadius: 12,

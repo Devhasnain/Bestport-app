@@ -35,6 +35,7 @@ const SocketProvider = ({children}: {children: ReactNode}) => {
     });
 
     socket.on("jobAssigned",payload=>{
+      console.log(payload)
       dispatch(handleNewJob(payload))
     })
 

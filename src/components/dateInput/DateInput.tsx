@@ -1,5 +1,5 @@
-import { TouchableOpacity, Image, Text, View, ViewStyle, TextStyle, } from 'react-native';
 import { formatTo12HourTime, formatToDMY, formatToFull12HourDateTime } from '@utils/DateFormat';
+import { TouchableOpacity, Image, Text, View, ViewStyle, TextStyle, } from 'react-native';
 import React, { memo, useCallback, useState } from 'react';
 import Typography from '@components/ui/Typography';
 import DatePicker from 'react-native-date-picker';
@@ -59,7 +59,7 @@ const DateInput = ({
       color={colors.primaryTextLight}
       fontSize={13.5}
       style={{
-        marginBottom:4
+        fontWeight:"600",
       }}
       >
         {placeholder}
