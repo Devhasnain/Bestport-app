@@ -2,7 +2,7 @@ const images = {
     appBackground: require("@assets/images/appBg.png"),
     appLogo: require("@assets/images/app-logo.png"),
     appIcon: require("@assets/images/app-icon.png"),
-    appLogoLg: require("@assets/images/logo-lg.png"),
+    appLogoLg: require("@assets/images/app-icon.png"),
 
 
     imageNotFound: require("@assets/images/image-not-found.png"),
