@@ -17,7 +17,7 @@ const Assigned = () => {
   const user = useSelector(getUser);
   const {data, loading, request} = useGet({
     endpoint:`${endpoints.jobTickets}?user=${user?._id}&active=true&status=assigned`,
-    autoFetch:!jobTickets?.length&&user?._id
+    autoFetch:true
   });
 
   const renderItems = useCallback(

@@ -23,7 +23,8 @@ const endpoints = {
     getEmployeeProfile:(id:string)=>`/user/profile?id=${id}`,
     getProductById:(id:string)=>`/product?id=${id}`,
     completedJob:(id:string)=>`/job/complete?id=${id}`,
-    createJobReview:(jobId:string,employeeId:string)=>`/review/create?jobId=${jobId}&employeeId=${employeeId}`
+    createJobReview:(jobId:string,employeeId:string)=>`/review/create?jobId=${jobId}&employeeId=${employeeId}`,
+    createHelpRequest:"/help-request/create"
 
 };
 

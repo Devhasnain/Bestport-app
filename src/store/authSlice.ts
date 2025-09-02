@@ -1,16 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { User } from "../types/user";
 import { RootState } from '@store/index';
+
+import { User } from "../types/user";
 
 
 type InitialStateType = {
     user: User | null;
     token: string | null
+    alert: any
 }
 
 const initialState: InitialStateType = {
     user: null,
     token: null,
+    alert: null
 };
 const authSlice = createSlice({
     name: 'auth',
@@ -31,6 +34,12 @@ const authSlice = createSlice({
                 state.user = { ...state.user, ...action.payload };
             }
         },
+        setAlert: (state, action) => {
+            state.alert = action.payload;
+        },
+        hideAlert: (state) => {
+            state.alert = null
+        }
     },
 });
 
@@ -39,9 +48,12 @@ export const {
     setUser,
     logout,
     updateUser,
+    setAlert,
+    hideAlert
 } = authSlice?.actions;
 
 export const getUser = (state: RootState) => state?.auth?.user;
 export const getToken = (state: RootState) => state?.auth?.token;
+export const isAlertExists = (state: RootState) => state.auth.alert
 
 export default authSlice.reducer;

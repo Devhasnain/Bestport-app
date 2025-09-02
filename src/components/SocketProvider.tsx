@@ -1,7 +1,7 @@
-import { ReactNode, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { connectSocket } from '@services/socket';
 import { handleNewJob } from '@store/jobSlice';
+import { ReactNode, useEffect } from 'react';
 import { getUser } from '@store/authSlice';
 
 import { useOnlineUsersContext } from '../context/OnlineUsersContext';

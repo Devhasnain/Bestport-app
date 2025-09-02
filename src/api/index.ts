@@ -9,10 +9,11 @@ import endpoints from './endpoints';
 const live = `https://bestport.up.railway.app/api/v1`;
 const dev = 'http://192.168.1.100:3000/api/v1';
 
-export const socketUrl = 'https://bestport-socket-server.up.railway.app'
+// export const socketUrl = 'https://bestport-socket-server.up.railway.app'
+export const socketUrl = 'http://192.168.1.100:8080'
 
 const baseApi = axios.create({
-  baseURL: `${live}`,
+  baseURL: `${dev}`,
   timeout: 20000,
   timeoutErrorMessage: 'Request timeout.',
   headers: {

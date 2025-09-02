@@ -176,3 +176,17 @@ export const reviewSchema = Yup.object().shape({
     .max(300, 'Comment cannot exceed 300 characters')
     .required('Comment is required'),
 });
+
+export const helpRequestSchema = Yup.object().shape({
+  subject: Yup.string()
+    .trim()
+    .required("Subject is required")
+    .min(5, "Subject must be at least 5 characters")
+    .max(150, "Subject must be at most 150 characters"),
+
+  message: Yup.string()
+    .trim()
+    .required("Message is required")
+    .min(10, "Message must be at least 10 characters")
+    .max(2000, "Message must be at most 2000 characters"),
+});

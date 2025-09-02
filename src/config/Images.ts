@@ -21,6 +21,9 @@ const images = {
     notificationIcon: require("@assets/images/notification2.png"),
     appLogoName: require("@assets/images/logo-name.png"),
 
+    successIcon: require("@assets/images/success.png"),
+    errorIcon: require("@assets/images/error.png"),
+    warning: require("@assets/images/warning.png"),
 };
 
 export default images

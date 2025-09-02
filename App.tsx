@@ -9,6 +9,7 @@ import { navigationRef } from '@navigation/NavigationService';
 import React, { useCallback, useRef, useState } from 'react';
 import SocketProvider from '@components/SocketProvider';
 import ErrorBoundary from 'react-native-error-boundary';
+import CustomAlert from '@components/CustomAlert';
 import { persistor, store } from '@store/index';
 import { StatusBar } from 'react-native';
 import { Provider } from 'react-redux';
@@ -66,6 +67,7 @@ const App = () => {
                       <FirebaseProvider>
                         <OnlineUsersProvider>
                           <SocketProvider>
+                            <CustomAlert />
                             <RootNavigation />
                           </SocketProvider>
                         </OnlineUsersProvider>

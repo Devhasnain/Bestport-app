@@ -29,3 +29,11 @@ export const getSocket = () => {
         return socket
     }
 };
+
+export const disconnectSocket = () => {
+  if (socket) {
+    socket.removeAllListeners();
+    socket.disconnect();
+    socket = null;
+  }
+};

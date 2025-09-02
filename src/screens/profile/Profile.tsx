@@ -7,8 +7,8 @@ import React, { memo, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { navigate } from '@navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
+import { disconnectSocket } from '@services/socket';
 import UserAvatar from '@components/UserAvatar';
-import { getSocket } from '@services/socket';
 import { useModal } from '@hooks/useModal';
 import { Divider } from '@rneui/themed';
 import images from '@config/Images';
@@ -45,8 +45,7 @@ const Profile = ({navigation}: any) => {
 
   const handleLogout = useCallback(async () => {
     navigate('Welcome');
-    const socket = getSocket();
-    socket?.disconnect();
+    disconnectSocket();
     dispatch(setToken(null));
     dispatch(setUser(null));
     toggleModal();

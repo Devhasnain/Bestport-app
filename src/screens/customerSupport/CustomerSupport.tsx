@@ -1,13 +1,33 @@
-import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
+import { Header, Input, KeyboardAvoidingView, Toast, Typography, } from '@components/index';
+import { showAlert, showErrorAlert } from '@utils/showToast';
+import { TouchableOpacity, View } from 'react-native';
+import getErrorMessage from '@utils/getErrorMessage';
+import { helpRequestSchema } from '@utils/schemas';
+import React, { useCallback } from 'react';
+import { usePost } from '@hooks/usePost';
+import endpoints from '@api/endpoints';
 import { Button } from '@rneui/themed';
 import colors from '@config/Colors';
-import { View } from 'react-native';
 import fonts from '@config/Fonts';
 import { Formik } from 'formik';
-import React from 'react';
 
 
+const initialValues = Object.freeze({
+  subject: '',
+  message: '',
+});
 const CustomerSupport = () => {
+  const sendRequestApi = usePost(endpoints.createHelpRequest);
+  const redirectToApplications = useCallback(() => {}, []);
+  const onSubmitRequest = useCallback(async (values: any, {resetForm}: any) => {
+    try {
+      await sendRequestApi.request({payload: values});
+      showAlert('success', 'Application submitted');
+      resetForm();
+    } catch (error) {
+      showErrorAlert('Error', getErrorMessage(error));
+    }
+  }, []);
   return (
     <>
       <Header leftIcon title="Customer support" />
@@ -26,9 +46,9 @@ const CustomerSupport = () => {
         </Typography>
 
         <Formik
-          initialValues={{message: ''}}
-          // validationSchema={setNewPasswordSchema}
-          onSubmit={() => {}}>
+          initialValues={initialValues}
+          validationSchema={helpRequestSchema}
+          onSubmit={onSubmitRequest}>
           {({handleChange, handleSubmit, values, errors, touched}) => (
             <View
               style={{
@@ -37,6 +57,13 @@ const CustomerSupport = () => {
                 gap: 12,
                 paddingTop: 30,
               }}>
+              <Input
+                placeholder="Subject"
+                value={values.subject}
+                onChange={handleChange('subject')}
+                error={touched?.subject && errors?.subject}
+              />
+
               <Input
                 placeholder="Message"
                 value={values.message}
@@ -49,8 +76,8 @@ const CustomerSupport = () => {
               <Button
                 disabledStyle={{backgroundColor: colors.messageBox}}
                 disabledTitleStyle={{color: colors.white}}
-                // disabled={loading}
-                // loading={loading}
+                disabled={sendRequestApi.loading}
+                loading={sendRequestApi.loading}
                 onPress={() => handleSubmit()}
                 title={'Submit'}
                 buttonStyle={{
@@ -60,6 +87,21 @@ const CustomerSupport = () => {
                 }}
                 titleStyle={{fontFamily: fonts.poppinsMedium, lineHeight: 20}}
               />
+
+              {/* <TouchableOpacity
+                onPress={redirectToApplications}
+                activeOpacity={0.8}>
+                <Typography
+                  color={colors.authLinkText}
+                  fontSize={15}
+                  lineHeight={20}
+                  style={{
+                    marginTop: 8,
+                    textAlign: 'center',
+                  }}>
+                  My Applications
+                </Typography>
+              </TouchableOpacity> */}
             </View>
           )}
         </Formik>
