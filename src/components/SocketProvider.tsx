@@ -16,6 +16,10 @@ const SocketProvider = ({children}: {children: ReactNode}) => {
     if (!user) return;
     const socket = connectSocket();
 
+     if (!socket.connected) {
+        socket.connect();
+      }
+
     // Optional: Listen for connection errors
     socket.on('connect_error', err => {
       console.error('Socket connect_error:', err.message);
