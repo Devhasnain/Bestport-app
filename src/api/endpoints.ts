@@ -24,7 +24,8 @@ const endpoints = {
     getProductById:(id:string)=>`/product?id=${id}`,
     completedJob:(id:string)=>`/job/complete?id=${id}`,
     createJobReview:(jobId:string,employeeId:string)=>`/review/create?jobId=${jobId}&employeeId=${employeeId}`,
-    createHelpRequest:"/help-request/create"
+    createHelpRequest:"/help-request/create",
+    deleteAccount:"/auth/delete-account"
 
 };
 

@@ -9,8 +9,10 @@ import { navigate } from '@navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
 import { disconnectSocket } from '@services/socket';
 import UserAvatar from '@components/UserAvatar';
+import { useDelete } from '@hooks/useDelete';
 import { useModal } from '@hooks/useModal';
 import { Divider } from '@rneui/themed';
+import endpoints from '@api/endpoints';
 import images from '@config/Images';
 import colors from '@config/Colors';
 import fonts from '@config/Fonts';
@@ -20,28 +22,33 @@ const tabs = [
   {
     title: 'Privacy policy',
     label: 'PrivacyPolicy',
-    icon:<Feather name='file-text' color={colors.primary} size={23} />
+    icon: <Feather name="file-text" color={colors.primary} size={23} />,
   },
   {
     title: 'Faqs',
     label: 'Faqs',
-    icon:<Feather name='message-square' color={colors.primary} size={23} />
+    icon: <Feather name="message-square" color={colors.primary} size={23} />,
   },
   {
     title: 'Customer Support',
     label: 'CustomerSupport',
-    icon:<Feather name='help-circle' color={colors.primary} size={23} />
+    icon: <Feather name="help-circle" color={colors.primary} size={23} />,
   },
 ];
 
 const Profile = ({navigation}: any) => {
   const {isOpen, toggleModal} = useModal();
+  const delAccountModal = useModal();
   const user = useSelector(getUser);
   const dispatch = useDispatch();
+  const deleteAccountReq = useDelete(endpoints.deleteAccount);
 
-  const userName= useMemo(()=>{
-    return `${user?.name[0]?.toUpperCase()}${user?.name?.slice(1,user?.name?.length)}`
-  },[user?.name])
+  const userName = useMemo(() => {
+    return `${user?.name[0]?.toUpperCase()}${user?.name?.slice(
+      1,
+      user?.name?.length,
+    )}`;
+  }, [user?.name]);
 
   const handleLogout = useCallback(async () => {
     navigate('Welcome');
@@ -51,6 +58,15 @@ const Profile = ({navigation}: any) => {
     toggleModal();
     await GoogleSignin.signOut();
   }, []);
+
+  const handleDeleteAccount = async () => {
+    await deleteAccountReq.request({});
+    delAccountModal.closeModal();
+    navigate('Welcome');
+    disconnectSocket();
+    dispatch(setToken(null));
+    dispatch(setUser(null));
+  };
 
   const handleRedirect = useCallback((screen: string) => {
     navigation?.navigate(screen);
@@ -70,14 +86,14 @@ const Profile = ({navigation}: any) => {
             gap: 15,
             backgroundColor: colors.primary,
             paddingVertical: 14,
-            paddingHorizontal:16,
+            paddingHorizontal: 16,
             borderRadius: 12,
           }}>
           {/* <UserProfileImagePicker user={user} /> */}
           <UserAvatar
-          image={user?.profile_img?.path}
-          name={user?.name}
-          size={60}
+            image={user?.profile_img?.path}
+            name={user?.name}
+            size={60}
           />
           <View>
             <Typography
@@ -92,8 +108,7 @@ const Profile = ({navigation}: any) => {
               fontSize={14}
               color={colors.white}
               lineHeight={18}
-              numberOfLines={1}
-              >
+              numberOfLines={1}>
               {user?.email}
             </Typography>
           </View>
@@ -127,9 +142,7 @@ const Profile = ({navigation}: any) => {
                   alignItems: 'center',
                   gap: 12,
                 }}>
-                {item?.icon && (
-                  item?.icon
-                )}
+                {item?.icon && item?.icon}
                 <Typography fontSize={15}>{item?.title}</Typography>
               </TouchableOpacity>
             ))}
@@ -146,6 +159,26 @@ const Profile = ({navigation}: any) => {
               <Image source={images.logoutIcon} tintColor={colors.btnPrimary} />
               <Typography fontSize={15}>Logout</Typography>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={delAccountModal.openModal}
+              activeOpacity={0.8}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 12,
+                backgroundColor: colors.authLinkText,
+                padding: 10,
+                borderRadius: 12,
+              }}>
+              <Typography
+                color={colors.white}
+                style={{textAlign: 'center', width: '100%'}}
+                fontSize={15}>
+                Delete Account
+              </Typography>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -154,6 +187,14 @@ const Profile = ({navigation}: any) => {
         title="Are you sure, You want to logout?"
         onCancel={toggleModal}
         onConfirm={handleLogout}
+      />
+      <ConfirmationModal
+        isOpen={delAccountModal.isOpen}
+        title="Are you sure, You want to delete your account?"
+        description="Your account and data will be permanently erased in 30 days. If you change your mind, simply log in before then to reactivate your account and cancel the deletion."
+        onCancel={delAccountModal.closeModal}
+        onConfirm={handleDeleteAccount}
+        loading={deleteAccountReq.loading}
       />
     </>
   );
