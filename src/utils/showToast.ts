@@ -10,7 +10,7 @@ export const showToast = (message: string) => {
 export const showAlert = (
    type="warning",
    title = 'Warning',
-   msg = 'Warning alert',
+   msg = '',
 ) => {
    store.dispatch(setAlert({ type: type, title, message: msg }));
    setTimeout(() => {
