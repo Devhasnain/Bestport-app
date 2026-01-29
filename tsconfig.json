@@ -15,5 +15,6 @@
       "@api/*":["api/*"],
       "@services/*":["services/*"],
     }
-  }
+  },
+  "esModuleInterop": true
 }
