@@ -1,21 +1,14 @@
-import { formatToFull12HourDateTime, getTimeAgo, isTicketExpired, } from '@utils/DateFormat';
+import { Header, NoResultsFound, Typography, UserAvatar, View, TouchableOpacity, ScrollView, RefreshControl, Button, Divider } from '@components/index';
+import { showToast, getErrorMessage, formatToFull12HourDateTime, getTimeAgo, isTicketExpired, } from '@utils/index';
+import { colors, fonts, formatJobStatus, getStatusColor, urgencyLevelText } from '@config/index';
 import React, { memo, ReactNode, useCallback, useEffect, useMemo, useState, } from 'react';
-import { formatJobStatus, getStatusColor, urgencyLevelText, } from '@config/Constants';
-import { RefreshControl, ScrollView, TouchableOpacity, View } from 'react-native';
-import { Header, NoResultsFound, Typography } from '@components/index';
 import { addEmployeeJobs, removeJobTicket } from '@store/jobSlice';
 import { navigate } from '@navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
-import getErrorMessage from '@utils/getErrorMessage';
-import UserAvatar from '@components/UserAvatar';
-import { Button, Divider } from '@rneui/themed';
-import { showToast } from '@utils/showToast';
+import styles from '@styles/jobDetail.styles';
+import { usePut, useGet } from '@hooks/index';
 import { getUser } from '@store/authSlice';
 import endpoints from '@api/endpoints';
-import { usePut } from '@hooks/usePut';
-import { useGet } from '@hooks/useGet';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
 
 import { Job, JobMeta } from '../../types/job';
 
@@ -55,37 +48,17 @@ const JobDetail = ({route}: any) => {
 
   return (
     <>
-      <Header leftIcon style={{justifyContent: 'space-between'}}>
-        <View style={{display: 'flex', flexDirection: 'row', gap: 5}}>
+      <Header leftIcon style={styles.header}>
+        <View style={styles.headerBadgeRow}>
           {job?.createdAt && (
-            <View
-              style={{
-                backgroundColor: colors.cardBadgeDark,
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                borderRadius: 100,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 6,
-              }}>
+            <View style={styles.timeAgoBadge}>
               <Typography fontSize={12.5} color={colors.primaryTextLight}>
                 {getTimeAgo(job?.createdAt)}
               </Typography>
             </View>
           )}
           {job?.status && (
-            <View
-              style={{
-                backgroundColor: getStatusColor(job?.status),
-                paddingHorizontal: 10,
-                paddingVertical: 4,
-                borderRadius: 100,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 6,
-              }}>
+            <View style={[styles.statusBadge, {backgroundColor: getStatusColor(job?.status)}]}>
               <Typography fontSize={12.5} color={colors.white}>
                 {formatJobStatus(job?.status)}
               </Typography>
@@ -102,47 +75,20 @@ const JobDetail = ({route}: any) => {
           />
         }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          gap: 12,
-          paddingVertical: 10,
-          paddingTop: 5,
-          paddingHorizontal: 12,
-        }}>
+        contentContainerStyle={styles.scrollContent}>
         {!loading && job ? (
           <>
-            <View
-              style={{
-                borderRadius: 12,
-                padding: 18,
-                backgroundColor: colors.white,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-                borderWidth: 0.5,
-                borderColor: colors.gray,
-                elevation: 8,
-              }}>
+            <View style={styles.jobInfoCard}>
               <Typography fontSize={18} fontFamily={fonts.poppinsMedium}>
                 {job?.title}
               </Typography>
               <Typography fontSize={15}>{job?.description}</Typography>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
+              <View style={styles.assignedToRow}>
                 {user?.role === 'customer' && job?.assigned_to && (
                   <TouchableOpacity
                     onPress={viewEmployeeProfile}
                     activeOpacity={0.8}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 8,
-                    }}>
+                    style={styles.employeeProfile}>
                     <UserAvatar
                       image={job?.assigned_to?.profile_img?.path}
                       name={job?.assigned_to?.name}
@@ -185,17 +131,14 @@ const JobDetail = ({route}: any) => {
                 <Typography fontSize={13} fontFamily={fonts.poppinsMedium}>
                   City
                 </Typography>
-
                 <Typography fontSize={13}>{job?.city}</Typography>
               </Row>
               <Row>
                 <Typography fontSize={13} fontFamily={fonts.poppinsMedium}>
                   Post code
                 </Typography>
-
                 <Typography fontSize={13}>{job?.post_code}</Typography>
               </Row>
-
               <Typography fontSize={13} fontFamily={fonts.poppinsMedium}>
                 Address
               </Typography>
@@ -210,23 +153,13 @@ const JobDetail = ({route}: any) => {
       </ScrollView>
 
       {jobMeta?.canCompleteJob && (
-        <View
-          style={{
-            paddingVertical: 14,
-            paddingHorizontal: 12,
-            backgroundColor: colors.white,
-            elevation: 20,
-          }}>
+        <View style={styles.bottomActionContainer}>
           <Button
             onPress={redirectToComplete}
-            disabledStyle={{backgroundColor: colors.btnDisabled}}
-            disabledTitleStyle={{color: colors.white}}
+            disabledStyle={styles.btnDisabled}
+            disabledTitleStyle={styles.btnDisabledTitle}
             title={'Complete job'}
-            buttonStyle={{
-              backgroundColor: colors.btnPrimary,
-              borderRadius: 12,
-              minHeight: 50,
-            }}
+            buttonStyle={styles.btnPrimary}
           />
         </View>
       )}
@@ -236,23 +169,13 @@ const JobDetail = ({route}: any) => {
       )}
 
       {jobMeta?.canReviewJob && (
-        <View
-          style={{
-            paddingVertical: 14,
-            paddingHorizontal: 12,
-            backgroundColor: colors.white,
-            elevation: 20,
-          }}>
+        <View style={styles.bottomActionContainer}>
           <Button
             onPress={redirectToReview}
-            disabledStyle={{backgroundColor: colors.btnDisabled}}
-            disabledTitleStyle={{color: colors.white}}
+            disabledStyle={styles.btnDisabled}
+            disabledTitleStyle={styles.btnDisabledTitle}
             title={'Review'}
-            buttonStyle={{
-              backgroundColor: colors.btnPrimary,
-              borderRadius: 12,
-              minHeight: 50,
-            }}
+            buttonStyle={styles.btnPrimary}
           />
         </View>
       )}
@@ -267,18 +190,7 @@ type SectionCarProps = {
 
 const SectionCard = memo(({title, children}: SectionCarProps) => {
   return (
-    <View
-      style={{
-        borderRadius: 12,
-        padding: 18,
-        backgroundColor: colors.white,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 5,
-        borderWidth: 0.5,
-        borderColor: colors.gray,
-        elevation: 15,
-      }}>
+    <View style={styles.sectionCard}>
       <Typography fontSize={14} fontFamily={fonts.poppinsMedium}>
         {title}
       </Typography>
@@ -289,13 +201,7 @@ const SectionCard = memo(({title, children}: SectionCarProps) => {
 });
 
 const Row = memo(({children}: any) => (
-  <View
-    style={{
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    }}>
+  <View style={styles.spaceBetweenRow}>
     {children}
   </View>
 ));
@@ -354,57 +260,37 @@ const AcceptJobTicket = memo(
     return (
       <>
         {ticket && ticket?.status === 'assigned' ? (
-          <View
-            style={{
-              paddingVertical: 14,
-              paddingHorizontal: 12,
-              backgroundColor: colors.white,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 10,
-              elevation: 20,
-            }}>
+          <View style={styles.ticketActionsContainer}>
             <Button
               onPress={handleAcceptJob}
-              disabledStyle={{backgroundColor: colors.btnDisabled}}
+              disabledStyle={styles.btnDisabled}
               loading={acceptJobTicketApi.loading}
               disabled={
                 isTicketExpired(ticket?.createdAt) ||
                 getTicketApi?.loading ||
                 acceptJobTicketApi.loading
               }
-              disabledTitleStyle={{color: colors.white}}
+              disabledTitleStyle={styles.btnDisabledTitle}
               title={
                 isTicketExpired(ticket?.createdAt)
                   ? 'Job ticket expired'
                   : 'Accept job ticket'
               }
-              buttonStyle={{
-                backgroundColor: colors.btnPrimary,
-                borderRadius: 12,
-                minHeight: 50,
-              }}
+              buttonStyle={styles.btnPrimary}
             />
             <Button
               onPress={handleRejectTicket}
-              disabledStyle={{backgroundColor: 'transparent'}}
+              disabledStyle={styles.btnRejectDisabled}
               loading={rejectTicketApi.loading}
-              loadingProps={{
-                color: colors.btnPrimary,
-              }}
+              loadingProps={{color: colors.btnPrimary}}
               disabled={rejectTicketApi.loading || disableReject}
-              disabledTitleStyle={{color: colors.primaryTextLight}}
-              titleStyle={{color: colors.btnPrimary}}
+              disabledTitleStyle={styles.btnRejectDisabledTitle}
+              titleStyle={styles.btnRejectTitle}
               title={ticket?.status === 'rejected' ? 'Rejected' : 'Reject'}
-              buttonStyle={{
-                backgroundColor: 'transparent',
-                borderRadius: 12,
-                minHeight: 50,
-                borderWidth: 1.5,
-                borderColor: disableReject
-                  ? colors.btnDisabled
-                  : colors.btnPrimary,
-              }}
+              buttonStyle={[
+                styles.btnReject,
+                {borderColor: disableReject ? colors.btnDisabled : colors.btnPrimary},
+              ]}
             />
           </View>
         ) : (

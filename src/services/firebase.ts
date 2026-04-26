@@ -31,7 +31,7 @@ export const requestUserPermission = async () => {
       return true;
     }
   } catch (error) {
-    console.log('Notification permission error:', error);
+    // console.log('Notification permission error:', error);
     return false;
   }
 };
@@ -51,14 +51,14 @@ export const getFcmToken = async (): Promise<string | null> => {
 
       const token = await messaging().getToken();
       if (token) {
-        console.log('FCM Token:', token);
+        // console.log('FCM Token:', token);
         return token;
       } else return null
     } else {
       return null;
     }
   } catch (error) {
-    console.error('Error getting FCM token:', error);
+    // console.error('Error getting FCM token:', error);
     return null;
   }
 };
@@ -89,12 +89,12 @@ export const sendFcmTokenToServer = async (token: string) => {
       ip_address
     }, { headers: { Authorization: `Bearer ${store.getState().auth.token}` } });
     if (response.data?.success) {
-      console.log('FCM token sent to server successfully');
+      // console.log('FCM token sent to server successfully');
     } else {
-      console.warn('FCM token sent but not acknowledged by server');
+      // console.warn('FCM token sent but not acknowledged by server');
     }
   } catch (error) {
-    console.error('Failed to send FCM token to server:', error);
+    // console.error('Failed to send FCM token to server:', error);
   }
 };
 
@@ -103,7 +103,7 @@ export const onForeGroundListener = async () => {
     await messaging().registerDeviceForRemoteMessages();
   }
   messaging().onMessage(async remoteMessage => {
-    console.log(remoteMessage, 'Foreground MSG11');
+    // console.log(remoteMessage, 'Foreground MSG11');
     notifeeHandler(remoteMessage);
   });
 };
@@ -113,7 +113,7 @@ export const onBackGroundListener = async () => {
     await messaging().registerDeviceForRemoteMessages();
   }
   messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log(remoteMessage, 'Background MSG11');
+    // console.log(remoteMessage, 'Background MSG11');
     notifeeHandler(remoteMessage);
   });
 };
@@ -195,14 +195,14 @@ export const initFCMListeners = async () => {
 
   // Foreground message
   const fgMsgUnsub = messaging().onMessage(async remoteMessage => {
-    console.log(remoteMessage, 'Foreground MSG11');
+    // console.log(remoteMessage, 'Foreground MSG11');
     notifeeHandler(remoteMessage);
   });
   unsubscribers.push(fgMsgUnsub);
 
   // Background message (no unsubscribe available)
   messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log(remoteMessage, 'Background MSG11');
+    // console.log(remoteMessage, 'Background MSG11');
     notifeeHandler(remoteMessage);
   });
 
@@ -220,7 +220,7 @@ export const initFCMListeners = async () => {
       try {
         unsub();
       } catch (err) {
-        console.warn('Error unsubscribing listener:', err);
+        // console.warn('Error unsubscribing listener:', err);
       }
     });
   };

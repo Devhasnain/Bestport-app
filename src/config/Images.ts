@@ -11,6 +11,7 @@ const images = {
     documentIcon: require('@assets/images/document.png'),
     templateIcon: require('@assets/images/template.png'),
     googleIcon: require('@assets/images/google.png'),
+    appleIcon: require('@assets/images/apple.png'),
     angleDownImage: require('@assets/images/dropdown.png'),
     checkBoxImg: require('@assets/images/check.png'),
     wavingHand: require('@assets/images/waving-hand.png'),

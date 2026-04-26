@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "12305641445-6v8kj05i2tc1qluk3bn8dkq027ek5qim.apps.googleusercontent.com",
+          "client_id": "12305641445-d95lorijeqh4bne2ies6vtkjo6s44b20.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.bestport",
-            "certificate_hash": "328d4b8db84fa11ff7c4b261f62c13c1dcdbcea3"
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "12305641445-sp1fraij6jb5jupqc36fjv5muhhug7p9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bestport",
+            "certificate_hash": "a7fd8f8f910b268287070219e448404c4cfb33ab"
           }
         },
         {
@@ -39,10 +47,10 @@
               "client_type": 3
             },
             {
-              "client_id": "12305641445-k87od41po0fnif3mbnun9l2vsh22o6d4.apps.googleusercontent.com",
+              "client_id": "12305641445-f6bocv0odkuods5ibq07haapalp741s0.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.bestport"
+                "bundle_id": "com.projectmanagementteams.bestport"
               }
             }
           ]

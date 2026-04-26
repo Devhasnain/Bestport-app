@@ -96,7 +96,7 @@ export const createJobSchema = Yup.object().shape({
   post_code: Yup.string()
     .transform(value => (value ? value.trim() : ''))
     .test("is-valid-postcode", "Invalid postcode", (value) => {
-      return value ? postcodeValidator(value?.toUpperCase(), "UK") : false;
+      return value ? postcodeValidator(value?.toUpperCase(), "US") : false;
     })
     .required('Post code is required')
     .matches(allowedTextRegex, 'Special characters not allowed')
@@ -117,20 +117,22 @@ export const createJobSchema = Yup.object().shape({
   contact_no: Yup.string()
     .transform(value => (value ? value.trim() : ''))
     .matches(/^\d{10}$/, 'Enter a valid mobile number')
-    .test("is-valid-uk-number", "Please enter a valid number", (value) => {
-      if (!value) return false;
+    .test(
+      "is-valid-us-number",
+      "Please enter a valid United States phone number",
+      (value) => {
+        if (!value) return false;
 
-      try {
-        let nationalNumber = value;
-        if (/^\d{10}$/.test(nationalNumber) && !nationalNumber.startsWith("0")) {
-          nationalNumber = "0" + nationalNumber;
+        try {
+          if (!/^\d{10}$/.test(value)) return false;
+          const phoneNumber = parsePhoneNumberFromString(value, "US");
+          return phoneNumber ? phoneNumber.isValid() : false;
+        } catch {
+          return false;
         }
-        const phoneNumber = parsePhoneNumberFromString(nationalNumber, 'GB');
-        return phoneNumber ? phoneNumber.isValid() : false;
-      } catch {
-        return false;
       }
-    })
+    )
+
     .required('Contact number is required')
 });
 

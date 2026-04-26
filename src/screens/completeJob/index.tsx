@@ -1,30 +1,18 @@
-import { AppFlatlist, Feather, FontAwesome, Header, SearchBar, Typography, } from '@components/index';
-import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal';
+import { Button, View, AppFlatlist, Header, SearchBar, Typography, ConfirmationModal, ProductCard, } from '@components/index';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { changeStack, navigate } from '@navigation/NavigationService';
 import { getProducts, setProducts } from '@store/productsSlice';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { showToast, getErrorMessage } from '@utils/index';
+import { useGet, usePut, useModal } from '@hooks/index';
 import { useDispatch, useSelector } from 'react-redux';
-import getErrorMessage from '@utils/getErrorMessage';
 import { empMarkJobComplete } from '@store/jobSlice';
-import { showToast } from '@utils/showToast';
-import { useModal } from '@hooks/useModal';
-import { ScreenWidth } from '@rneui/base';
+import { SelectedProductProps } from '@types/index';
+import styles from '@styles/completeJob.styles';
+import { colors, fonts } from '@config/index';
 import endpoints from '@api/endpoints';
-import { usePut } from '@hooks/usePut';
-import { useGet } from '@hooks/useGet';
-import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
 
 
-type SelectedProduct = {
-  product:string;
-  quantity:number
-}
-
-
-const CompleteJob = ({route}:any) => {
+const CompleteJob = ({route}: any) => {
   const confirmModal = useModal();
   const completeSuccessModal = useModal();
   const [search, setSearch] = useState('');
@@ -34,9 +22,11 @@ const CompleteJob = ({route}:any) => {
     endpoint: endpoints.getProducts,
     autoFetch: !products?.length,
   });
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[] | []>([]);
+  const [selectedProducts, setSelectedProducts] = useState<
+    SelectedProductProps[] | []
+  >([]);
 
-  const completeJobApi = usePut(endpoints.completedJob(route?.params?.id))
+  const completeJobApi = usePut(endpoints.completedJob(route?.params?.id));
 
   const filteredProducts = useMemo(() => {
     return search?.trim()?.length
@@ -55,8 +45,8 @@ const CompleteJob = ({route}:any) => {
 
   const incrementQuantity = useCallback(
     (id: string) => {
-      setSelectedProducts((pre) =>
-        pre?.map((item) => {
+      setSelectedProducts(pre =>
+        pre?.map(item => {
           if (item?.product === id) {
             return {...item, quantity: item?.quantity + 1};
           } else return item;
@@ -68,8 +58,8 @@ const CompleteJob = ({route}:any) => {
 
   const decrementQuantity = useCallback(
     (id: string) => {
-      setSelectedProducts((pre) =>
-        pre?.map((item) => {
+      setSelectedProducts(pre =>
+        pre?.map(item => {
           if (item?.product === id) {
             if (item?.quantity > 1) {
               return {...item, quantity: item?.quantity - 1};
@@ -85,10 +75,10 @@ const CompleteJob = ({route}:any) => {
 
   const handleSelectProduct = useCallback(
     (product: any) => {
-      setSelectedProducts((pre) =>
-        pre?.find((item) => item?.product === product?._id)
-          ? pre?.filter((item) => item?.product !== product?._id)
-          : [{product:product?._id, quantity: 1}, ...pre],
+      setSelectedProducts(pre =>
+        pre?.find(item => item?.product === product?._id)
+          ? pre?.filter(item => item?.product !== product?._id)
+          : [{product: product?._id, quantity: 1}, ...pre],
       );
     },
     [selectedProducts],
@@ -99,181 +89,48 @@ const CompleteJob = ({route}:any) => {
   }, []);
 
   const renderItem = useCallback(
-    ({item}: any) => (
-      <View
-        style={{
-          width: ScreenWidth - 23,
-          borderWidth: 0.3,
-          borderColor: colors.inputplaceholder,
-          borderRadius: 12,
-          marginHorizontal: 'auto',
-          padding: 12,
-          backgroundColor: colors.white,
-          position: 'relative',
-        }}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 14,
-          }}>
-          <TouchableOpacity
-            onPress={() => productDetails(item?._id)}
-            activeOpacity={0.8}
-            style={{
-              width: '20%',
-              aspectRatio: 1,
-              borderRadius: 10,
-              overflow: 'hidden',
-              borderWidth: 0.4,
-              borderColor: colors.inputplaceholder,
-            }}>
-            <Image
-              alt=""
-              source={{uri: item?.image?.path}}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 3,
-              width: '70%',
-            }}>
-            <Typography
-              fontFamily={fonts.poppinsSemiBold}
-              fontSize={16}
-              numberOfLines={1}>
-              {item?.title}
-            </Typography>
-            <Typography
-              color={colors.primaryTextLight}
-              fontSize={13.5}
-              numberOfLines={2}
-              lineHeight={17}>
-              {item?.description}
-            </Typography>
-          </View>
-        </View>
-
-        <View
-          style={{
-            paddingTop: 12,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: isSelected(item?._id)
-              ? 'space-between'
-              : 'flex-end',
-          }}>
-          <Typography fontSize={20} fontFamily={fonts.poppinsSemiBold}>
-            ${item?.price}
-          </Typography>
-
-          {isSelected(item?._id) && (
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: 10,
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => decrementQuantity(item?._id)}
-                style={{
-                  height: 28,
-                  width: 28,
-                  borderWidth: 0.5,
-                  borderRadius: 6,
-                  borderColor: colors.inputplaceholder,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Feather
-                  name="minus"
-                  size={20}
-                  color={colors.primaryTextLight}
-                />
-              </TouchableOpacity>
-              <Typography>{isSelected(item?._id)?.quantity}</Typography>
-              <TouchableOpacity
-                onPress={() => incrementQuantity(item?._id)}
-                activeOpacity={0.8}
-                style={{
-                  height: 28,
-                  width: 28,
-                  borderWidth: 0.5,
-                  borderRadius: 6,
-                  borderColor: colors.inputplaceholder,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Feather
-                  name="plus"
-                  size={20}
-                  color={colors.primaryTextLight}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-
-        <FontAwesome
-          onPress={() => handleSelectProduct(item)}
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-          }}
-          name={isSelected(item?._id) ? 'check-square' : 'square-o'}
-          size={20}
-          color={colors.primary}
-        />
-      </View>
+    ({item,index}: any) => (
+      <ProductCard
+      item={item}
+      key={index}
+      productDetails={productDetails}
+      incrementQuantity={incrementQuantity}
+      decrementQuantity={decrementQuantity}
+      handleSelectProduct={handleSelectProduct}
+      isSelected={isSelected}
+      />
     ),
     [products, selectedProducts],
   );
 
-  const handleConfirmComplete = useCallback(async()=>{
+  const handleConfirmComplete = useCallback(async () => {
     try {
-      await completeJobApi.request({payload:{products:selectedProducts}});
+      await completeJobApi.request({payload: {products: selectedProducts}});
       confirmModal.closeModal();
       dispatch(empMarkJobComplete(route?.params?.id));
       completeSuccessModal.openModal();
     } catch (error) {
       showToast(getErrorMessage(error));
     }
-  },[selectedProducts,confirmModal]);
+  }, [selectedProducts, confirmModal]);
 
-  const closeSuccessModal = useCallback(()=>{
+  const closeSuccessModal = useCallback(() => {
     completeSuccessModal.closeModal();
-    changeStack("App");
-  },[selectedProducts,completeSuccessModal]);
+    changeStack('App');
+  }, [selectedProducts, completeSuccessModal]);
 
   useEffect(() => {
     if (getProductsApi.data) {
-      dispatch(setProducts(getProductsApi.data.data ?? []));
+      dispatch(setProducts(getProductsApi.data.data?.products ?? []));
     }
   }, [getProductsApi.data]);
 
+  console.log(products,'alll products')
+
   return (
     <>
-      <Header leftIcon />
-      <View
-        style={{
-          paddingHorizontal: 14,
-          paddingTop: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-        }}>
+      <Header leftIcon={true} />
+      <View style={styles.pickProductsContainer}>
         <Typography fontSize={20} fontFamily={fonts.poppinsMedium}>
           Products
         </Typography>
@@ -305,8 +162,6 @@ const CompleteJob = ({route}:any) => {
         <Button
           title={'Continue'}
           disabledTitleStyle={{backgroundColor: colors.btnDisabled}}
-          // loading={loading}
-          // disabled={loading}
           onPress={confirmModal.openModal}
           buttonStyle={{
             minHeight: 50,
@@ -317,22 +172,22 @@ const CompleteJob = ({route}:any) => {
       </View>
 
       <ConfirmationModal
-      loading={completeJobApi.loading}
-      isOpen={confirmModal.isOpen}
-      onCancel={confirmModal.closeModal}
-      onConfirm={handleConfirmComplete}
-      width={"90%"}
-      title='Mark Job as Completed'
-      description='Are you sure you’ve finished this job? This will notify the customer and admin that the work is complete.'
+        loading={completeJobApi.loading}
+        isOpen={confirmModal.isOpen}
+        onCancel={confirmModal.closeModal}
+        onConfirm={handleConfirmComplete}
+        width={'90%'}
+        title="Mark Job as Completed"
+        description="Are you sure you’ve finished this job? This will notify the customer and admin that the work is complete."
       />
 
-       <ConfirmationModal
-      isOpen={completeSuccessModal.isOpen}
-      onConfirm={closeSuccessModal}
-      confirmTitle='Home'
-      width={"90%"}
-      title='Job Completed Successfully'
-      description='You’ve marked this job as completed. The customer and admin have been notified. Great work!'
+      <ConfirmationModal
+        isOpen={completeSuccessModal.isOpen}
+        onConfirm={closeSuccessModal}
+        confirmTitle="Home"
+        width={'90%'}
+        title="Job Completed Successfully"
+        description="You’ve marked this job as completed. The customer and admin have been notified. Great work!"
       />
     </>
   );
