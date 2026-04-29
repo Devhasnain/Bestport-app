@@ -49,13 +49,9 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>This app requires access to the camera</string>
-	<key>NSDocumentsFolderUsageDescription</key>
-	<string>Bestport needs access to documents to select files.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>This app does not use the camera, but system components may require this permission.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Bestport needs access to your photo library to upload files.</string>
+	<string>This app does not access your photo library. The permission is required by system components.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIAppFonts</key>

@@ -1,13 +1,10 @@
-import { FontAwesome, Header, TextAccordion, Typography, } from '@components/index';
-import { View, ScrollView, RefreshControl } from 'react-native';
+import { FontAwesome, Header, TextAccordion, Typography, UserAvatar, View, ScrollView, RefreshControl } from '@components/index';
 import React, { memo, useEffect, useState } from 'react';
-import UserAvatar from '@components/UserAvatar';
+import styles from "@styles/employeProfile.styles";
 import { formatToDMY } from '@utils/DateFormat';
-import { ScreenWidth } from '@rneui/base';
+import { colors, fonts } from '@config/index';
 import endpoints from '@api/endpoints';
 import { useGet } from '@hooks/useGet';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
 
 
 const EmployeeProfile = ({route}: any) => {
@@ -36,17 +33,11 @@ const EmployeeProfile = ({route}: any) => {
             colors={[colors.primary]}
           />
         }
-        contentContainerStyle={{paddingTop: 30, gap: 25, paddingBottom:20}}>
+        contentContainerStyle={styles.contentContainerStyle}>
         {!getEmployeeProfileApi.loading && employeeProfile ? (
           <>
             <View
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 10,
-              }}>
+              style={styles.headerAvatarContainer}>
               <UserAvatar
                 image={employeeProfile?.profile_img?.path}
                 name={employeeProfile?.name}
@@ -55,13 +46,7 @@ const EmployeeProfile = ({route}: any) => {
               />
 
               <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 3,
-                }}>
+                style={styles.headerNameContainer}>
                 <Typography fontSize={20} fontFamily={fonts.poppinsSemiBold}>
                   {employeeProfile?.name}
                 </Typography>
@@ -108,22 +93,12 @@ const EmployeeProfile = ({route}: any) => {
 
             <SectionCard>
               <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
+                style={styles.ratingsContainer}>
                 <Typography fontSize={15} fontFamily={fonts.poppinsMedium}>
                   Overall rating
                 </Typography>
                 <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 5,
-                  }}>
+                  style={styles.ratingStarsWrapper}>
                   <FontAwesome
                     size={18}
                     name="star"
@@ -139,19 +114,9 @@ const EmployeeProfile = ({route}: any) => {
             {employeeProfile?.reviews?.map((item: any, index: number) => (
               <SectionCard key={index}>
                 <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
+                  style={styles.reviewCardContainer}>
                   <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 14,
-                    }}>
+                    style={styles.reviewCardAvatarContainer}>
                     <UserAvatar
                       size={40}
                       image={item?.customer?.profile_img}
@@ -162,12 +127,7 @@ const EmployeeProfile = ({route}: any) => {
                     </Typography>
                   </View>
                   <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 5,
-                  }}>
+                  style={styles.reviewCardStarsContainer}>
                   <FontAwesome
                     size={18}
                     name="star"
@@ -195,24 +155,7 @@ const EmployeeProfile = ({route}: any) => {
 
 const SectionCard = memo(({children}: any) => (
   <View
-    style={{
-      padding: 14,
-      backgroundColor: colors.white,
-      elevation: 8,
-      shadowColor: "#000",
-      shadowOffset: {
-      width: 0,
-      height: 2,
-      },
-      shadowOpacity: 0.2,
-      shadowRadius: 4.65,
-      width: ScreenWidth - 28,
-      marginHorizontal: 'auto',
-      borderRadius: 12,
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 14,
-    }}>
+    style={styles.sectionContainer}>
     {children}
   </View>
 ));

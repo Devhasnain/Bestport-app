@@ -8,5 +8,6 @@ export type User = {
     profile_img?:{
         path:string
     },
-    phone?:string
+    phone?:string;
+    is_online?: boolean,
 }

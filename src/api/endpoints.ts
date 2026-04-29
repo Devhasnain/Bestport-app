@@ -2,6 +2,7 @@ const endpoints = {
     register: "/auth/register",
     login: "/auth/login",
     googleLogin: "/auth/google-auth",
+    appleLogin: "/auth/apple-auth",
     profile: "/auth/me",
     registerDevice: "/auth/register-device",
     getFcm: "/auth/fcm",
@@ -25,7 +26,11 @@ const endpoints = {
     completedJob:(id:string)=>`/job/complete?id=${id}`,
     createJobReview:(jobId:string,employeeId:string)=>`/review/create?jobId=${jobId}&employeeId=${employeeId}`,
     createHelpRequest:"/help-request/create",
-    deleteAccount:"/auth/delete-account"
+    deleteAccount:"/auth/delete-account",
+
+    toggleOnline:"/online/update",
+    updateOnlineHeartbeat:"/online/update-heartbeat",
+
 
 };
 

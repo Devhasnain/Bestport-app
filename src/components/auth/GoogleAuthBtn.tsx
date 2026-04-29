@@ -1,7 +1,6 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image, ActivityIndicator } from 'react-native';
 import Typography from '@components/ui/Typography';
-import Toast from 'react-native-simple-toast';
 import { showToast } from '@utils/showToast';
 import { setToken } from '@store/authSlice';
 import React, { useCallback } from 'react';

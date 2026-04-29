@@ -1,17 +1,12 @@
-import { AuthLayoutContainer, Input, HaveAnAccount, Typography, } from '@components/index';
+import { AuthLayoutContainer, Button, Input, HaveAnAccount, Typography, View, TouchableOpacity, } from '@components/index';
+import { getErrorMessage, showToast, loginSchema } from '@utils/index';
 import { navigate } from '@navigation/NavigationService';
-import { View, TouchableOpacity } from 'react-native';
-import getErrorMessage from '@utils/getErrorMessage';
-import { showToast } from '@utils/showToast';
-import { loginSchema } from '@utils/schemas';
+import { colors, fonts } from '@config/index';
 import { setToken } from '@store/authSlice';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { usePost } from '@hooks/usePost';
 import endpoints from '@api/endpoints';
-import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
 import { Formik } from 'formik';
 
 import styles from './Login.style';
@@ -63,19 +58,6 @@ const Login = () => {
                 onChange={handleChange('password')}
                 error={touched?.password && errors.password}
               />
-              {/* <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
-                <Typography
-                  color={colors.authLinkText}
-                  fontSize={15}
-                  lineHeight={20}
-                  style={{
-                    textDecorationLine: 'underline',
-                    marginTop: 8,
-                    textAlign: 'right',
-                  }}>
-                  Forget password?
-                </Typography>
-              </TouchableOpacity> */}
             </View>
 
             <Button
@@ -95,13 +77,7 @@ const Login = () => {
         )}
       </Formik>
       <View
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingVertical:20
-        }}>
+        style={styles.footerContainer}>
         <HaveAnAccount onPress={redirectToSignUp} />
         <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
           <Typography

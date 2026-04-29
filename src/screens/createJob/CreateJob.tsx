@@ -1,21 +1,12 @@
-import SingleSelector from '@components/singleSelector/SingleSelector';
-import PhoneNumInput from '@components/phoneNumInput/PhoneNumInput';
-import { serviceTypes, urgencyLevel } from '@config/Constants';
-import { Header, Input, Typography, } from '@components/index';
-import DateInput from '@components/dateInput/DateInput';
+import { SingleSelector, PhoneNumInput, Button, ScrollView, View, DateInput, Header, Input, Typography, } from '@components/index';
+import { showToast, getErrorMessage, createJobSchema } from '@utils/index';
+import { serviceTypes, urgencyLevel, colors } from '@config/index';
 import { useDispatch, useSelector } from 'react-redux';
-import getErrorMessage from '@utils/getErrorMessage';
-import { useKeyboard } from '@hooks/useKeyboard';
-import { createJobSchema } from '@utils/schemas';
-import { ScrollView, View } from 'react-native';
-import { showToast } from '@utils/showToast';
+import { usePost, useKeyboard } from '@hooks/index';
 import React, { useCallback } from 'react';
 import { getUser } from '@store/authSlice';
-import { usePost } from '@hooks/usePost';
 import { addJob } from '@store/jobSlice';
 import endpoints from '@api/endpoints';
-import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
 import { Formik } from 'formik';
 
 

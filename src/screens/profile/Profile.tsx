@@ -2,13 +2,13 @@ import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Typography, Header, Feather } from '@components/index';
+import React, { memo, use, useCallback, useMemo } from 'react';
 import { getUser, setToken, setUser } from '@store/authSlice';
-import React, { memo, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { navigate } from '@navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
-import { disconnectSocket } from '@services/socket';
 import UserAvatar from '@components/UserAvatar';
+import { useAvailability } from '@hooks/index';
 import { useDelete } from '@hooks/useDelete';
 import { useModal } from '@hooks/useModal';
 import { Divider } from '@rneui/themed';
@@ -37,6 +37,7 @@ const tabs = [
 ];
 
 const Profile = ({navigation}: any) => {
+  const { setOfflineAndCleanup } = useAvailability();
   const {isOpen, toggleModal} = useModal();
   const delAccountModal = useModal();
   const user = useSelector(getUser);
@@ -52,7 +53,7 @@ const Profile = ({navigation}: any) => {
 
   const handleLogout = useCallback(async () => {
     navigate('Welcome');
-    disconnectSocket();
+    await setOfflineAndCleanup();
     dispatch(setToken(null));
     dispatch(setUser(null));
     toggleModal();
@@ -61,9 +62,9 @@ const Profile = ({navigation}: any) => {
 
   const handleDeleteAccount = async () => {
     await deleteAccountReq.request({});
+    await setOfflineAndCleanup();
     delAccountModal.closeModal();
     navigate('Welcome');
-    disconnectSocket();
     dispatch(setToken(null));
     dispatch(setUser(null));
   };

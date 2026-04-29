@@ -18,6 +18,7 @@ module.exports = {
           '@types': './src/types',
           '@api': './src/api',
           '@services': './src/services',
+          '@styles': './src/styles',
         },
       },
     ],

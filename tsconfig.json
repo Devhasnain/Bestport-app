@@ -14,7 +14,10 @@
       "@hooks/*":["hooks/*"],
       "@api/*":["api/*"],
       "@services/*":["services/*"],
-    }
+      "@styles/*":["styles/*"],
+      "@types/*":["types/*"],
+    },
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "esModuleInterop": true
 }

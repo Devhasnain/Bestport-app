@@ -56,7 +56,7 @@ const PhoneNumInput = ({label="Contact Number",value = '', onChange, error = ''}
           fontSize={15}
           fontFamily={fonts.poppinsMedium}
           color={colors.inputplaceholder}>
-          +44
+          +1
         </Typography>
         <TextInput
           inputMode="numeric"

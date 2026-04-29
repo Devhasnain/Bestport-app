@@ -1,4 +1,5 @@
 import GoogleAuthBtn from '@components/auth/GoogleAuthBtn';
+import AppleAuthBtn from '@components/auth/AppleAuthBtn';
 import { navigate } from '@navigation/NavigationService';
 import { Ionicons, Typography } from '@components/index';
 import React, { useCallback } from 'react';
@@ -78,10 +79,8 @@ const Welcome = () => {
           flex:1,
           paddingTop:20,
         }}>
+          <AppleAuthBtn />
         <GoogleAuthBtn />
-        {/* <GoogleAuthBtn /> */}
-
-
         <Button
           onPress={handleRedirect}
           containerStyle={{width: '100%'}}

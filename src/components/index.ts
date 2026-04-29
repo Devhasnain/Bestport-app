@@ -28,5 +28,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Toast from 'react-native-simple-toast';
-
-export { Octicons,AntDesign, Fontisto, FontAwesome, Ionicons,Toast, MaterialIcons }
+import ConfirmationModal from "./confirmationalModal/ConfirmationModal";
+export {Text,View, TouchableOpacity,Image, ImageBackground, Touchable, ActivityIndicator, FlatList, ScrollView, RefreshControl} from "react-native"
+export {Button,Divider} from "@rneui/themed";
+export {ScreenHeight, ScreenWidth,} from "@rneui/base";
+export {ConfirmationModal, Octicons,AntDesign, Fontisto, FontAwesome, Ionicons,Toast, MaterialIcons }
+export {ProductCard} from "./ProductCard"
+import SingleSelector from "./singleSelector/SingleSelector"
+import PhoneNumInput from  "./phoneNumInput/PhoneNumInput"
+import DateInput from  "./dateInput/DateInput"
+import UserAvatar from  "./UserAvatar"
+export {SingleSelector, PhoneNumInput, DateInput, UserAvatar}
