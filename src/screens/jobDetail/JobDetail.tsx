@@ -147,13 +147,22 @@ const JobDetail = ({ route }: any) => {
       {/* Action Buttons */}
       {/* <View style={localStyles.footer}> */}
         {jobMeta?.canCompleteJob && (
+          <View style={localStyles.footer}>
+
           <Button onPress={redirectToComplete} title={'Complete Job'} buttonStyle={styles.btnPrimary} />
+          </View>
+
         )}
         {job && jobMeta?.canEmployeeInteract && (
+          <View style={localStyles.footer}>
           <AcceptJobTicket ticket={jobTicket} />
+          </View>
         )}
         {jobMeta?.canReviewJob && (
+          <View style={localStyles.footer}>
+          
           <Button onPress={redirectToReview} title={'Submit Review'} buttonStyle={styles.btnPrimary} />
+          </View>
         )}
       {/* </View> */}
     </>
@@ -250,7 +259,7 @@ const AcceptJobTicket = memo(({ ticket }: { ticket: any }) => {
         onPress={handleRejectTicket}
         loading={rejecting}
         title="Decline Ticket"
-        buttonStyle={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: '#E74C3C' }}
+        buttonStyle={{ backgroundColor: 'transparent', borderRadius:12, borderWidth: 1, borderColor: '#E74C3C' }}
         titleStyle={{ color: '#E74C3C' }}
       />
     </View>

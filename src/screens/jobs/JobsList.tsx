@@ -1,4 +1,4 @@
-import { AppFlatlist, JobCard, Pagination, View } from '@/components/index';
+import { AppFlatlist, EmptyState, JobCard, Pagination, View } from '@/components/index';
 import React, { useCallback, useState } from 'react';
 import { JobStatus } from '@/types/index';
 import { useJobs } from '@/hooks/index';
@@ -29,6 +29,7 @@ const JobsList = ({status}:{status:JobStatus}) => {
         data={data?.data?.jobs || []}
         refreshing={isPending}
         onRefresh={refetch}
+        ListEmptyComponent={<EmptyState/>}
         renderItem={renderItems}
         ListFooterComponent={
           <>

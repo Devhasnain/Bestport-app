@@ -4,5 +4,7 @@ export * from "./queries"
 import { useAvailability } from "./useAvailability";
 import { useModal } from "./useModal";
 import { useDebounce } from "./useDebounce";
+import { useKeyboard } from "./useKeyboard";
 
-export {useModal, useAvailability,useDebounce}
+
+export {useModal, useAvailability,useDebounce, useKeyboard}

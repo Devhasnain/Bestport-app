@@ -1,4 +1,4 @@
-import { NoResultsFound, ActivityIndicator, RefreshControl, FlatList, View, } from '@/components/index';
+import { NoResultsFound, ActivityIndicator, RefreshControl, FlatList, View, EmptyState, } from '@/components/index';
 import React, { memo, useCallback, useMemo } from 'react';
 import { FlatListProps } from 'react-native';
 import colors from '@/config/Colors';
@@ -55,7 +55,7 @@ export const AppFlatlist = memo(
       if (refreshing) {
         return <View />;
       } else {
-        return <NoResultsFound title={'No results found.'} />;
+        return <EmptyState/>;
       }
     }, [refreshing]);
 

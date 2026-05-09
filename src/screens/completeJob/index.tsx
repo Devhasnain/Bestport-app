@@ -187,7 +187,7 @@ const CompleteJob = ({route}: any) => {
         paddingBottom={20}
       />
 
-      <View style={{paddingVertical: 10, paddingHorizontal: 14}}>
+      <View style={{paddingBottom: 30,backgroundColor:colors.white, paddingTop:10, paddingHorizontal: 14}}>
         <Button
           title={'Continue'}
           disabledTitleStyle={{backgroundColor: colors.btnDisabled}}

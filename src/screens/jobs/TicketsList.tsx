@@ -1,4 +1,4 @@
-import { AppFlatlist, JobCard, Pagination } from '@/components/index';
+import { AppFlatlist, EmptyState, JobCard, Pagination } from '@/components/index';
 import React, { useCallback, useState } from 'react';
 import { useJobTickets } from '@/hooks/index';
 import { useAuthStore } from '@/store/index';
@@ -30,6 +30,7 @@ const TicketsList = () => {
         refreshing={isPending}
         onRefresh={refetch}
         renderItem={renderItems}
+        ListEmptyComponent={<EmptyState />}
         ListFooterComponent={
           <>
             {!isPending && !error ? (
