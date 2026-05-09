@@ -1,13 +1,17 @@
-import { FontAwesome, Header, TextAccordion, Typography, UserAvatar, View, ScrollView, } from '@/components/index';
+import { FontAwesome, Header, TextAccordion, Typography, UserAvatar, View, ScrollView, RefreshControl } from '@/components/index';
 import { formatToDMY } from '@/utils/DateFormat';
 import { colors, fonts } from '@/config/index';
-import { useEmployee } from '@/hooks/queries';
+import { useEmployee } from '@/hooks/index';
 import { StyleSheet } from 'react-native';
 import React, { memo } from 'react';
 
 
 const EmployeeProfile = ({route}: any) => {
-  const {data: apiResponse} = useEmployee(route?.params?.id);
+  const {
+    data: apiResponse,
+    refetch,
+    isPending,
+  } = useEmployee(route?.params?.id);
   const employee = apiResponse?.data;
 
   if (!employee) return null; // Loading state handled by your hook ideally
@@ -17,6 +21,13 @@ const EmployeeProfile = ({route}: any) => {
       <Header leftIcon title="Employee Profile" />
 
       <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isPending}
+            onRefresh={refetch}
+            colors={[colors.primary]}
+          />
+        }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}>
         {/* Profile Header Section */}
@@ -52,7 +63,7 @@ const EmployeeProfile = ({route}: any) => {
                 fontSize={15}
                 fontFamily={fonts.poppinsBold}
                 style={{marginLeft: 5}}>
-                { Number(employee?.rating || 0).toFixed(1) || '0.0'}
+                {Number(employee?.rating || 0).toFixed(1) || '0.0'}
               </Typography>
               <Typography fontSize={11} color={colors.primaryTextLight}>
                 {' '}
@@ -180,6 +191,13 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     elevation: 2,
+    shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.15,
+  shadowRadius: 3.84,
   },
   sectionTitle: {
     marginHorizontal: 25,

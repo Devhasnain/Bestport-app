@@ -37,7 +37,6 @@ const BottomTabNavigator = () => {
           color={focused ? styles.activeIconColor : styles.inactiveIconColor}
           size={25}
           />,
-          // <TabIcon focused={focused} icon="home" />,
           tabBarLabel: ({focused}) => (
             <TabLabel focused={focused} label="Jobs" />
           ),

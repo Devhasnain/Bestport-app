@@ -132,11 +132,11 @@ const Profile = ({navigation}: any) => {
             redirect="EditEmail"
           />
 
-          <InputBtn
+          {/* <InputBtn
             title="Password"
             value="***********"
             redirect="EditPassword"
-          />
+          /> */}
 
           <Divider orientation="horizontal" style={styles.divider} />
 
@@ -268,8 +268,9 @@ const styles = StyleSheet.create({
 
   deleteBtn: {
     backgroundColor: colors.authLinkText,
-    padding: 10,
+    padding: 15,
     borderRadius: 12,
+      marginTop: 30,
   },
 
   deleteText: {

@@ -1,14 +1,16 @@
-import notifee, { AndroidStyle, EventType } from '@notifee/react-native';
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import notifee, { EventType } from '@notifee/react-native';
 import { navigate } from '@/navigation/NavigationService';
 import messaging from '@react-native-firebase/messaging';
 import DeviceInfo from 'react-native-device-info';
-import baseApi, { endpoints } from '@/api/index';
-import { store } from '@/store/index';
 import { isIOS } from '@rneui/base';
 
 import { API_ENDPOINTS } from '../constants';
 import axiosInstance from './axiosService';
+
+
+const FCM_TOKEN_KEY = 'FCM_TOKEN';
 
 
 /**
@@ -54,14 +56,12 @@ export const getFcmToken = async (): Promise<string | null> => {
 
       const token = await messaging().getToken();
       if (token) {
-        // console.log('FCM Token:', token);
         return token;
       } else return null
     } else {
       return null;
     }
   } catch (error) {
-    // console.error('Error getting FCM token:', error);
     return null;
   }
 };
@@ -186,7 +186,13 @@ export const initFCMListeners = async () => {
 
   const fcmToken = await getFcmToken();
   if (fcmToken) {
-    await sendFcmTokenToServer(fcmToken);
+    const savedToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
+
+    if (savedToken !== fcmToken) {
+      await sendFcmTokenToServer(fcmToken);
+
+      await AsyncStorage.setItem(FCM_TOKEN_KEY, fcmToken);
+    }
   }
 
   // Attach all listeners and store unsubscribes

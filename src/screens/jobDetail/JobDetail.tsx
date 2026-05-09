@@ -184,13 +184,28 @@ const localStyles = StyleSheet.create({
   mainContainer: { flex: 1, backgroundColor: '#F8F9FA' },
   topSection: { paddingHorizontal: 20, paddingTop: 10, marginBottom: 15 },
   timeRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
-  infoCard: { backgroundColor: '#FFF', padding: 20, marginHorizontal: 20, borderRadius: 15, elevation: 1 },
+  infoCard: { backgroundColor: '#FFF', padding: 20, marginHorizontal: 20, borderRadius: 15, elevation: 1,
+
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 4,
+   },
   assignmentCard: { 
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     backgroundColor: '#FFF', padding: 15, marginHorizontal: 20, marginTop: 15, borderRadius: 15,
     borderWidth: 1, borderColor: '#EFEFEF'
   },
-  sectionCard: { backgroundColor: '#FFF', padding: 20, marginHorizontal: 20, marginTop: 15, borderRadius: 15 },
+  sectionCard: { backgroundColor: '#FFF', padding: 20, marginHorizontal: 20, marginTop: 15, borderRadius: 15, elevation: 4,
+
+  // iOS: Shadow properties
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.15,
+  shadowRadius: 3.84,},
   sectionHeaderRow: { flexDirection: 'row', alignItems: 'center' },
   detailRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
   locationGrid: { flexDirection: 'row', marginTop: 10, padding: 10, backgroundColor: '#F9F9F9', borderRadius: 10 },

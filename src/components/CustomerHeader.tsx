@@ -41,19 +41,19 @@ const styles = StyleSheet.create({
     // iOS Shadow
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.035,
     shadowRadius: 10,
-    elevation: 4,
+    elevation: 3.5,
     borderBottomWidth: Platform.OS === 'android' ? 0 : 0.5,
     borderBottomColor: '#F0F0F0',
-    paddingHorizontal:12
+    paddingHorizontal:12,
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 10,
-    paddingTop: Platform.OS === 'ios' ? 50 : 40, // Status bar handling
+    paddingTop: Platform.OS === 'ios' ? 60 : 50, // Status bar handling
   },
   logoContainer: {
     height: 35,

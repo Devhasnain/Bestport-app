@@ -1,7 +1,5 @@
 import { initFCMListeners } from '@/services/firebase';
 import { memo, ReactNode, useEffect } from 'react';
-import { getToken } from '@/store/authSlice';
-import { useSelector } from 'react-redux';
 
 import { useAuthStore } from '../store';
 

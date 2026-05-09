@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, FlatList, ScrollView, TouchableOpacity, RefreshControl } from 'react-native'; // RefreshControl add kiya
 import { CustomerHeader, EmptyState, JobStatus, Typography, UserGreeting } from '@/components/index';
 import { navigate } from '@/navigation/NavigationService';
-import { useAnalytics, useJobs } from '@/hooks/queries';
-import { useAuthStore } from '@/store/authStore';
-import { getTimeAgo } from '@/utils/DateFormat';
+import { useAnalytics, useJobs } from '@/hooks/index';
+import { useAuthStore } from '@/store/index';
+import { colors, fonts } from '@/config/index';
 import React, { useCallback } from 'react';
-import colors from '@/config/Colors';
+import { getTimeAgo } from '@/utils/index';
 
 
 const Home = () => {
@@ -89,7 +89,9 @@ const Home = () => {
         }
       >
         <View style={styles.sectionHeader}>
-          <Typography fontSize={22} style={styles.greeting}>Overview</Typography>
+          <Typography fontSize={20} color={colors.primaryTextLight} lineHeight={22} fontFamily={fonts.poppinsSemiBold} >
+            Overview
+          </Typography>
         </View>
 
         <View style={styles.grid}>
@@ -136,8 +138,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 15,
   },
-  greeting: {fontWeight: 'bold'},
-  sectionTitle: {fontSize: 18, fontWeight: '600', color: '#444'},
+  greeting: {fontFamily: fonts.poppinsSemiBold,lineHeight:24, color: colors.primaryTextLight,},
+  sectionTitle: {lineHeight:24, fontFamily:fonts.poppinsSemiBold, fontSize: 18, color: colors.primaryTextLight},
   seeAll: {color: colors.primary, fontWeight: 'semibold'}, // Fiverr Green Color
   grid: {
     flexDirection: 'row',

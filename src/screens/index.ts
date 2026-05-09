@@ -33,8 +33,6 @@ const PrivacyPolicy = lazy(() => import('./privacyPolicy/PrivacyPolicy'));
 const Faqs = lazy(() => import('./faqs/Faqs'));
 const Notifications = lazy(() => import('./notifications/Notifications'));
 const Profile = lazy(() => import('./profile/Profile'));
-const EmployeeHome = lazy(() => import("./employee/"))
-const CustomerHome = lazy(() => import("./customer/"))
 
 
 export {
@@ -63,8 +61,6 @@ export {
   Faqs,
   Notifications,
   Profile,
-  EmployeeHome,
-  CustomerHome,
   Home,
   Jobs
 };
