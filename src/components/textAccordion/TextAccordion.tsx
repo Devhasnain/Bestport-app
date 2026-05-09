@@ -12,7 +12,7 @@ type Props = {
   charLimit: number;
 };
 
-const TextAccordion = ({
+export const TextAccordion = memo(({
   text = '',
   charLimit = 100,
   readMoreText = 'Read more',
@@ -46,6 +46,4 @@ const TextAccordion = ({
       )}
     </View>
   );
-};
-
-export default memo(TextAccordion);
+});

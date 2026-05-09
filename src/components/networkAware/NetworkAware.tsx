@@ -1,14 +1,12 @@
-import Feather from 'react-native-vector-icons/Feather';
+import { Dialog, Text, View, Feather } from '@/components/index';
 import React, { memo, useEffect, useState } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { Text, View } from 'react-native';
-import { Dialog } from '@rneui/themed';
-import colors from '@config/Colors';
+import colors from '@/config/Colors';
 
 import styles from './NetworkAware.style';
 
 
-const NetworkAware = () => {
+export const NetworkAware = memo(() => {
   const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
@@ -44,6 +42,4 @@ const NetworkAware = () => {
       )}
     </>
   );
-};
-
-export default memo(NetworkAware);
+});

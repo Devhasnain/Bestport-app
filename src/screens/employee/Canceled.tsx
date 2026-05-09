@@ -1,5 +1,5 @@
-import { JobCard, AppFlatlist } from '@components/index';
-import { getCancelledJobs } from '@store/jobSlice';
+import { JobCard, AppFlatlist } from '@/components/index';
+import { getCancelledJobs } from '@/store/jobSlice';
 import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 

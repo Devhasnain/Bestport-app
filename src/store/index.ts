@@ -4,6 +4,9 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
+
+export { useAuthStore } from './authStore';
+export { useAlertStore } from './alertStore';
 import notificationReducer from './notificationSlice';
 import productsReducer from './productsSlice';
 import authReducer from './authSlice';

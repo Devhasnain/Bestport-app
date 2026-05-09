@@ -1,6 +1,7 @@
-import baseApi from '@api/index';
-import { store } from '@store/index';
+import { store } from '@/store/index';
+import baseApi from '@/api/index';
 import { useState } from 'react';
+
 
 type RequestProps = {
   token?: string | null;

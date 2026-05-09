@@ -1,6 +1,5 @@
-import colors from '@config/Colors';
+import { colors, fonts } from '@/config/index';
 import { isIOS } from '@rneui/base';
-import fonts from '@config/Fonts';
 
 
 export default {
@@ -9,13 +8,16 @@ export default {
       backgroundColor: 'transparent',
     },
     animation: 'fade',
-    tabBarStyle: {
-      height: isIOS ? 90 : 75,
+    tabBarStyle:
+    {
+      height: isIOS ? 100 : 75,
       borderTopWidth: 0,
-      elevation: 5,
+      elevation: 15,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
+      paddingTop: isIOS ? 10 : 0,
     },
+
   },
   tabItem: {
     display: 'flex',

@@ -1,4 +1,4 @@
-import { TabBar, UserGreeting } from '@components/index';
+import { TabBar, UserGreeting } from '@/components/index';
 import React from 'react';
 
 import DynamicTab from './DynamicTab';

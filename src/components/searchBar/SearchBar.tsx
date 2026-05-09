@@ -1,8 +1,7 @@
-import Feather from 'react-native-vector-icons/Feather';
-import { View, TextInput } from 'react-native';
-import colors from '@config/Colors';
-import React from 'react';
+import colors from '@/config/Colors';
+import React, { memo } from 'react';
 
+import { View, TextInput, Feather } from '../index';
 import styles from './SearchBar.style';
 
 
@@ -12,7 +11,7 @@ type Props = {
   placeholder?: string;
 };
 
-const SearchBar = ({
+export const SearchBar = memo(({
   value = '',
   setValue = () => {},
   placeholder = 'Search',
@@ -30,6 +29,4 @@ const SearchBar = ({
       />
     </View>
   );
-};
-
-export default React.memo(SearchBar);
+});

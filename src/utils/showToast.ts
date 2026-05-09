@@ -1,6 +1,5 @@
-import { hideAlert, setAlert } from "@store/authSlice";
-import { Toast } from "@components/index";
-import { store } from "@store/index";
+import { useAlertStore } from "@/store/index";
+import { Toast } from "@/components/index";
 
 
 export const showToast = (message: string) => {
@@ -8,19 +7,19 @@ export const showToast = (message: string) => {
 };
 
 export const showAlert = (
-   type="warning",
+   type = "warning",
    title = 'Warning',
    msg = '',
 ) => {
-   store.dispatch(setAlert({ type: type, title, message: msg }));
+   useAlertStore.getState().setAlert({ type: type, title, message: msg });
    setTimeout(() => {
-      store.dispatch(hideAlert());
+      useAlertStore.getState().hideAlert(null);
    }, 2000);
 };
 
 export const showErrorAlert = (title: string, msg: string) => {
-   store.dispatch(setAlert({ type: 'error', title: title || "Error", message: msg }));
+   useAlertStore.getState().setAlert({ type: 'error', title: title || "Error", message: msg });
    setTimeout(() => {
-      store.dispatch(hideAlert());
+      useAlertStore.getState().hideAlert(null);
    }, 2000);
 }

@@ -1,48 +1,49 @@
-import ConfirmationModal from '@components/confirmationalModal/ConfirmationModal';
-import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { Typography, Header, Feather, ConfirmationModal, View, ScrollView, TouchableOpacity, Image, UserAvatar, Divider, } from '@/components/index';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Typography, Header, Feather } from '@components/index';
-import React, { memo, use, useCallback, useMemo } from 'react';
-import { getUser, setToken, setUser } from '@store/authSlice';
+import { useAvailability, useDeleteAccout } from '@/hooks/index';
+import { showErrorAlert, getErrorMessage } from '@/utils/index';
+import React, { memo, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { navigate } from '@navigation/NavigationService';
-import { useDispatch, useSelector } from 'react-redux';
-import UserAvatar from '@components/UserAvatar';
-import { useAvailability } from '@hooks/index';
-import { useDelete } from '@hooks/useDelete';
-import { useModal } from '@hooks/useModal';
-import { Divider } from '@rneui/themed';
-import endpoints from '@api/endpoints';
-import images from '@config/Images';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
+import { replace } from '@/navigation/NavigationService';
+import { images, colors, fonts } from '@/config/index';
+import { useAuthStore } from '@/store/index';
+import { useModal } from '@/hooks/useModal';
+import { StyleSheet } from 'react-native';
 
 
 const tabs = [
   {
     title: 'Privacy policy',
     label: 'PrivacyPolicy',
+
     icon: <Feather name="file-text" color={colors.primary} size={23} />,
   },
+
   {
     title: 'Faqs',
     label: 'Faqs',
+
     icon: <Feather name="message-square" color={colors.primary} size={23} />,
   },
+
   {
     title: 'Customer Support',
     label: 'CustomerSupport',
+
     icon: <Feather name="help-circle" color={colors.primary} size={23} />,
   },
 ];
 
 const Profile = ({navigation}: any) => {
-  const { setOfflineAndCleanup } = useAvailability();
+  const {setOfflineAndCleanup} = useAvailability();
+
   const {isOpen, toggleModal} = useModal();
+
   const delAccountModal = useModal();
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
-  const deleteAccountReq = useDelete(endpoints.deleteAccount);
+
+  const {user, logout} = useAuthStore();
+
+  const {mutate: deleteAccount, isPending: isDeleting} = useDeleteAccout();
 
   const userName = useMemo(() => {
     return `${user?.name[0]?.toUpperCase()}${user?.name?.slice(
@@ -52,21 +53,34 @@ const Profile = ({navigation}: any) => {
   }, [user?.name]);
 
   const handleLogout = useCallback(async () => {
-    navigate('Welcome');
-    await setOfflineAndCleanup();
-    dispatch(setToken(null));
-    dispatch(setUser(null));
-    toggleModal();
     await GoogleSignin.signOut();
+
+    setOfflineAndCleanup();
+
+    toggleModal();
+
+    logout();
+
+    replace('Welcome');
   }, []);
 
   const handleDeleteAccount = async () => {
-    await deleteAccountReq.request({});
-    await setOfflineAndCleanup();
-    delAccountModal.closeModal();
-    navigate('Welcome');
-    dispatch(setToken(null));
-    dispatch(setUser(null));
+    deleteAccount(
+      {},
+      {
+        onSuccess: () => {
+          setOfflineAndCleanup();
+
+          delAccountModal.closeModal();
+
+          replace('Welcome');
+
+          logout();
+        },
+
+        onError: error => showErrorAlert('Error', getErrorMessage(error)),
+      },
+    );
   };
 
   const handleRedirect = useCallback((screen: string) => {
@@ -76,26 +90,18 @@ const Profile = ({navigation}: any) => {
   return (
     <>
       <Header title="Profile" titleFontSize={21} />
+
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingHorizontal: 12, paddingBottom: 90}}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 15,
-            backgroundColor: colors.primary,
-            paddingVertical: 14,
-            paddingHorizontal: 16,
-            borderRadius: 12,
-          }}>
-          {/* <UserProfileImagePicker user={user} /> */}
+        contentContainerStyle={styles.scrollContent}>
+        {/* Profile Card */}
+        <View style={styles.profileCard}>
           <UserAvatar
             image={user?.profile_img?.path}
             name={user?.name}
             size={60}
           />
+
           <View>
             <Typography
               fontFamily={fonts.poppinsMedium}
@@ -104,6 +110,7 @@ const Profile = ({navigation}: any) => {
               color={colors.white}>
               {userName}
             </Typography>
+
             <Typography
               fontFamily={fonts.poppinsRegular}
               fontSize={14}
@@ -115,67 +122,56 @@ const Profile = ({navigation}: any) => {
           </View>
         </View>
 
-        <View
-          style={{
-            paddingTop: 25,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 10,
-          }}>
-          <InputBtn title="Name" value={user?.name} redirect="EditName" />
-          <InputBtn title="Email" value={user?.email} redirect="EditEmail" />
+        {/* Form Section */}
+        <View style={styles.formSection}>
+          <InputBtn title="Name" value={user?.name ?? ''} redirect="EditName" />
+
+          <InputBtn
+            title="Email"
+            value={user?.email ?? ''}
+            redirect="EditEmail"
+          />
+
           <InputBtn
             title="Password"
-            value={'***********'}
+            value="***********"
             redirect="EditPassword"
           />
 
-          <Divider orientation="horizontal" style={{marginVertical: 12}} />
-          <View style={{display: 'flex', flexDirection: 'column', gap: 20}}>
+          <Divider orientation="horizontal" style={styles.divider} />
+
+          {/* Links */}
+          <View style={styles.linksWrapper}>
             {tabs.map((item, index) => (
               <TouchableOpacity
+                key={index}
                 activeOpacity={0.8}
                 onPress={() => handleRedirect(item.label)}
-                key={index}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 12,
-                }}>
-                {item?.icon && item?.icon}
-                <Typography fontSize={15}>{item?.title}</Typography>
+                style={styles.linkItem}>
+                {item.icon}
+
+                <Typography fontSize={15}>{item.title}</Typography>
               </TouchableOpacity>
             ))}
 
+            {/* Logout */}
             <TouchableOpacity
               onPress={toggleModal}
               activeOpacity={0.8}
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 12,
-              }}>
+              style={styles.linkItem}>
               <Image source={images.logoutIcon} tintColor={colors.btnPrimary} />
+
               <Typography fontSize={15}>Logout</Typography>
             </TouchableOpacity>
 
+            {/* Delete Account */}
             <TouchableOpacity
               onPress={delAccountModal.openModal}
               activeOpacity={0.8}
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 12,
-                backgroundColor: colors.authLinkText,
-                padding: 10,
-                borderRadius: 12,
-              }}>
+              style={styles.deleteBtn}>
               <Typography
                 color={colors.white}
-                style={{textAlign: 'center', width: '100%'}}
+                style={styles.deleteText}
                 fontSize={15}>
                 Delete Account
               </Typography>
@@ -183,19 +179,23 @@ const Profile = ({navigation}: any) => {
           </View>
         </View>
       </ScrollView>
+
+      {/* Logout Modal */}
       <ConfirmationModal
         isOpen={isOpen}
         title="Are you sure, You want to logout?"
         onCancel={toggleModal}
         onConfirm={handleLogout}
       />
+
+      {/* Delete Account Modal */}
       <ConfirmationModal
         isOpen={delAccountModal.isOpen}
         title="Are you sure, You want to delete your account?"
         description="Your account and data will be permanently erased in 30 days. If you change your mind, simply log in before then to reactivate your account and cancel the deletion."
         onCancel={delAccountModal.closeModal}
         onConfirm={handleDeleteAccount}
-        loading={deleteAccountReq.loading}
+        loading={isDeleting}
       />
     </>
   );
@@ -209,30 +209,86 @@ type InputBtnProps = {
 
 const InputBtn = memo(({title, value, redirect}: InputBtnProps) => {
   const navigation = useNavigation<any>();
+
   const handleRedirect = useCallback(() => {
     navigation.navigate(redirect);
   }, [redirect]);
+
   return (
-    <View style={{display: 'flex', flexDirection: 'column', gap: 3}}>
+    <View style={styles.inputWrapper}>
       <Typography fontSize={14} color={colors.primaryTextLight}>
         {title}
       </Typography>
+
       <Typography
         fontSize={15}
-        style={{
-          backgroundColor: colors.white,
-          borderWidth: 0.5,
-          borderRadius: 6,
-          borderColor: colors.inputBorder,
-          paddingHorizontal: 12,
-          paddingVertical: 12,
-        }}
+        style={styles.inputField}
         color={colors.primaryTextLight}
         onPress={handleRedirect}>
         {value}
       </Typography>
     </View>
   );
+});
+
+const styles = StyleSheet.create({
+  scrollContent: {
+    paddingHorizontal: 12,
+    paddingBottom: 90,
+  },
+
+  profileCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 15,
+    backgroundColor: colors.primary,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+  },
+
+  formSection: {
+    paddingTop: 25,
+    gap: 10,
+  },
+
+  divider: {
+    marginVertical: 12,
+  },
+
+  linksWrapper: {
+    gap: 20,
+  },
+
+  linkItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+
+  deleteBtn: {
+    backgroundColor: colors.authLinkText,
+    padding: 10,
+    borderRadius: 12,
+  },
+
+  deleteText: {
+    textAlign: 'center',
+    width: '100%',
+  },
+
+  inputWrapper: {
+    gap: 3,
+  },
+
+  inputField: {
+    backgroundColor: colors.white,
+    borderWidth: 0.5,
+    borderRadius: 6,
+    borderColor: colors.inputBorder,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+  },
 });
 
 export default Profile;

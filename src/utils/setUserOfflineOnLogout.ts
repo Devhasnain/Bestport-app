@@ -1,4 +1,4 @@
-import { store } from '@store/index';
+import { store } from '@/store/index';
 
 import endpoints from '../api/endpoints';
 import baseApi from '../api/index';

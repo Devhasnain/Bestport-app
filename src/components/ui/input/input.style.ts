@@ -1,7 +1,7 @@
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
-import { isIOS } from '@rneui/base';
+import { fonts, colors } from '@/config/index';
 import { StyleSheet } from 'react-native';
+import { isIOS } from '@rneui/base';
+
 
 const Styles = StyleSheet.create({
   inputContainerStyle: {

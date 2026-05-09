@@ -1,8 +1,10 @@
-import React, {memo} from 'react';
-import Typography from '../Typography';
-import colors from '@config/Colors';
+import colors from '@/config/Colors';
+import React, { memo } from 'react';
 
-const InputErrorMessage = ({error = ''}) => {
+import { Typography } from '../Typography';
+
+
+export const InputErrorMessage = memo(({error = ''}:any) => {
   return (
     <Typography
       fontSize={12}
@@ -14,6 +16,4 @@ const InputErrorMessage = ({error = ''}) => {
       {error}
     </Typography>
   );
-};
-
-export default memo(InputErrorMessage);
+});

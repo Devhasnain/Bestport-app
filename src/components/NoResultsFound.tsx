@@ -1,6 +1,8 @@
-import {memo} from 'react';
-import {View, ViewStyle} from 'react-native';
-import Typography from './ui/Typography';
+import { View, ViewStyle } from 'react-native';
+import { memo } from 'react';
+
+import { Typography } from './ui/Typography';
+
 
 type Props = {
   title?: string;
@@ -9,7 +11,7 @@ type Props = {
   lineHeight?: number;
 };
 
-const NoResultsFound = ({
+export const NoResultsFound = memo(({
   title,
   additionalStyles,
   fontSize = 16,
@@ -33,6 +35,4 @@ const NoResultsFound = ({
       </Typography>
     </View>
   );
-};
-
-export default memo(NoResultsFound);
+});

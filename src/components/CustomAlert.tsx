@@ -1,35 +1,27 @@
-import { View, StyleSheet, Animated, Dimensions, Image, } from "react-native";
-import React, { memo, useEffect, useRef, useState } from "react";
-import { isAlertExists } from "@store/authSlice";
-import { useSelector } from "react-redux";
-import images from "@config/Images";
-import fonts from "@config/Fonts";
+import { View, StyleSheet, Animated, Dimensions, Image } from 'react-native';
+import React, { memo, useEffect, useRef, useState } from 'react';
+import { images, fonts } from '@/config/index';
 
-import Typography from "./ui/Typography";
+import { Typography } from './ui/Typography';
+import { useAlertStore } from '../store';
 
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 
-const alertColors:any = Object.freeze({
-  success: "#e3fae8",
-  error: "#fff1f0",
-  warning: "#faf5e3",
+const alertColors: any = Object.freeze({
+  success: '#e3fae8',
+  error: '#fff1f0',
+  warning: '#faf5e3',
 });
 
-const alertIcons:any = Object.freeze({
+const alertIcons: any = Object.freeze({
   success: images.successIcon,
   error: images.errorIcon,
   warning: images.warning,
 });
 
-const CustomAlert = () => {
-  const alert = 
-  // {
-  //   type:"success",
-  //   title:"If the model name",
-  //   message:"If the model name or If the model name or If the model name or "
-  // }
-  useSelector(isAlertExists);
+export const CustomAlert = memo(() => {
+  const alert = useAlertStore((state)=>state.alert)
   const slideAnim = useRef(new Animated.Value(-100)).current;
   const [visible, setVisible] = useState(false);
 
@@ -46,7 +38,7 @@ const CustomAlert = () => {
         toValue: -200,
         duration: 250,
         useNativeDriver: true,
-      }).start(({ finished }) => {
+      }).start(({finished}) => {
         if (finished) setVisible(false);
       });
     }
@@ -55,7 +47,7 @@ const CustomAlert = () => {
 
   if (!visible) return null;
 
-  const bgColor = alert?.type ? alertColors[alert.type] : "white";
+  const bgColor = alert?.type ? alertColors[alert.type] : 'white';
   const icon = alert?.type ? alertIcons[alert.type] : null;
 
   return (
@@ -63,9 +55,8 @@ const CustomAlert = () => {
       style={[
         styles.container,
         styles.activeAlert,
-        { backgroundColor: bgColor, transform: [{ translateY: slideAnim }] },
-      ]}
-    >
+        {backgroundColor: bgColor, transform: [{translateY: slideAnim}]},
+      ]}>
       {icon && <Image source={icon} style={styles.icon} />}
       <View style={styles.textWrapper}>
         {alert?.title && (
@@ -81,37 +72,35 @@ const CustomAlert = () => {
       </View>
     </Animated.View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: 'absolute',
     top: 50,
-    alignSelf: "center",
+    alignSelf: 'center',
     width: width * 0.9,
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 12,
     zIndex: 9999,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   activeAlert: {
     elevation: 12,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowRadius: 3,
   },
   icon: {
     height: 25,
     width: 25,
     marginRight: 10,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   textWrapper: {
     flexShrink: 1,
-    width: "90%",
+    width: '90%',
   },
 });
-
-export default memo(CustomAlert);

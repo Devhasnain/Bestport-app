@@ -1,107 +1,108 @@
-import colors from '@config/Colors';
-import {navigate, navigationRef} from '@navigation/NavigationService';
-import {getToken, setToken, setUser} from '@store/authSlice';
-import {getUserProfile} from '@utils/getUserProfile';
-import React, {
-  memo,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import {ActivityIndicator, View, InteractionManager} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { ActivityIndicator, InteractionManager, StyleSheet, View, } from 'react-native';
+import React, { memo, ReactNode, useCallback, useEffect, useRef } from 'react';
+import { navigationRef, replace } from '@/navigation/NavigationService';
 import RNBootSplash from 'react-native-bootsplash';
+import { useGetProfile } from '@/hooks/index';
+import { useAuthStore } from '@/store/index';
+import colors from '@/config/Colors';
+
 
 type Props = {
   children: ReactNode;
   navigationReady: boolean;
 };
 
-const authRoutes = ['Login', 'Register', 'Welcome'];
+const AUTH_ROUTES = ['Login', 'Register', 'Welcome'];
+const FIFTEEN_MINUTES = 15 * 60 * 1000;
 
-const AuthManager = ({children, navigationReady}: Props) => {
-  const dispatch = useDispatch();
-  const token = useSelector(getToken);
-  const navigation = navigationRef.current;
-  const currentRouteName = navigation?.getCurrentRoute()?.name ?? '';
-  const isAuthRoute = authRoutes.includes(currentRouteName);
-  const [loading, setLoading] = useState(false);
-  const timeoutRef = useRef<any>(null);
+export const AuthManager = memo(({children, navigationReady}: Props) => {
+  const {accessToken, isLoading, lastAuthenticated, setLoading} =
+    useAuthStore();
+  const {mutate: getUserProfile} = useGetProfile();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const authenticateUser = useCallback(async () => {
-    if (!token) return;
-    try {
-      setLoading(true);
-      const user = await getUserProfile();
-      if (user) {
-        navigate('App');
-      }
-    } catch (error) {
-      setLoading(false);
-      dispatch(setToken(null));
-      dispatch(setUser(null));
-      if (!isAuthRoute) {
-        navigate('Welcome');
-      }
-    } finally {
-      HideSplashScreen();
-      setLoading(false);
-    }
-  }, [token, navigationReady]);
+  const isAuthRoute = AUTH_ROUTES.includes(
+    navigationRef.current?.getCurrentRoute()?.name ?? '',
+  );
 
-  const HideSplashScreen = useCallback(() => {
+  // ─── Splash Hide ──────────────────────────────────────────────
+  const hideSplash = useCallback(() => {
     InteractionManager.runAfterInteractions(() => {
       timeoutRef.current = setTimeout(() => {
+        console.log('hidding splash screen')
         RNBootSplash.hide({fade: true});
       }, 1500);
     });
   }, []);
 
+  // ─── Cleanup ──────────────────────────────────────────────────
   useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  // ─── Auth Flow ────────────────────────────────────────────────
+  useEffect(() => {
+   
     if (!navigationReady) return;
 
     const handleAuthFlow = async () => {
-      if (token) {
-        await authenticateUser();
-      } else {
-        HideSplashScreen();
-        if (!isAuthRoute) {
-          navigate('Welcome');
-        }
+      setLoading(true);
+
+      // Token nahi hai — Welcome par bhejo
+      if (!accessToken) {
+        setLoading(false);
+        hideSplash();
+        if (!isAuthRoute) replace('Welcome');
+        return;
       }
+
+      // Pehli baar login — profile fetch karo
+      if (!lastAuthenticated) {
+        getUserProfile();
+        hideSplash();
+        return;
+      }
+
+      // 15 min se zyada hua — revalidate karo
+      const isExpired = Date.now() - lastAuthenticated > FIFTEEN_MINUTES;
+      if (isExpired) {
+        getUserProfile();
+        hideSplash();
+        return;
+      }
+
+      // Token valid hai — App mein bhejo
+      replace('App');
+      hideSplash();
+      setLoading(false);
     };
 
     handleAuthFlow();
-  }, [token, navigationReady]);
-
+ 
+  }, [accessToken, navigationReady, lastAuthenticated]);
+  
   return (
     <>
       {children}
-
-      {loading && (
-        <View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            zIndex: 999,
-          }}>
-          <ActivityIndicator
-            color={colors.white}
-            size={'large'}
-            style={{zIndex: 99}}
-          />
+      {isLoading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator color={colors.white} size="large" />
         </View>
       )}
     </>
   );
-};
+});
 
-export default memo(AuthManager);
+const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    zIndex: 999,
+  },
+});

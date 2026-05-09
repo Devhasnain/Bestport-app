@@ -1,12 +1,12 @@
 import RNRestart from 'react-native-restart';
-import {View} from 'react-native';
-import React, {useState} from 'react';
-import {Button, Dialog} from '@rneui/themed';
-import styles from './ReportErrorModel.style';
-import fonts from '@config/Fonts';
-import Typography from '@components/ui/Typography';
+import React, { memo, useState } from 'react';
+import fonts from '@/config/Fonts';
 
-const ReportErrorModel = () => {
+import { Button, Dialog, Typography, View } from '../index';
+import styles from './ReportErrorModel.style';
+
+
+export const ReportErrorModel = memo(() => {
   const [isVisible] = useState(true);
   const handleRestartApp = () => {
     RNRestart.Restart();
@@ -24,15 +24,15 @@ const ReportErrorModel = () => {
             <Typography
               fontFamily={fonts.poppinsBold}
               fontSize={20}
-              style={{textAlign: 'center',paddingBottom:8}}>
+              style={{textAlign: 'center', paddingBottom: 8}}>
               Something Went Wrong
             </Typography>
             <Typography
               fontFamily={fonts.poppinsRegular}
               fontSize={14}
               style={{textAlign: 'center'}}>
-              We’re sorry, an unexpected error occurred.
-              Please try reloading the app.
+              We’re sorry, an unexpected error occurred. Please try reloading
+              the app.
             </Typography>
             <Button
               containerStyle={{marginTop: 16}}
@@ -46,6 +46,4 @@ const ReportErrorModel = () => {
       )}
     </>
   );
-};
-
-export default ReportErrorModel;
+});

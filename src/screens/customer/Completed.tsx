@@ -1,7 +1,6 @@
-import AppFlatlist from '@components/appFlatlist/AppFlatlist';
-import { getCompletedJobs } from '@store/jobSlice';
+import { JobCard, AppFlatlist } from '@/components/index';
+import { getCompletedJobs } from '@/store/jobSlice';
 import React, { memo, useCallback } from 'react';
-import { JobCard } from '@components/index';
 import { useSelector } from 'react-redux';
 
 

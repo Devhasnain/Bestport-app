@@ -1,30 +1,30 @@
 const images = {
-    appBackground: require("@assets/images/appBg.png"),
-    appLogo: require("@assets/images/app-logo.png"),
-    appIcon: require("@assets/images/app-icon.png"),
-    appLogoLg: require("@assets/images/app-icon.png"),
+    appBackground: require("@/assets/images/appBg.png"),
+    appLogo: require("@/assets/images/app-logo.png"),
+    appIcon: require("@/assets/images/app-icon.png"),
+    appLogoLg: require("@/assets/images/app-icon.png"),
 
 
-    imageNotFound: require("@assets/images/image-not-found.png"),
-    cameraIcon: require('@assets/images/camera.png'),
-    logoutIcon: require('@assets/images/logout.png'),
-    documentIcon: require('@assets/images/document.png'),
-    templateIcon: require('@assets/images/template.png'),
-    googleIcon: require('@assets/images/google.png'),
-    appleIcon: require('@assets/images/apple.png'),
-    angleDownImage: require('@assets/images/dropdown.png'),
-    checkBoxImg: require('@assets/images/check.png'),
-    wavingHand: require('@assets/images/waving-hand.png'),
+    imageNotFound: require("@/assets/images/image-not-found.png"),
+    cameraIcon: require('@/assets/images/camera.png'),
+    logoutIcon: require('@/assets/images/logout.png'),
+    documentIcon: require('@/assets/images/document.png'),
+    templateIcon: require('@/assets/images/template.png'),
+    googleIcon: require('@/assets/images/google.png'),
+    appleIcon: require('@/assets/images/apple.png'),
+    angleDownImage: require('@/assets/images/dropdown.png'),
+    checkBoxImg: require('@/assets/images/check.png'),
+    wavingHand: require('@/assets/images/waving-hand.png'),
 
     // Tabbar Icons 
-    homeIcon: require("@assets/images/home2.png"),
-    userIcon: require("@assets/images/profile.png"),
-    notificationIcon: require("@assets/images/notification2.png"),
-    appLogoName: require("@assets/images/logo-name.png"),
+    homeIcon: require("@/assets/images/home2.png"),
+    userIcon: require("@/assets/images/profile.png"),
+    notificationIcon: require("@/assets/images/notification2.png"),
+    appLogoName: require("@/assets/images/logo-name.png"),
 
-    successIcon: require("@assets/images/success.png"),
-    errorIcon: require("@assets/images/error.png"),
-    warning: require("@assets/images/warning.png"),
+    successIcon: require("@/assets/images/success.png"),
+    errorIcon: require("@/assets/images/error.png"),
+    warning: require("@/assets/images/warning.png"),
 };
 
 export default images

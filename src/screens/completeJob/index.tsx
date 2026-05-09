@@ -1,44 +1,38 @@
-import { Button, View, AppFlatlist, Header, SearchBar, Typography, ConfirmationModal, ProductCard, } from '@components/index';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { changeStack, navigate } from '@navigation/NavigationService';
-import { getProducts, setProducts } from '@store/productsSlice';
-import { showToast, getErrorMessage } from '@utils/index';
-import { useGet, usePut, useModal } from '@hooks/index';
-import { useDispatch, useSelector } from 'react-redux';
-import { empMarkJobComplete } from '@store/jobSlice';
-import { SelectedProductProps } from '@types/index';
-import styles from '@styles/completeJob.styles';
-import { colors, fonts } from '@config/index';
-import endpoints from '@api/endpoints';
+import { Button, View, AppFlatlist, Header, SearchBar, Typography, ConfirmationModal, ProductCard, Pagination, AppBottomSheet, } from '@/components/index';
+import { showToast, getErrorMessage, showErrorAlert } from '@/utils/index';
+import { useModal, useProducts, useCompleteJob } from '@/hooks/index';
+import { navigate, replace } from '@/navigation/NavigationService';
+import React, { useCallback, useEffect, useState } from 'react';
+import { IProduct, SelectedProductProps } from '@/types/index';
+import styles from '@/styles/completeJob.styles';
+import { colors, fonts } from '@/config/index';
+
+import JobInvoice from './JobInvoice';
 
 
 const CompleteJob = ({route}: any) => {
-  const confirmModal = useModal();
-  const completeSuccessModal = useModal();
+  const [receivedAmount, setReceivedAmount] = useState('');
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const dispatch = useDispatch();
-  const products = useSelector(getProducts);
-  const getProductsApi = useGet({
-    endpoint: endpoints.getProducts,
-    autoFetch: !products?.length,
+  const {data, isPending, refetch, error} = useProducts({
+    page,
+    limit: 10,
+    search,
   });
+  const completeJobReq = useCompleteJob();
+  const confirmModal = useModal();
+  const invoiceModal = useModal();
+  const completeSuccessModal = useModal();
+  const [products, setProducts] = useState<IProduct[] | []>([]);
   const [selectedProducts, setSelectedProducts] = useState<
     SelectedProductProps[] | []
   >([]);
 
-  const completeJobApi = usePut(endpoints.completedJob(route?.params?.id));
-
-  const filteredProducts = useMemo(() => {
-    return search?.trim()?.length
-      ? products?.filter((item: any) =>
-          item?.title?.toLowerCase()?.includes(search?.toLowerCase()),
-        )
-      : products;
-  }, [search, products]);
+  // const completeJobApi = usePut(endpoints.completedJob(route?.params?.id));
 
   const isSelected = useCallback(
     (id: string) => {
-      return selectedProducts?.find(item => item?.product === id);
+      return selectedProducts?.find(item => item?.product?._id === id);
     },
     [selectedProducts],
   );
@@ -47,7 +41,7 @@ const CompleteJob = ({route}: any) => {
     (id: string) => {
       setSelectedProducts(pre =>
         pre?.map(item => {
-          if (item?.product === id) {
+          if (item?.product?._id === id) {
             return {...item, quantity: item?.quantity + 1};
           } else return item;
         }),
@@ -60,7 +54,7 @@ const CompleteJob = ({route}: any) => {
     (id: string) => {
       setSelectedProducts(pre =>
         pre?.map(item => {
-          if (item?.product === id) {
+          if (item?.product?._id === id) {
             if (item?.quantity > 1) {
               return {...item, quantity: item?.quantity - 1};
             } else {
@@ -76,9 +70,9 @@ const CompleteJob = ({route}: any) => {
   const handleSelectProduct = useCallback(
     (product: any) => {
       setSelectedProducts(pre =>
-        pre?.find(item => item?.product === product?._id)
-          ? pre?.filter(item => item?.product !== product?._id)
-          : [{product: product?._id, quantity: 1}, ...pre],
+        pre?.find(item => item?.product?._id === product?._id)
+          ? pre?.filter(item => item?.product?._id !== product?._id)
+          : [{product: product, quantity: 1}, ...pre],
       );
     },
     [selectedProducts],
@@ -89,15 +83,15 @@ const CompleteJob = ({route}: any) => {
   }, []);
 
   const renderItem = useCallback(
-    ({item,index}: any) => (
+    ({item, index}: any) => (
       <ProductCard
-      item={item}
-      key={index}
-      productDetails={productDetails}
-      incrementQuantity={incrementQuantity}
-      decrementQuantity={decrementQuantity}
-      handleSelectProduct={handleSelectProduct}
-      isSelected={isSelected}
+        item={item}
+        key={index}
+        productDetails={productDetails}
+        incrementQuantity={incrementQuantity}
+        decrementQuantity={decrementQuantity}
+        handleSelectProduct={handleSelectProduct}
+        isSelected={e => isSelected(e as string)}
       />
     ),
     [products, selectedProducts],
@@ -105,10 +99,11 @@ const CompleteJob = ({route}: any) => {
 
   const handleConfirmComplete = useCallback(async () => {
     try {
-      await completeJobApi.request({payload: {products: selectedProducts}});
+      // await completeJobApi.request({payload: {products: selectedProducts}});
       confirmModal.closeModal();
-      dispatch(empMarkJobComplete(route?.params?.id));
-      completeSuccessModal.openModal();
+      // dispatch(empMarkJobComplete(route?.params?.id));
+      showToast('Job completed');
+      // completeSuccessModal.openModal();
     } catch (error) {
       showToast(getErrorMessage(error));
     }
@@ -116,16 +111,37 @@ const CompleteJob = ({route}: any) => {
 
   const closeSuccessModal = useCallback(() => {
     completeSuccessModal.closeModal();
-    changeStack('App');
+    replace('App');
   }, [selectedProducts, completeSuccessModal]);
 
-  useEffect(() => {
-    if (getProductsApi.data) {
-      dispatch(setProducts(getProductsApi.data.data?.products ?? []));
+  const onCompleteJob = () => {
+    let amount = Number(receivedAmount);
+    if (!amount || amount > 50000) {
+      showErrorAlert(
+        'Error',
+        `Collected amout should be greater than 0 and less then or equals to 50000`,
+      );
+      return;
     }
-  }, [getProductsApi.data]);
+    const payload = {
+      products: selectedProducts,
+      receivedAmount: Number(receivedAmount),
+      ...route.params,
+    };
+    completeJobReq.mutate(payload, {
+      onSuccess: () => {
+        showToast('Job completed');
+        replace('App');
+      },
+      onError: error => showErrorAlert('Error', getErrorMessage(error)),
+    });
+  };
 
-  console.log(products,'alll products')
+  useEffect(() => {
+    if (data?.data?.products) {
+      setProducts(data?.data?.products);
+    }
+  }, [data]);
 
   return (
     <>
@@ -148,13 +164,26 @@ const CompleteJob = ({route}: any) => {
       </View>
 
       <AppFlatlist
-        refreshing={getProductsApi.loading}
-        onRefresh={getProductsApi.request}
-        data={filteredProducts}
+        refreshing={isPending}
+        onRefresh={refetch}
+        data={products}
         renderItem={renderItem}
         contentContainerStyle={{
           gap: 14,
         }}
+        ListFooterComponent={
+          <>
+            {!isPending && !error ? (
+              <Pagination
+                currentPage={page}
+                totalPages={data?.data?.pagination?.totalPages}
+                onPageChange={setPage}
+              />
+            ) : (
+              <View />
+            )}
+          </>
+        }
         paddingBottom={20}
       />
 
@@ -162,7 +191,7 @@ const CompleteJob = ({route}: any) => {
         <Button
           title={'Continue'}
           disabledTitleStyle={{backgroundColor: colors.btnDisabled}}
-          onPress={confirmModal.openModal}
+          onPress={invoiceModal.openModal}
           buttonStyle={{
             minHeight: 50,
             borderRadius: 12,
@@ -172,7 +201,7 @@ const CompleteJob = ({route}: any) => {
       </View>
 
       <ConfirmationModal
-        loading={completeJobApi.loading}
+        // loading={completeJobApi.loading}
         isOpen={confirmModal.isOpen}
         onCancel={confirmModal.closeModal}
         onConfirm={handleConfirmComplete}
@@ -189,6 +218,19 @@ const CompleteJob = ({route}: any) => {
         title="Job Completed Successfully"
         description="You’ve marked this job as completed. The customer and admin have been notified. Great work!"
       />
+
+      <AppBottomSheet
+        open={invoiceModal.isOpen}
+        onClose={invoiceModal.closeModal}
+        snapPoints={['85%']}>
+        <JobInvoice
+          selectedProducts={selectedProducts}
+          receivedAmount={receivedAmount}
+          setReceivedAmount={setReceivedAmount}
+          onCompleteJob={onCompleteJob}
+          loading={completeJobReq.isPending}
+        />
+      </AppBottomSheet>
     </>
   );
 };

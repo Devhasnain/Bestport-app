@@ -1,4 +1,4 @@
-import { JobStatus } from "../types/job";
+import { JobStatus } from "../types/job.types";
 
 
 export const dummyJobs = [

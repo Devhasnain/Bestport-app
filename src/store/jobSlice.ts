@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '@store/index';
+import { RootState } from '@/store/index';
 
-import { Job } from '../types/job';
+import { Job } from '../types/job.types';
 
 
 type InitialStateType = {

@@ -1,9 +1,9 @@
-import { getEmployeeCompletedJobs, getEmployeeInProgressJobs, setEmployeeJobs, } from '@store/jobSlice';
-import { AppFlatlist, JobCard } from '@components/index';
+import { getEmployeeCompletedJobs, getEmployeeInProgressJobs, setEmployeeJobs, } from '@/store/jobSlice';
+import { AppFlatlist, JobCard } from '@/components/index';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useCallback, useEffect } from 'react';
-import endpoints from '@api/endpoints';
-import { useGet } from '@hooks/useGet';
+import endpoints from '@/api/endpoints';
+import { useGet } from '@/hooks/useGet';
 
 
 type Props = {

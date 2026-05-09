@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { ScreenWidth } from "@rneui/base";
-import colors from "@config/Colors";
+import colors from "@/config/Colors";
 
 
 const productCardStyle = StyleSheet.create({

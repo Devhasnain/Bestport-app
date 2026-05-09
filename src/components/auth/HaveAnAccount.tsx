@@ -1,8 +1,8 @@
-import Typography from '@components/ui/Typography';
-import { View, Text } from 'react-native';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
-import React from 'react';
+import { Typography, View } from '@/components/index';
+import { colors, fonts } from '@/config/index';
+import React, { memo } from 'react';
+
+import styles from './styles';
 
 
 type Props = {
@@ -11,16 +11,9 @@ type Props = {
   onPress: () => void;
 };
 
-const HaveAnAccount = ({text, linkTitle, onPress = () => {}}: Props) => {
+export const HaveAnAccount = memo(({text, linkTitle, onPress = () => {}}: Props) => {
   return (
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 5,
-      }}>
+    <View style={styles.haveAccountContainer}>
       <Typography fontSize={15} style={{textAlign: 'center'}}>
         {text ?? "Don't have an account yet?"}
       </Typography>
@@ -34,6 +27,4 @@ const HaveAnAccount = ({text, linkTitle, onPress = () => {}}: Props) => {
       </Typography>
     </View>
   );
-};
-
-export default HaveAnAccount;
+});

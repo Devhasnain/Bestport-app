@@ -1,4 +1,7 @@
+import { IProduct } from "./Product.types";
+
+
 export type SelectedProductProps = {
-      product: string;
+  product: IProduct;
   quantity: number;
 }

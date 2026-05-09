@@ -1,39 +1,35 @@
-import { Header, Input, Toast, Typography, } from '@components/index';
-import { useDispatch, useSelector } from 'react-redux';
-import getErrorMessage from '@utils/getErrorMessage';
-import { getUser, setUser } from '@store/authSlice';
-import { editEmailSchema } from '@utils/schemas';
-import { showToast } from '@utils/showToast';
-import React, { useCallback } from 'react';
-import endpoints from '@api/endpoints';
-import { usePut } from '@hooks/usePut';
-import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
-import { View } from 'react-native';
-import fonts from '@config/Fonts';
+import { editEmailSchema, getErrorMessage, showErrorAlert, showToast } from '@/utils/index';
+import { Header, Input, Typography, View, Button } from '@/components/index';
+import { useUpdateEmail } from '@/hooks/index';
+import { colors, fonts } from '@/config/index';
+import { useAuthStore } from '@/store/index';
+import { StyleSheet } from 'react-native';
 import { Formik } from 'formik';
+import React from 'react';
 
 
 const EditEmail = () => {
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
-  const {request, loading} = usePut(endpoints.editEmail);
-  const handleOnSubmit = useCallback(async (values: any) => {
-    try {
-      await request({payload: values});
-      dispatch(setUser({...user, email: values?.email}));
-      showToast('Email updated successfully');
-    } catch (error) {
-      showToast(getErrorMessage(error));
-    }
-  }, []);
+  const {setUser, user} = useAuthStore();
+  const {mutate: updateEmail, isPending} = useUpdateEmail();
+
+  const handleOnSubmit = (values: any) => {
+    if (!user) return;
+    updateEmail(values, {
+      onSuccess: () => {
+        setUser({...user, email: values?.email});
+        showToast('Email updated successfully');
+      },
+      onError: error => showErrorAlert('Error', getErrorMessage(error)),
+    });
+  };
+
   return (
     <>
       <Header leftIcon title="Edit email" />
       <Typography
         fontFamily={fonts.poppinsRegular}
         color={colors.primaryTextLight}
-        style={{paddingTop: 8, paddingHorizontal: 14}}
+        style={styles.description}
         fontSize={15}>
         Please enter a valid and verified email address. This will be used for
         account-related notifications and password recovery. Make sure you have
@@ -41,18 +37,11 @@ const EditEmail = () => {
       </Typography>
 
       <Formik
-        initialValues={{email: user?.email}}
+        initialValues={{email: user?.email || ''}}
         validationSchema={editEmailSchema}
         onSubmit={handleOnSubmit}>
         {({handleChange, handleSubmit, values, errors, touched, dirty}) => (
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-              paddingTop: 30,
-              paddingHorizontal: 14,
-            }}>
+          <View style={styles.formContainer}>
             <Input
               placeholder="Email address"
               value={values.email}
@@ -61,18 +50,14 @@ const EditEmail = () => {
             />
 
             <Button
-              disabledStyle={{backgroundColor: colors.messageBox}}
-              disabledTitleStyle={{color: colors.white}}
-              disabled={!dirty}
-              loading={loading}
+              disabledStyle={styles.buttonDisabled}
+              disabledTitleStyle={styles.buttonDisabledTitle}
+              disabled={isPending}
+              loading={isPending}
               onPress={() => handleSubmit()}
               title={'Submit'}
-              buttonStyle={{
-                minHeight: 50,
-                borderRadius: 12,
-                backgroundColor: colors.btnPrimary,
-              }}
-              titleStyle={{fontFamily: fonts.poppinsMedium, lineHeight: 20}}
+              buttonStyle={styles.button}
+              titleStyle={styles.buttonTitle}
             />
           </View>
         )}
@@ -80,5 +65,34 @@ const EditEmail = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  description: {
+    paddingTop: 8,
+    paddingHorizontal: 14,
+  },
+  formContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    paddingTop: 30,
+    paddingHorizontal: 14,
+  },
+  button: {
+    minHeight: 50,
+    borderRadius: 12,
+    backgroundColor: colors.btnPrimary,
+  },
+  buttonTitle: {
+    fontFamily: fonts.poppinsMedium,
+    lineHeight: 20,
+  },
+  buttonDisabled: {
+    backgroundColor: colors.messageBox,
+  },
+  buttonDisabledTitle: {
+    color: colors.white,
+  },
+});
 
 export default EditEmail;

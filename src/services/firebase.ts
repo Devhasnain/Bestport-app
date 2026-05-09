@@ -1,11 +1,14 @@
 import notifee, { AndroidStyle, EventType } from '@notifee/react-native';
 import { AppState, PermissionsAndroid, Platform } from 'react-native';
+import { navigate } from '@/navigation/NavigationService';
 import messaging from '@react-native-firebase/messaging';
-import { navigate } from '@navigation/NavigationService';
 import DeviceInfo from 'react-native-device-info';
-import baseApi, { endpoints } from '@api/index';
-import { store } from '@store/index';
+import baseApi, { endpoints } from '@/api/index';
+import { store } from '@/store/index';
 import { isIOS } from '@rneui/base';
+
+import { API_ENDPOINTS } from '../constants';
+import axiosInstance from './axiosService';
 
 
 /**
@@ -78,7 +81,7 @@ export const sendFcmTokenToServer = async (token: string) => {
     const device_name = await DeviceInfo.getDeviceName();
     const ip_address = await DeviceInfo.getIpAddress();
 
-    const response = await baseApi.put(endpoints.registerDevice, {
+   await axiosInstance.put(API_ENDPOINTS.AUTH.REGISTER_DEVICE, {
       fcm_token: token,
       device_id,
       app_version,
@@ -87,12 +90,8 @@ export const sendFcmTokenToServer = async (token: string) => {
       brand,
       device_name,
       ip_address
-    }, { headers: { Authorization: `Bearer ${store.getState().auth.token}` } });
-    if (response.data?.success) {
-      // console.log('FCM token sent to server successfully');
-    } else {
-      // console.warn('FCM token sent but not acknowledged by server');
-    }
+    });
+    
   } catch (error) {
     // console.error('Failed to send FCM token to server:', error);
   }
@@ -123,7 +122,7 @@ const notifeeHandler = async (remoteMessage: any) => {
   const { body, title } = notification;
   // Request permissions (required for iOS)
   await notifee.requestPermission();
-  
+
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
@@ -136,7 +135,7 @@ const notifeeHandler = async (remoteMessage: any) => {
     android: {
       channelId,
       smallIcon: 'ic_stat_ic_notification',
-      showTimestamp:true,
+      showTimestamp: true,
     },
     ios: {
       foregroundPresentationOptions: {
@@ -183,7 +182,7 @@ export const initFCMListeners = async () => {
   }
 
   const permissionGranted = await requestUserPermission();
-  if (!permissionGranted) return () => {};
+  if (!permissionGranted) return () => { };
 
   const fcmToken = await getFcmToken();
   if (fcmToken) {

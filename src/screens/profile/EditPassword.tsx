@@ -1,10 +1,8 @@
-import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
-import { editPasswordSchema } from '@utils/schemas';
+import { Header, Input, KeyboardAvoidingView, Typography, View, } from '@/components/index';
+import { editPasswordSchema } from '@/utils/schemas';
+import { colors, fonts } from '@/config/index';
 import React, { useCallback } from 'react';
 import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
-import { View } from 'react-native';
-import fonts from '@config/Fonts';
 import { Formik } from 'formik';
 
 
@@ -65,7 +63,7 @@ const EditPassword = () => {
 
               <Button
                 disabledStyle={{backgroundColor: colors.messageBox}}
-                disabledTitleStyle={{color:colors.white}}
+                disabledTitleStyle={{color: colors.white}}
                 disabled={!dirty}
                 // loading={loading}
                 onPress={() => handleSubmit()}

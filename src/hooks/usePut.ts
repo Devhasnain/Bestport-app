@@ -1,7 +1,7 @@
+import { store } from '@/store/index';
+import baseApi from '@/api/index';
 import { useState } from 'react';
 
-import { store } from '@store/index';
-import baseApi from '@api/index';
 
 type RequestProps = {
   payload?: any;

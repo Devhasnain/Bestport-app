@@ -1,47 +1,45 @@
+import { Feather, Typography, TouchableOpacity, MaterialIcons } from '@/components/index';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Notifications from '@screens/notifications/Notifications';
-import { Feather, Typography } from '@components/index';
-import { TouchableOpacity } from 'react-native';
-import Profile from '@screens/profile/Profile';
-import EmployeeHome from '@screens/employee';
-import CustomerHome from '@screens/customer';
-import { getUser } from '@store/authSlice';
-import { useSelector } from 'react-redux';
+import { Notifications, Profile, Home, Jobs } from '@/screens/index';
+import styles from '@/assets/style';
 import React, { memo } from 'react';
-import { isIOS } from '@rneui/base';
-import styles from '@assets/style';
 
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
-  const user = useSelector(getUser);
-  const isCustomer = user?.role === 'customer';
-
   return (
     <Tab.Navigator
       screenOptions={{
-        sceneStyle: {
-          backgroundColor: 'transparent',
-        },
+        sceneStyle: styles.screenOptions.sceneStyle,
         animation: 'none',
-        tabBarStyle: {
-          height: isIOS ? 100 : 75,
-          borderTopWidth: 0,
-          elevation: 15,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          paddingTop:isIOS ? 10 : 0
-        },
+        tabBarStyle: styles.screenOptions.tabBarStyle,
       }}>
       <Tab.Screen
         name="Home"
-        component={isCustomer ? CustomerHome : EmployeeHome}
+        component={Home}
         options={{
           headerShown: false,
           tabBarIcon: ({focused}) => <TabIcon focused={focused} icon="home" />,
           tabBarLabel: ({focused}) => (
             <TabLabel focused={focused} label="Home" />
+          ),
+          tabBarButton: props => <TabItem {...props} />,
+        }}
+      />
+      <Tab.Screen
+        name="Jobs"
+        component={Jobs}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({focused}) => <MaterialIcons
+          name='work-outline'
+          color={focused ? styles.activeIconColor : styles.inactiveIconColor}
+          size={25}
+          />,
+          // <TabIcon focused={focused} icon="home" />,
+          tabBarLabel: ({focused}) => (
+            <TabLabel focused={focused} label="Jobs" />
           ),
           tabBarButton: props => <TabItem {...props} />,
         }}

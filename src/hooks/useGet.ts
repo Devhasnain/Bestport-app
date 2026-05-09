@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { store } from '@store/index';
-import baseApi from '@api/index';
+import { store } from '@/store/index';
+import baseApi from '@/api/index';
 
 
 type Props = {

@@ -1,6 +1,7 @@
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import React, {memo, ReactNode} from 'react';
-import {ViewStyle} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import React, { memo, ReactNode } from 'react';
+import { ViewStyle } from 'react-native';
+
 
 type Props = {
   children: ReactNode;
@@ -10,7 +11,7 @@ type Props = {
   extraScrollHeight?: number;
 };
 
-const KeyboardAvoidingComponent = ({
+export const KeyboardAvoidingComponent = memo(({
   children,
   contentContainerStyle,
   stickyHeaderIndices = [],
@@ -29,6 +30,4 @@ const KeyboardAvoidingComponent = ({
       {children}
     </KeyboardAwareScrollView>
   );
-};
-
-export default memo(KeyboardAvoidingComponent);
+});

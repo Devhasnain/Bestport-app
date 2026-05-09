@@ -1,32 +1,35 @@
-import { Header, Input, KeyboardAvoidingView, Typography, } from '@components/index';
-import { navigate } from '@navigation/NavigationService';
-import { setNewPasswordSchema } from '@utils/schemas';
-import getErrorMessage from '@utils/getErrorMessage';
-import { showToast } from '@utils/showToast';
-import React, { useCallback } from 'react';
-import { usePost } from '@hooks/usePost';
-import endpoints from '@api/endpoints';
-import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
-import { View } from 'react-native';
-import fonts from '@config/Fonts';
+import { Header, Input, KeyboardAvoidingView, Typography, Button, View, } from '@/components/index';
+import { getErrorMessage, showToast, showErrorAlert } from '@/utils/index';
+import { replace } from '@/navigation/NavigationService';
+import { setNewPasswordSchema } from '@/utils/schemas';
+import { useSetPassword } from '@/hooks/index';
+import { colors, fonts } from '@/config/index';
+import { useAuthStore } from '@/store/index';
 import { Formik } from 'formik';
+import React from 'react';
 
 
-const SetNewPassword = ({route}: any) => {
-  const setPasswordApi = usePost(endpoints.setNewPassword);
+const SetNewPassword = () => {
+  const {passwordResetToken, setPasswordResetToken} = useAuthStore();
+  const {mutate: setNewPassword, isPending} = useSetPassword();
 
-  const handleOnSubmit = useCallback(async (values: any) => {
-    try {
-      await setPasswordApi.request({
-        payload: {token: route?.params?.token, password: values?.password},
-      });
-      navigate('Login');
-      showToast("Password updated successfully")
-    } catch (error) {
-      showToast(getErrorMessage(error));
-    }
-  }, []);
+  const handleOnSubmit = (values: any) => {
+    if (!passwordResetToken) return;
+    setNewPassword(
+      {
+        token: passwordResetToken,
+        password: values?.password,
+      },
+      {
+        onSuccess: () => {
+          setPasswordResetToken('');
+          showToast('Password updated successfully.');
+          replace('Login');
+        },
+        onError: error => showErrorAlert('Error', getErrorMessage(error)),
+      },
+    );
+  };
 
   return (
     <>
@@ -75,8 +78,8 @@ const SetNewPassword = ({route}: any) => {
 
               <Button
                 disabledStyle={{backgroundColor: colors.messageBox}}
-                disabled={setPasswordApi.loading}
-                loading={setPasswordApi.loading}
+                disabled={isPending}
+                loading={isPending}
                 onPress={() => handleSubmit()}
                 title={'Submit'}
                 buttonStyle={{

@@ -1,23 +1,50 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "moduleResolution": "bundler", // TS 5.x preferred for React Native/Metro
+    "module": "ESNext",
+    "target": "ESNext",
+    "jsx": "react-native",
+
+    // --- Path Aliases ---
+    "baseUrl": ".", // "." rakho taake paths correctly resolve hon
     "paths": {
-      "*": ["src/*"],
-      "@components/*": ["components/*"],
-      "@screens/*": ["screens/*"],
-      "@assets/*": ["assets/*"],
-      "@utils/*": ["utils/*"],
-      "@config/*": ["config/*"],
-      "@store/*": ["store/*"],
-      "@navigation/*": ["navigation/*"],
-      "@hooks/*":["hooks/*"],
-      "@api/*":["api/*"],
-      "@services/*":["services/*"],
-      "@styles/*":["styles/*"],
-      "@types/*":["types/*"],
+      "@/components/*": ["src/components/*"],
+      "@/screens/*": ["src/screens/*"],
+      "@/assets/*": ["src/assets/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/config/*": ["src/config/*"],
+      "@/store/*": ["src/store/*"],
+      "@/navigation/*": ["src/navigation/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/api/*": ["src/api/*"],
+      "@/services/*": ["src/services/*"],
+      "@/styles/*": ["src/styles/*"],
+      "@/types/*": ["src/types/*"],
+      "@/providers/*": ["src/providers/*"],
+      "@/constants/*": ["src/constants/*"]
+
     },
+
+    // --- Interop ---
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true, // TS 5.x — .ts/.tsx imports allow karta hai
+
+    // --- Type Safety (TS 5.x recommended) ---
+    "strict": true,
+    "noUncheckedIndexedAccess": true, // array/object access pe undefined check
+    "exactOptionalPropertyTypes": false, // optional props strictly handle karo
+    "noImplicitOverride": true, // override keyword enforce karta hai
+
+    // --- Output ---
+    "noEmit": true, // Metro khud bundle karta hai
+    "isolatedModules": true, // Metro/Babel compatibility ke liye zaroori
+
+    // --- Misc ---
+    "resolveJsonModule": true,
+    "skipLibCheck": true // .d.ts errors ignore karta hai (speed up)
   },
+  "include": ["src", "index.js", "index.ts", "app.js", "app.tsx"],
+  "exclude": ["node_modules", "android", "ios", "__tests__"]
 }

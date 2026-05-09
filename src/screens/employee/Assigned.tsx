@@ -1,14 +1,13 @@
-import { getJobTickets, removeJobTicket, setEmployeeJobs } from '@store/jobSlice';
-import AppFlatlist from '@components/appFlatlist/AppFlatlist';
+import { getJobTickets, removeJobTicket, setEmployeeJobs } from '@/store/jobSlice';
+import { JobCard, Typography, AppFlatlist, View } from '@/components/index';
 import React, { memo, useCallback, useEffect } from 'react';
-import { JobCard, Typography } from '@components/index';
 import { useDispatch, useSelector } from 'react-redux';
-import { isTicketExpired } from '@utils/DateFormat';
-import { StyleSheet, View } from 'react-native';
-import { getUser } from '@store/authSlice';
-import endpoints from '@api/endpoints';
-import { useGet } from '@hooks/useGet';
-import fonts from '@config/Fonts';
+import { isTicketExpired } from '@/utils/DateFormat';
+import { getUser } from '@/store/authSlice';
+import { StyleSheet } from 'react-native';
+import endpoints from '@/api/endpoints';
+import { useGet } from '@/hooks/useGet';
+import fonts from '@/config/Fonts';
 
 
 const Assigned = () => {

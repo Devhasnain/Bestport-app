@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import fonts from '@config/Fonts';
+import fonts from '@/config/Fonts';
 
 
 const styles = StyleSheet.create({
@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingVertical: 30,
-    // paddingHorizontal: 25,
   },
   title: {
     fontFamily: fonts.poppinsBold,

@@ -1,16 +1,12 @@
+import { Typography, Image, ActivityIndicator, Button } from '@/components/index';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Image, ActivityIndicator } from 'react-native';
-import Typography from '@components/ui/Typography';
-import { showToast } from '@utils/showToast';
-import { setToken } from '@store/authSlice';
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { usePost } from '@hooks/usePost';
-import endpoints from '@api/endpoints';
-import { Button } from '@rneui/themed';
-import images from '@config/Images';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
+import { showErrorAlert, showToast } from '@/utils/showToast';
+import { images, colors, fonts } from '@/config/index';
+import { useGoogleLogin } from '@/hooks/mutations';
+import React, { memo, useCallback } from 'react';
+import { getErrorMessage } from '@/utils/index';
+
+import styles from './styles';
 
 
 GoogleSignin.configure({
@@ -25,57 +21,51 @@ type Props = {
   title?: string;
 };
 
-const GoogleAuthBtn = ({title = 'Continue with Google'}: Props) => {
-  const dispatch = useDispatch();
-  const {request, loading} = usePost(endpoints.googleLogin);
+export const GoogleAuthBtn = memo(({title = 'Continue with Google'}: Props) => {
+  const {mutate: googleLogin, isPending} = useGoogleLogin();
   const handleSignIn = useCallback(async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
 
-      if (userInfo) {
-        const res = await request({
-          payload: {
+      if (userInfo?.data?.user?.email && userInfo?.data?.user?.name) {
+        googleLogin(
+          {
             name: userInfo?.data?.user?.name,
             email: userInfo?.data?.user?.email,
-            profile_img: userInfo?.data?.user?.photo,
+            profile_img: userInfo?.data?.user?.photo || '',
           },
-        });
-        dispatch(setToken(res?.data?.token));
-        showToast('Login successfull');
+          {
+            onSuccess: () => showToast('Login successfull'),
+            onError: error => showErrorAlert('Error', getErrorMessage(error)),
+          },
+        );
       }
     } catch (error: any) {
-      showToast('Google Sign-In error');
+      showErrorAlert('Error', getErrorMessage(error));
     }
   }, []);
 
   return (
     <Button
       onPress={handleSignIn}
-      containerStyle={{width: '100%'}}
-      disabled={loading}
-      buttonStyle={{
-        gap: 20,
-        backgroundColor: colors.white,
-        borderWidth: 1.5,
-        borderColor: colors.gray,
-        borderRadius: 12,
-        paddingVertical: 12,
-        position:"relative",
-        display:"flex",
-        flexDirection:"row",
-        alignItems:"center"
-      }}>
-      <Image source={images.googleIcon} style={{height: 23, width: 23}} />
+      containerStyle={styles.authBtnContainerStyle}
+      disabled={isPending}
+      buttonStyle={styles.authButtonStyle}>
+      <Image source={images.googleIcon} style={styles.btnImage} />
       <Typography
         fontFamily={fonts.poppinsMedium}
         fontSize={15}
         color={colors.primaryTextLight}>
         {title}
       </Typography>
-      {loading && <ActivityIndicator style={{position:"absolute"}}  color={colors.primary} size={18} />}
+      {isPending && (
+        <ActivityIndicator
+          style={{position: 'absolute'}}
+          color={colors.primary}
+          size={18}
+        />
+      )}
     </Button>
   );
-};
-
-export default GoogleAuthBtn;
+});

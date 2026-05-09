@@ -1,7 +1,7 @@
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
+import { Text, TextStyle, TextProps } from 'react-native';
 import React, { memo, ReactNode } from 'react';
-import {Text, StyleSheet, TextStyle, TextProps} from 'react-native';
+import { fonts, colors } from '@/config/index';
+
 
 type Props = {
   children?:ReactNode,
@@ -13,7 +13,7 @@ type Props = {
   onPress?:()=>void
 } & TextProps
 
-const Typography = ({
+export const Typography = memo(({
   children,
   fontFamily = fonts.poppinsRegular,
   fontSize = 16,
@@ -37,5 +37,4 @@ const Typography = ({
       {children}
     </Text>
   );
-};
-export default memo(Typography);
+});

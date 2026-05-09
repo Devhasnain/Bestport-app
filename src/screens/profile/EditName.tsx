@@ -1,58 +1,47 @@
-import { Header, Input, Toast, Typography, } from '@components/index';
-import { useDispatch, useSelector } from 'react-redux';
-import getErrorMessage from '@utils/getErrorMessage';
-import { getUser, setUser } from '@store/authSlice';
-import { editNameSchema } from '@utils/schemas';
-import { showToast } from '@utils/showToast';
-import React, { useCallback } from 'react';
-import endpoints from '@api/endpoints';
-import { usePut } from '@hooks/usePut';
-import { Button } from '@rneui/themed';
-import colors from '@config/Colors';
-import { View } from 'react-native';
-import fonts from '@config/Fonts';
+import { editNameSchema, getErrorMessage, showToast, showErrorAlert, } from '@/utils/index';
+import { Header, Input, Typography, Button, View } from '@/components/index';
+import { colors, fonts } from '@/config/index';
+import { useUpdateName } from '@/hooks/index';
+import { useAuthStore } from '@/store/index';
+import { StyleSheet } from 'react-native';
 import { Formik } from 'formik';
+import React from 'react';
 
 
 const EditName = () => {
-  const user = useSelector(getUser);
-  const dispatch = useDispatch();
-  const {request, loading} = usePut(endpoints.editName);
-  const handleOnSubmit = useCallback(async (values: any) => {
-    try {
-      await request({payload: values});
-      dispatch(setUser({...user, name: values?.name}));
-     showToast("Name updated successfully");
-    } catch (error) {
-     showToast(getErrorMessage(error));
-    }
-  }, []);
+  const {setUser, user} = useAuthStore();
+  const {mutate: updateName, isPending} = useUpdateName();
+
+  const handleOnSubmit = (values: any) => {
+    if (!user) return;
+    updateName(values, {
+      onSuccess: () => {
+        setUser({...user, name: values?.name});
+        showToast('Name updated successfully');
+      },
+      onError: (error) => showErrorAlert('Error', getErrorMessage(error)),
+    });
+  };
+
   return (
     <>
       <Header leftIcon title="Edit name" />
       <Typography
         fontFamily={fonts.poppinsRegular}
         color={colors.primaryTextLight}
-        style={{paddingTop: 8, paddingHorizontal: 14}}
+        style={styles.description}
         fontSize={15}>
         Update your display name. This will be shown on your profile and used
         across the app for job-related interactions.
       </Typography>
 
       <Formik
-        initialValues={{name: user?.name}}
+        initialValues={{name: user?.name || ''}}
         enableReinitialize={true}
         validationSchema={editNameSchema}
         onSubmit={handleOnSubmit}>
         {({handleChange, handleSubmit, values, errors, touched, dirty}) => (
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-              paddingTop: 16,
-              paddingHorizontal: 14,
-            }}>
+          <View style={styles.formContainer}>
             <Input
               placeholder="Name"
               value={values.name}
@@ -61,22 +50,14 @@ const EditName = () => {
             />
 
             <Button
-              disabledStyle={{backgroundColor: colors.messageBox}}
-              disabledTitleStyle={{color: colors.white}}
-              disabled={!dirty}
-              loading={loading}
+              disabledStyle={styles.buttonDisabled}
+              disabledTitleStyle={styles.buttonDisabledTitle}
+              disabled={isPending}
+              loading={isPending}
               onPress={() => handleSubmit()}
               title={'Submit'}
-              buttonStyle={{
-                minHeight: 50,
-                borderRadius: 12,
-                backgroundColor: colors.btnPrimary,
-              }}
-              titleStyle={{
-                color: colors.white,
-                fontFamily: fonts.poppinsMedium,
-                lineHeight: 20,
-              }}
+              buttonStyle={styles.button}
+              titleStyle={styles.buttonTitle}
             />
           </View>
         )}
@@ -84,5 +65,35 @@ const EditName = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  description: {
+    paddingTop: 8,
+    paddingHorizontal: 14,
+  },
+  formContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    paddingTop: 16,
+    paddingHorizontal: 14,
+  },
+  button: {
+    minHeight: 50,
+    borderRadius: 12,
+    backgroundColor: colors.btnPrimary,
+  },
+  buttonTitle: {
+    color: colors.white,
+    fontFamily: fonts.poppinsMedium,
+    lineHeight: 20,
+  },
+  buttonDisabled: {
+    backgroundColor: colors.messageBox,
+  },
+  buttonDisabledTitle: {
+    color: colors.white,
+  },
+});
 
 export default EditName;

@@ -1,111 +1,151 @@
-import { MaterialIcons, TextAccordion, Typography } from '@components/index';
-import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import endpoints from '@api/endpoints';
-import { useGet } from '@hooks/useGet';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
+import { MaterialIcons, TextAccordion, Typography, View, ScrollView, TouchableOpacity, Image, } from '@/components/index';
+import { StyleSheet, Dimensions } from 'react-native';
+import { useProductById } from '@/hooks/index';
+import { colors, fonts } from '@/config/index';
+import React from 'react';
 
 
-const ProductDetail = ({route,navigation}:any) => {
-    const [product,setProduct] = useState<any>(null)
-    const getProductApi = useGet({endpoint:endpoints.getProductById(route?.params?.id ??""), autoFetch:route?.params?.id && !product});
+const { width } = Dimensions.get('window');
 
-    useEffect(()=>{
-        if(getProductApi.data){
-            setProduct(getProductApi.data?.data??null);
-        }
-    },[getProductApi.data]);
+const ProductDetail = ({ route, navigation }: any) => {
+  const { data } = useProductById(route.params.id);
+  const product = data?.data;
 
   return (
-    <ScrollView
-    showsVerticalScrollIndicator={false}
-    contentContainerStyle={{
-    }}
-    stickyHeaderIndices={[0]}
-    >
-       <TouchableOpacity
-       style={{
-        height:40,
-        width:40,
-        borderWidth:0.5,
-        borderColor:colors.inputplaceholder,
-        marginTop:50,
-        marginLeft:14,
-        borderRadius:100,
-        display:"flex",
-        flexDirection:"column",
-        alignItems:"center",
-        justifyContent:"center",
-        alignContent:"center",
-        position:"absolute",
-        backgroundColor:colors.white
-        
-       }}
-              onPress={() => navigation?.goBack()}
-              activeOpacity={0.8}
-       >
+    <View style={styles.mainContainer}>
+      {/* Floating Back Button */}
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation?.goBack()}
+        activeOpacity={0.9}>
         <MaterialIcons
-        style={{lineHeight:38,width:15}}
-              size={20}
-              name="arrow-back-ios"
-              color={colors.btnPrimary}
-            />
-       </TouchableOpacity>
-
-       <View
-       style={{
-        width:"100%",
-        height:400
-       }}
-       >
-        <Image
-        source={{uri:product?.image?.path}}
-        style={{
-            width:"100%",
-            height:"100%",
-        }}
-        resizeMode="cover"
+          name="arrow-back-ios"
+          size={18}
+          color={colors.btnPrimary}
+          style={{ marginLeft: 5 }} // To center the ios icon properly
         />
-       </View>
+      </TouchableOpacity>
 
-       <View
-       style={{
-        paddingHorizontal:14,
-        paddingTop:10,
-        display:"flex",
-        flexDirection:"column",
-        gap:5
-       }}
-       >
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Product Image Section */}
+        <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: product?.image?.path }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+        </View>
 
+        {/* Content Section */}
+        <View style={styles.contentCard}>
+          <View style={styles.headerRow}>
+            <Typography 
+              fontSize={24} 
+              fontFamily={fonts.poppinsSemiBold} 
+              style={styles.title}
+            >
+              {product?.title?.trim()}
+            </Typography>
+            <View style={styles.priceBadge}>
+              <Typography
+                fontSize={18}
+                fontFamily={fonts.poppinsBold}
+                style={{ color: colors.white }}>
+                ${product?.price}
+              </Typography>
+            </View>
+          </View>
 
-       <Typography
-       fontSize={22}
-       fontFamily={fonts.poppinsSemiBold}
-       >
-        {product?.title?.trim()}
-       </Typography>
+          <View style={styles.divider} />
 
-       <Typography
-       fontSize={20}
-       fontFamily={fonts.poppinsBold}
-       style={{textAlign:"right"}}
-       >
-        ${product?.price}
-       </Typography>
+          <Typography 
+            fontSize={16} 
+            fontFamily={fonts.poppinsMedium} 
+            style={{ marginBottom: 8, color: colors.primaryText }}
+          >
+            Description
+          </Typography>
+          
+          <TextAccordion 
+            charLimit={150} 
+            text={product?.description} 
+            textStyle={styles.description}
+          />
+        </View>
+      </ScrollView>
+    </View>
+  );
+};
 
-       <TextAccordion
-       charLimit={150}
-       text={product?.description}
-       />
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  backButton: {
+    height: 45,
+    width: 45,
+    borderRadius: 23,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // Shadow for iOS/Android
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  imageContainer: {
+    width: width,
+    height: 420,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  contentCard: {
+    flex: 1,
+    backgroundColor: colors.white,
+    marginTop: -30, // Image ke upar overlay effect
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingBottom: 40,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 15,
+  },
+  title: {
+    flex: 1,
+    color: '#333',
+    marginRight: 10,
+  },
+  priceBadge: {
+    backgroundColor: colors.btnPrimary,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#F0F0F0',
+    marginVertical: 20,
+  },
+  description: {
+    lineHeight: 24,
+    color: '#666',
+  }
+});
 
-       </View>
-
-
-        
-    </ScrollView>
-  )
-}
-
-export default ProductDetail
+export default ProductDetail;

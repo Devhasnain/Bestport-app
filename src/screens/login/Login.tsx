@@ -1,34 +1,28 @@
-import { AuthLayoutContainer, Button, Input, HaveAnAccount, Typography, View, TouchableOpacity, } from '@components/index';
-import { getErrorMessage, showToast, loginSchema } from '@utils/index';
-import { navigate } from '@navigation/NavigationService';
-import { colors, fonts } from '@config/index';
-import { setToken } from '@store/authSlice';
+import { AuthLayoutContainer, Button, Input, HaveAnAccount, Typography, View, TouchableOpacity, } from '@/components/index';
+import { getErrorMessage, showToast, loginSchema, showErrorAlert, } from '@/utils/index';
+import { navigate } from '@/navigation/NavigationService';
+import { colors, fonts } from '@/config/index';
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { usePost } from '@hooks/usePost';
-import endpoints from '@api/endpoints';
+import { useLogin } from '@/hooks/index';
 import { Formik } from 'formik';
 
 import styles from './Login.style';
 
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const {request, loading} = usePost(endpoints.login);
+  const {mutate: login, isPending} = useLogin();
   const initialValues = {
     email: '',
     password: '',
   };
 
   const redirectToSignUp = useCallback(() => navigate('SignUp'), []);
-  const handleSignIn = useCallback(async (values: any) => {
-    try {
-      const res = await request({payload: values});
-      dispatch(setToken(res?.data?.token));
-    } catch (error) {
-      showToast(getErrorMessage(error));
-    }
-  }, []);
+  const handleSignIn = (values: any) => {
+    login(values, {
+      onSuccess: () => showToast('Login successfull.'),
+      onError: (error: any) =>showErrorAlert('Error', getErrorMessage(error)),
+    });
+  };
 
   const redirectToForget = useCallback(() => {
     navigate('ForgetPassword');
@@ -61,23 +55,18 @@ const Login = () => {
             </View>
 
             <Button
-              disabledStyle={{backgroundColor: colors.messageBox}}
-              disabled={loading}
-              loading={loading}
               onPress={() => handleSubmit()}
+              disabledStyle={{backgroundColor: colors.messageBox}}
+              disabled={isPending}
+              loading={isPending}
               title={'Submit'}
-              buttonStyle={{
-                minHeight: 50,
-                borderRadius: 12,
-                backgroundColor: colors.btnPrimary,
-              }}
+              buttonStyle={styles.submitBtnStyle}
               titleStyle={{fontFamily: fonts.poppinsMedium, lineHeight: 20}}
             />
           </View>
         )}
       </Formik>
-      <View
-        style={styles.footerContainer}>
+      <View style={styles.footerContainer}>
         <HaveAnAccount onPress={redirectToSignUp} />
         <TouchableOpacity onPress={redirectToForget} activeOpacity={0.8}>
           <Typography

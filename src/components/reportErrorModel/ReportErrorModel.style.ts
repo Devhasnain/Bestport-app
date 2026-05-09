@@ -1,6 +1,6 @@
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
+import { colors, fonts } from '@/config/index';
 import { StyleSheet } from 'react-native';
+
 
 const styles = StyleSheet.create({
   modelContainer: {

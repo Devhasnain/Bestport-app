@@ -1,32 +1,21 @@
-import { Typography, TouchableOpacity, View, ActivityIndicator } from '@components/index';
-import { showAlert, getErrorMessage, } from '@utils/index';
-import { useAvailability } from '@hooks/useAvailability';
+import { useAvailability } from '@/hooks/useAvailability';
+import { colors, fonts } from '@/config/index';
 import React, { memo, useState } from 'react';
-import { colors, fonts } from '@config/index';
-import { getUser } from '@store/authSlice';
-import { useSelector } from 'react-redux';
+import { useAuthStore } from '@/store/index';
 
+import { Typography, TouchableOpacity, View, ActivityIndicator } from '../index';
 import styles from './UserGreeting.style';
 
 
-const UserGreeting = () => {
-  const user = useSelector(getUser);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOnline, setIsOnline] = useState(false);
-  const {setAvailable} = useAvailability(serverStatus => {
-    setIsOnline(serverStatus);
-  });
+export const UserGreeting = memo(() => {
+  const user = useAuthStore(state => state.user);
+  const [isOnline, setIsOnline] = useState(user?.is_online);
+
+  const {setAvailable, isToggling: isLoading} = useAvailability();
 
   const handleToggle = async (value: boolean) => {
-    try {
-      setIsLoading(true);
-      await setAvailable(value ? 'online' : 'offline');
-      setIsOnline(value);
-    } catch (error) {
-      showAlert(getErrorMessage(error));
-    } finally {
-      setIsLoading(false);
-    }
+    setIsOnline(value);
+    setAvailable(value);
   };
 
   return (
@@ -46,11 +35,13 @@ const UserGreeting = () => {
           activeOpacity={0.9}
           onPress={isOnline || isLoading ? () => {} : () => handleToggle(true)}
           style={[styles.btn, isOnline ? styles.btnActive : null]}>
-            {!isOnline && isLoading && <ActivityIndicator size={12} color={colors.black50} />}
+          {!isOnline && isLoading && (
+            <ActivityIndicator size={12} color={colors.black50} />
+          )}
           <Typography
             fontSize={12}
             fontFamily={fonts.poppinsMedium}
-            color={isOnline ? colors.white : colors.text}>
+            color={isOnline ? colors.white : colors.primaryText}>
             Online
           </Typography>
         </TouchableOpacity>
@@ -61,17 +52,17 @@ const UserGreeting = () => {
             !isOnline || isLoading ? () => {} : () => handleToggle(false)
           }
           style={[styles.btn, !isOnline ? styles.btnActive : null]}>
-            {isOnline && isLoading && <ActivityIndicator size={12} color={colors.black50} />}
+          {isOnline && isLoading && (
+            <ActivityIndicator size={12} color={colors.black50} />
+          )}
           <Typography
             fontSize={12}
             fontFamily={fonts.poppinsMedium}
-            color={!isOnline ? colors.white : colors.text}>
+            color={!isOnline ? colors.white : colors.primaryText}>
             Offline
           </Typography>
         </TouchableOpacity>
       </View>
     </View>
   );
-};
-
-export default memo(UserGreeting);
+});

@@ -1,12 +1,9 @@
-import { formatTo12HourTime, formatToDMY, formatToFull12HourDateTime } from '@utils/DateFormat';
-import { TouchableOpacity, Image, Text, View, ViewStyle, TextStyle, } from 'react-native';
+import { TouchableOpacity, Image, Text, View, Typography, isIOS, } from '@/components/index';
+import { formatTo12HourTime, formatToDMY, formatToFull12HourDateTime, } from '@/utils/DateFormat';
 import React, { memo, useCallback, useState } from 'react';
-import Typography from '@components/ui/Typography';
+import { images, colors, fonts } from '@/config/index';
 import DatePicker from 'react-native-date-picker';
-import images from '@config/Images';
-import colors from '@config/Colors';
-import { isIOS } from '@rneui/base';
-import fonts from '@config/Fonts';
+import { ViewStyle, TextStyle } from 'react-native';
 
 import styles from './DateInput.style';
 
@@ -20,93 +17,94 @@ type Props = {
   error?: any;
 };
 
-const DateInput = ({
-  value = '',
-  mode = 'date',
-  handleChange = () => {},
-  additionlStyle,
-  placeholder,
-  error,
-}: Props) => {
-  const [dateOpen, setDateOpen] = useState(false);
-  const [timeOpen, setTimeOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+export const DateInput = memo(
+  ({
+    value = '',
+    mode = 'date',
+    handleChange = () => {},
+    additionlStyle,
+    placeholder,
+    error,
+  }: Props) => {
+    const [dateOpen, setDateOpen] = useState(false);
+    const [timeOpen, setTimeOpen] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
+    const handleFocus = () => {
+      setIsFocused(true);
+    };
 
-  const dateOnChange = useCallback(
-    (date: any) => {
-      if (mode === 'date') {
-        handleChange({date: timeStampToISOString(date)});
-        setDateOpen(!dateOpen);
-      } else if (mode === 'time') {
-        handleChange({time: timeStampToISOString(date)});
-        setDateOpen(!dateOpen);
-      } else {
-        handleChange({date: timeStampToISOString(date)});
-        setDateOpen(!dateOpen);
-      }
-    },
-    [dateOpen, handleChange, timeOpen],
-  );
+    const dateOnChange = useCallback(
+      (date: any) => {
+        if (mode === 'date') {
+          handleChange({date: timeStampToISOString(date)});
+          setDateOpen(!dateOpen);
+        } else if (mode === 'time') {
+          handleChange({time: timeStampToISOString(date)});
+          setDateOpen(!dateOpen);
+        } else {
+          handleChange({date: timeStampToISOString(date)});
+          setDateOpen(!dateOpen);
+        }
+      },
+      [dateOpen, handleChange, timeOpen],
+    );
 
-  return (
-    <View style={[styles.parentContainer, additionlStyle]}>
-      <Typography
-      fontFamily={fonts.poppinsRegular}
-      color={colors.primaryTextLight}
-      fontSize={13.5}
-      style={{
-        fontWeight:"600",
-      }}
-      >
-        {placeholder}
-      </Typography>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => setDateOpen(!dateOpen)}
-        onFocus={handleFocus}
-        style={[
-          container(error),
-          error ? {borderColor: 'red'} : {},
-          isFocused
-            ? {borderColor: colors.activeInputBorderColor, borderWidth: 2}
-            : {},
-        ]}>
-        <DatePicker
-          open={dateOpen}
-          modal
-          mode={mode}
-          date={new Date(value ? value : new Date().toISOString())}
-          onConfirm={dateOnChange}
-          onCancel={() => {
-            setDateOpen(false);
-          }}
-        />
-
-        <Text numberOfLines={1} style={[text(value)]}>
-          {value
-            ? mode === 'date'
-              ? formatToDMY(value)
-              : mode === 'time'
-              ? formatTo12HourTime(value)
-              : mode === 'datetime'
-              ? formatToFull12HourDateTime(value)
-              : value
-            : placeholder}
-        </Text>
-        <Image source={images.angleDownImage} />
-      </TouchableOpacity>
-      {error && (
-        <Typography color={colors.authLinkText} fontSize={12} lineHeight={18}>
-          {error}
+    return (
+      <View style={[styles.parentContainer, additionlStyle]}>
+        <Typography
+          fontFamily={fonts.poppinsRegular}
+          color={colors.primaryTextLight}
+          fontSize={13.5}
+          style={{
+            fontWeight: '600',
+          }}>
+          {placeholder}
         </Typography>
-      )}
-    </View>
-  );
-};
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => setDateOpen(!dateOpen)}
+          onFocus={handleFocus}
+          style={[
+            container(error),
+            error ? {borderColor: 'red'} : {},
+            isFocused
+              ? {borderColor: colors.activeInputBorderColor, borderWidth: 2}
+              : {},
+          ]}>
+          <DatePicker
+            open={dateOpen}
+            modal
+            mode={mode}
+            date={new Date(value ? value : new Date().toISOString())}
+            onConfirm={dateOnChange}
+            onCancel={() => {
+              setDateOpen(false);
+            }}
+          />
+
+          <Text numberOfLines={1} style={[text(value)]}>
+            {value
+              ? mode === 'date'
+                ? formatToDMY(value)
+                : mode === 'time'
+                ? formatTo12HourTime(value)
+                : mode === 'datetime'
+                ? formatToFull12HourDateTime(value)
+                : value
+              : placeholder}
+          </Text>
+          <Image source={images.angleDownImage} />
+        </TouchableOpacity>
+        {error && (
+          <Typography color={colors.authLinkText} fontSize={12} lineHeight={18}>
+            {error}
+          </Typography>
+        )}
+      </View>
+    );
+  },
+);
 
 const timeStampToISOString = (timestamp: string) => {
   try {
@@ -121,7 +119,7 @@ const timeStampToISOString = (timestamp: string) => {
 const container = (error: any): ViewStyle => ({
   width: '100%',
   backgroundColor: colors.white,
-  borderWidth: isIOS ? 1: 1.5,
+  borderWidth: isIOS ? 1 : 1.5,
   borderRadius: 12,
   borderColor: error ? colors.activeInputBorderColor : colors.inputBorder,
   display: 'flex',
@@ -137,5 +135,3 @@ const text = (value: any): TextStyle => ({
   color: value ? colors.primaryText : colors.inputplaceholder,
   fontSize: 14,
 });
-
-export default memo(DateInput);

@@ -1,35 +1,28 @@
-import { Input, AuthLayoutContainer, HaveAnAccount, Button, View } from '@components/index';
-import { getErrorMessage, registerSchema, showToast } from '@utils/index';
-import { navigate } from '@navigation/NavigationService';
-import { setToken } from '@store/authSlice';
+import { Input, AuthLayoutContainer, HaveAnAccount, Button, View, } from '@/components/index';
+import { getErrorMessage, registerSchema, showErrorAlert, showToast, } from '@/utils/index';
+import { navigate } from '@/navigation/NavigationService';
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { usePost } from '@hooks/usePost';
-import endpoints from '@api/endpoints';
-import { colors } from '@config/index';
+import { useSignUp } from '@/hooks/index';
+import { colors } from '@/config/index';
 import { Formik } from 'formik';
 
 import styles from './SignUp.style';
 
 
 const SignUp = () => {
-  const dispatch = useDispatch();
-  const {request, loading} = usePost(endpoints.register);
+  const {mutate: signUp, isPending} = useSignUp();
   const initialFormValues = {
     name: '',
     email: '',
     password: '',
-    // confirmPassword: '',
   };
   const redirectToLogin = useCallback(() => navigate('Login'), []);
-  const handleSignUp = useCallback(async (values: any) => {
-    try {
-      const res = await request({payload: values});
-      dispatch(setToken(res?.data?.token));
-    } catch (error) {
-      showToast(getErrorMessage(error));
-    }
-  }, []);
+  const handleSignUp = (values: any) => {
+    signUp(values, {
+      onSuccess: () => showToast('Sign up successfull'),
+      onError: (error: any) => showErrorAlert('Error', getErrorMessage(error)),
+    });
+  };
   return (
     <AuthLayoutContainer
       title="Sign Up"
@@ -39,8 +32,7 @@ const SignUp = () => {
         validationSchema={registerSchema}
         onSubmit={handleSignUp}>
         {({handleChange, handleSubmit, values, errors, touched}) => (
-          <View
-            style={styles.inputsContainer}>
+          <View style={styles.inputsContainer}>
             <Input
               placeholder="Name"
               value={values.name}
@@ -62,8 +54,8 @@ const SignUp = () => {
             />
             <Button
               disabledStyle={{backgroundColor: colors.messageBox}}
-              disabled={loading}
-              loading={loading}
+              disabled={isPending}
+              loading={isPending}
               title={'Submit'}
               onPress={() => handleSubmit()}
               buttonStyle={styles.buttonStyle}
@@ -72,8 +64,7 @@ const SignUp = () => {
           </View>
         )}
       </Formik>
-      <View
-        style={styles.footerContainer}>
+      <View style={styles.footerContainer}>
         <HaveAnAccount
           text="Already have an account?"
           linkTitle="Login"

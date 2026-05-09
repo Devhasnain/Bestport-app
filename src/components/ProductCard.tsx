@@ -1,13 +1,21 @@
-import { Feather, FontAwesome, Image, TouchableOpacity, Typography, View } from "@components/index";
-import styles from "@styles/productCard.styles";
-import { ProductCardProps } from '@types/index';
-import { colors, fonts } from '@config/index';
+import { Feather, FontAwesome, Image, TouchableOpacity, Typography, View, } from '@/components/index';
+import styles from '@/styles/productCard.styles';
+import { ProductCardProps } from '@/types/index';
+import { colors, fonts } from '@/config/index';
 import React, { memo } from 'react';
 
 
-export const ProductCard = memo(({item,productDetails,isSelected,handleSelectProduct,decrementQuantity, incrementQuantity}:ProductCardProps) => {
-  return (
-   <View style={styles.cardContainer}>
+export const ProductCard = memo(
+  ({
+    item,
+    productDetails,
+    isSelected,
+    handleSelectProduct,
+    decrementQuantity,
+    incrementQuantity,
+  }: ProductCardProps) => {
+    return (
+      <View style={styles.cardContainer}>
         <View style={styles.cardHeaderContainer}>
           <TouchableOpacity
             onPress={() => productDetails(item?._id)}
@@ -84,5 +92,6 @@ export const ProductCard = memo(({item,productDetails,isSelected,handleSelectPro
           color={colors.primary}
         />
       </View>
-  )
-})
+    );
+  },
+);

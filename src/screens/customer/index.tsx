@@ -1,15 +1,11 @@
-import { navigate } from '@navigation/NavigationService';
+import { TabBar, Image, View, Button } from '@/components/index';
+import { navigate } from '@/navigation/NavigationService';
 import { useDispatch, useSelector } from 'react-redux';
-import { getJobs, setJobs } from '@store/jobSlice';
-import { TabBar } from '@components/index';
-import { Image, View } from 'react-native';
+import { images, colors, fonts } from '@/config/index';
+import { getJobs, setJobs } from '@/store/jobSlice';
+import endpoints from '@/api/endpoints';
 import React, { useEffect } from 'react';
-import endpoints from '@api/endpoints';
-import { useGet } from '@hooks/useGet';
-import { Button } from '@rneui/themed';
-import images from '@config/Images';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
+import { useGet } from '@/hooks/useGet';
 
 import InProgress from './InProgress';
 import Completed from './Completed';

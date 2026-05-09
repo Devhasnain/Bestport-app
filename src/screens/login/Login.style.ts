@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import colors from "@config/Colors";
+import colors from "@/config/Colors";
 
 
 const styles = StyleSheet.create({
@@ -15,13 +15,18 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingVertical: 20,
   },
-  footerContainer:{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingVertical:20
-        }
+  footerContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20
+  },
+  submitBtnStyle: {
+    minHeight: 50,
+    borderRadius: 12,
+    backgroundColor: colors.btnPrimary,
+  }
 });
 
 export default styles

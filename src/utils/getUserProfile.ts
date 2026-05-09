@@ -1,7 +1,9 @@
-import baseApi from '../api/index';
-import {setUser} from '@store/authSlice';
-import {store} from '@store/index';
+import { setUser } from '@/store/authSlice';
+import { store } from '@/store/index';
+
 import endpoints from '../api/endpoints';
+import baseApi from '../api/index';
+
 
 export const getUserProfile = async () => {
   try {

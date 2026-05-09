@@ -1,9 +1,8 @@
-import { View, ScrollView, Dimensions, TouchableOpacity, FlatList, ActivityIndicator, ViewStyle, } from 'react-native';
 import React, { memo, useCallback, useRef, useState, useMemo } from 'react';
-import Typography from '@components/ui/Typography';
-import colors from '@config/Colors';
+import { colors, fonts } from '@/config/index';
+import { ViewStyle } from 'react-native';
 
-import fonts from '../../config/Fonts';
+import { Typography, View, ScrollView, TouchableOpacity, FlatList, Dimensions, } from '../index';
 import styles from './TabBar.style';
 
 
@@ -15,7 +14,7 @@ type Props = {
   containerStyle?: ViewStyle;
 };
 
-const TabBar = ({tabs = [], containerStyle}: Props) => {
+export const TabBar = memo(({tabs = [], containerStyle}: Props) => {
   const [activeTab, setActiveTab] = useState(0);
   const scrollRef = useRef<ScrollView>(null);
   const flatListRef = useRef<FlatList>(null);
@@ -78,7 +77,7 @@ const TabBar = ({tabs = [], containerStyle}: Props) => {
     () =>
       tabs.map((tab, index) => (
         <View key={index.toString()} style={[{width, flex: 1}, containerStyle]}>
-           {tab.component}
+          {tab.component}
         </View>
       )),
     [tabs, activeTab, containerStyle],
@@ -119,6 +118,4 @@ const TabBar = ({tabs = [], containerStyle}: Props) => {
       </ScrollView>
     </>
   );
-};
-
-export default memo(TabBar);
+});

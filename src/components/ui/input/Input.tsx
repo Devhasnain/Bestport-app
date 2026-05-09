@@ -1,53 +1,15 @@
-import { Image, ImageSourcePropType, KeyboardTypeOptions, StyleProp, TextStyle, TouchableOpacity, ViewStyle, } from 'react-native';
-import React, { memo, ReactNode, useCallback, useState } from 'react';
+import { Image, ImageSourcePropType, TouchableOpacity, } from 'react-native';
+import React, { memo, useCallback, useState } from 'react';
 import Feather from 'react-native-vector-icons/Feather';
+import { InputFieldProps } from '@/types/index';
+import { colors, fonts } from '@/config/index';
 import { Input } from '@rneui/themed';
-import colors from '@config/Colors';
-import fonts from '@config/Fonts';
 
-import InputErrorMessage from './InputErrorMessage';
+import { InputErrorMessage } from './InputErrorMessage';
 import Styles from './input.style';
 
 
-interface InputFieldProps {
-  label?: string;
-  value?: string;
-  placeholder?: string;
-  keyboardType?: KeyboardTypeOptions;
-  inputType?: string;
-  placeholderTextColor?: string;
-  editable?: boolean;
-  secureTextEntry?: boolean;
-  inputContainerStyle?: StyleProp<ViewStyle>;
-  containerStyle?: StyleProp<ViewStyle>;
-  inputStyle?: StyleProp<TextStyle>;
-  inputFieldAdditionalStyle?: StyleProp<TextStyle>;
-  additionalStyle?: StyleProp<ViewStyle>;
-  inputAdditionalStyle?: StyleProp<ViewStyle>;
-  onChange?: (text: string) => void;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  pressOnLeftIcon?: () => void;
-  pressOnRightIcon?: () => void;
-  leftIconType?: 'icon' | 'image';
-  rightIconType?: 'icon' | 'image';
-  leftIcon?: any;
-  rightIcon?: any;
-  maxLength?: number;
-  error?: any;
-  numberOfLines?: number;
-  multiline?: boolean;
-  inputMode?:
-    | 'text'
-    | 'numeric'
-    | 'decimal'
-    | 'email'
-    | 'tel'
-    | 'url'
-    | undefined;
-}
-
-const InputField: React.FC<InputFieldProps> = ({
+export const InputField: React.FC<InputFieldProps> = memo(({
   label = '',
   value = '',
   placeholder = '',
@@ -183,6 +145,4 @@ const InputField: React.FC<InputFieldProps> = ({
       ErrorComponent={() => <>{error && <InputErrorMessage error={error} />}</>}
     />
   );
-};
-
-export default memo(InputField);
+});

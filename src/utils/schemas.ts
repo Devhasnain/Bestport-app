@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const allowedTextRegex = /^[a-zA-Z0-9\s.,'-]*$/;
 
 const nameSchema = Yup.string()
@@ -185,6 +185,12 @@ export const helpRequestSchema = Yup.object().shape({
     .required("Subject is required")
     .min(5, "Subject must be at least 5 characters")
     .max(150, "Subject must be at most 150 characters"),
+
+  phone: Yup.string()
+    .matches(phoneRegExp, 'Phone number is not valid')
+    .min(10, "Too short")
+    .max(15, "Too long")
+    .required('Phone number is required'),
 
   message: Yup.string()
     .trim()

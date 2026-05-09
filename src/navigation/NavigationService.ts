@@ -1,18 +1,55 @@
-import * as React from 'react';
+import { CommonActions, createNavigationContainerRef, StackActions, } from '@react-navigation/native';
+
+import { RootStackParamList } from '../types';
 
 
-export const navigationRef: any = React.createRef();
-export const navigate = (routeName: string, params?: any) => {
-  navigationRef.current?.navigate(routeName, params);
-};
+export const navigationRef =
+  createNavigationContainerRef<RootStackParamList>();
 
-export const changeStack = (stackName: any) => {
-  resetRoot(stackName);
-};
+export function navigate<T extends keyof RootStackParamList>(
+  name: T,
+  params?: RootStackParamList[T]
+) {
+  if (!navigationRef.isReady()) return;
 
-const resetRoot = (routeName: any) => {
-  navigationRef.current?.resetRoot({
+  navigationRef.dispatch(
+    CommonActions.navigate({
+      name,
+      params,
+    })
+  );
+}
+
+export function replace<T extends keyof RootStackParamList>(
+  name: T,
+  params?: RootStackParamList[T]
+) {
+  if (!navigationRef.isReady()) return;
+
+  navigationRef.dispatch(
+    StackActions.replace(name, params)
+  );
+}
+
+export function reset<T extends keyof RootStackParamList>(
+  name: T,
+  params?: RootStackParamList[T]
+) {
+  if (!navigationRef.isReady()) return;
+
+  navigationRef.reset({
     index: 0,
-    routes: [{ name: routeName }],
+    routes: [{ name, params }],
   });
-};
+}
+
+export function goBack() {
+  if (navigationRef.isReady() && navigationRef.canGoBack()) {
+    navigationRef.goBack();
+  }
+}
+
+export function getCurrentRouteName() {
+  return navigationRef.getCurrentRoute()?.name;
+}
+
