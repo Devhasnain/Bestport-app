@@ -1,8 +1,8 @@
-import { Button, View, AppFlatlist, Header, SearchBar, Typography, ConfirmationModal, ProductCard, Pagination, AppBottomSheet, } from '@/components/index';
-import { showToast, getErrorMessage, showErrorAlert } from '@/utils/index';
+import { Button, View, AppFlatlist, Header, SearchBar, Typography, ConfirmationModal, ProductCard, Pagination, } from '@/components/index';
 import { useModal, useProducts, useCompleteJob } from '@/hooks/index';
 import { navigate, replace } from '@/navigation/NavigationService';
 import React, { useCallback, useEffect, useState } from 'react';
+import { getErrorMessage, showErrorAlert } from '@/utils/index';
 import { IProduct, SelectedProductProps } from '@/types/index';
 import styles from '@/styles/completeJob.styles';
 import { colors, fonts } from '@/config/index';
@@ -19,16 +19,13 @@ const CompleteJob = ({route}: any) => {
     limit: 10,
     search,
   });
-  const completeJobReq = useCompleteJob();
-  const confirmModal = useModal();
+  const completeJobReq = useCompleteJob(route.params?.jobId);
   const invoiceModal = useModal();
   const completeSuccessModal = useModal();
   const [products, setProducts] = useState<IProduct[] | []>([]);
   const [selectedProducts, setSelectedProducts] = useState<
     SelectedProductProps[] | []
   >([]);
-
-  // const completeJobApi = usePut(endpoints.completedJob(route?.params?.id));
 
   const isSelected = useCallback(
     (id: string) => {
@@ -97,18 +94,6 @@ const CompleteJob = ({route}: any) => {
     [products, selectedProducts],
   );
 
-  const handleConfirmComplete = useCallback(async () => {
-    try {
-      // await completeJobApi.request({payload: {products: selectedProducts}});
-      confirmModal.closeModal();
-      // dispatch(empMarkJobComplete(route?.params?.id));
-      showToast('Job completed');
-      // completeSuccessModal.openModal();
-    } catch (error) {
-      showToast(getErrorMessage(error));
-    }
-  }, [selectedProducts, confirmModal]);
-
   const closeSuccessModal = useCallback(() => {
     completeSuccessModal.closeModal();
     replace('App');
@@ -130,8 +115,8 @@ const CompleteJob = ({route}: any) => {
     };
     completeJobReq.mutate(payload, {
       onSuccess: () => {
-        showToast('Job completed');
-        replace('App');
+        completeSuccessModal.openModal();
+        invoiceModal.closeModal();
       },
       onError: error => showErrorAlert('Error', getErrorMessage(error)),
     });
@@ -187,7 +172,13 @@ const CompleteJob = ({route}: any) => {
         paddingBottom={20}
       />
 
-      <View style={{paddingBottom: 30,backgroundColor:colors.white, paddingTop:10, paddingHorizontal: 14}}>
+      <View
+        style={{
+          paddingBottom: 30,
+          backgroundColor: colors.white,
+          paddingTop: 10,
+          paddingHorizontal: 14,
+        }}>
         <Button
           title={'Continue'}
           disabledTitleStyle={{backgroundColor: colors.btnDisabled}}
@@ -201,16 +192,6 @@ const CompleteJob = ({route}: any) => {
       </View>
 
       <ConfirmationModal
-        // loading={completeJobApi.loading}
-        isOpen={confirmModal.isOpen}
-        onCancel={confirmModal.closeModal}
-        onConfirm={handleConfirmComplete}
-        width={'90%'}
-        title="Mark Job as Completed"
-        description="Are you sure you’ve finished this job? This will notify the customer and admin that the work is complete."
-      />
-
-      <ConfirmationModal
         isOpen={completeSuccessModal.isOpen}
         onConfirm={closeSuccessModal}
         confirmTitle="Home"
@@ -219,18 +200,16 @@ const CompleteJob = ({route}: any) => {
         description="You’ve marked this job as completed. The customer and admin have been notified. Great work!"
       />
 
-      <AppBottomSheet
-        open={invoiceModal.isOpen}
-        onClose={invoiceModal.closeModal}
-        snapPoints={['85%']}>
+      {invoiceModal.isOpen && (
         <JobInvoice
           selectedProducts={selectedProducts}
           receivedAmount={receivedAmount}
           setReceivedAmount={setReceivedAmount}
           onCompleteJob={onCompleteJob}
           loading={completeJobReq.isPending}
+          onClose={invoiceModal.closeModal}
         />
-      </AppBottomSheet>
+      )}
     </>
   );
 };

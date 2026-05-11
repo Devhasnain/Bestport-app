@@ -28,12 +28,12 @@ export const useRejectJobTicket = (jobId: string, userId: string) => {
     })
 }
 
-export const useCompleteJob = () => {
+export const useCompleteJob = (jobId: string) => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (data: any) => jobService.completeJob(data),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEYS.JOBS_LIST({}) })
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DASHBOARD_ANALYTICS,QUERY_KEYS.JOBS_DETAIL(jobId), QUERY_KEYS.JOBS_LIST({})] })
     })
 }
 

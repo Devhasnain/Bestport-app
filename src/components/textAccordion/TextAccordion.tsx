@@ -24,7 +24,7 @@ export const TextAccordion = memo(({
   const isLongText = text.length > charLimit;
   const displayText = useMemo(
     () => (expanded || !isLongText ? text : text.slice(0, charLimit) + '...'),
-    [expanded, isLongText],
+    [expanded, isLongText, text],
   );
 
   return (

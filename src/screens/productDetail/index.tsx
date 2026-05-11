@@ -1,5 +1,5 @@
-import { MaterialIcons, TextAccordion, Typography, View, ScrollView, TouchableOpacity, Image, } from '@/components/index';
-import { StyleSheet, Dimensions } from 'react-native';
+import { MaterialIcons, TextAccordion, Typography, View, ScrollView, TouchableOpacity, Image, EmptyState, PageLoader, } from '@/components/index';
+import { StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import { useProductById } from '@/hooks/index';
 import { colors, fonts } from '@/config/index';
 import React from 'react';
@@ -8,8 +8,18 @@ import React from 'react';
 const { width } = Dimensions.get('window');
 
 const ProductDetail = ({ route, navigation }: any) => {
-  const { data } = useProductById(route.params.id);
+  const { data, isPending, error } = useProductById(route.params.id);
   const product = data?.data;
+
+  if (isPending) {
+    return (
+      <PageLoader/>
+    );
+  }
+
+  if(error && data) {
+    return <EmptyState />;
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -32,7 +42,7 @@ const ProductDetail = ({ route, navigation }: any) => {
           <Image
             source={{ uri: product?.image?.path }}
             style={styles.image}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         </View>
 

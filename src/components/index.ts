@@ -43,6 +43,7 @@ export {Pagination} from "./Pagination"
 export {JobStatus} from "./JobStatus"
 export {AppBottomSheet} from "./AppBottomSheet"
 export {EmptyState} from "./EmptyState"
+export {PageLoader} from "./PageLoader"
 export {
     Text, View, TouchableOpacity, Image, ImageBackground, Touchable, ActivityIndicator, FlatList, ScrollView, RefreshControl, TextInput,
     Dimensions,

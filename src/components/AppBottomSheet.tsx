@@ -9,6 +9,7 @@ type Props = {
   onOpen?: () => void;
   children: ReactNode;
   snapPoints?: string[];
+  contentContainerStyle?: object;
 };
 
 export type AppBottomSheetRef = {
@@ -27,6 +28,7 @@ export const AppBottomSheet = forwardRef<
       onOpen,
       children,
       snapPoints = ['40%'],
+      contentContainerStyle = {},
     },
     ref,
   ) => {
@@ -65,6 +67,7 @@ export const AppBottomSheet = forwardRef<
 
     return (
       <BottomSheetModal
+      index={0}
         ref={bottomSheetRef}
         snapPoints={memoizedSnapPoints}
         enablePanDownToClose
@@ -78,7 +81,7 @@ export const AppBottomSheet = forwardRef<
           />
         )}>
         <BottomSheetView
-          style={styles.contentContainer}>
+          style={[styles.contentContainer, contentContainerStyle]}>
           {children}
         </BottomSheetView>
       </BottomSheetModal>
@@ -88,7 +91,7 @@ export const AppBottomSheet = forwardRef<
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
+    // flex: 1,
     padding: 20,
   },
 });

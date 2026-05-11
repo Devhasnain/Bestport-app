@@ -1,4 +1,4 @@
-import { FontAwesome, Header, TextAccordion, Typography, UserAvatar, View, ScrollView, RefreshControl } from '@/components/index';
+import { FontAwesome, Header, TextAccordion, Typography, UserAvatar, View, ScrollView, RefreshControl, PageLoader, EmptyState } from '@/components/index';
 import { formatToDMY } from '@/utils/DateFormat';
 import { colors, fonts } from '@/config/index';
 import { useEmployee } from '@/hooks/index';
@@ -11,10 +11,15 @@ const EmployeeProfile = ({route}: any) => {
     data: apiResponse,
     refetch,
     isPending,
+    error
   } = useEmployee(route?.params?.id);
   const employee = apiResponse?.data;
 
-  if (!employee) return null; // Loading state handled by your hook ideally
+  if(isPending) {
+    return <PageLoader/>
+  }
+
+  if (!error) return  <EmptyState/>;
 
   return (
     <>

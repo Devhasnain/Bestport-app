@@ -14,6 +14,7 @@ type Props = {
   style?: ViewStyle;
   children?: ReactNode;
   titleFontSize?: number;
+  onBackPress?: () => void;
 };
 
 export const Header = memo(({
@@ -22,6 +23,7 @@ export const Header = memo(({
   leftIcon = false,
   children,
   titleFontSize = 18,
+  onBackPress,
 }: Props) => {
   const navigation = useNavigation();
   return (
@@ -40,7 +42,7 @@ export const Header = memo(({
           {leftIcon && (
             <MaterialIcons
               size={20}
-              onPress={() => navigation.goBack()}
+              onPress={onBackPress || (() => navigation.goBack())}
               name="arrow-back-ios"
               color={colors.btnPrimary}
             />

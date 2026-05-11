@@ -1,45 +1,62 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, ActivityIndicator, } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, ActivityIndicator, ScrollView, } from 'react-native';
+import { Header, ScreenHeight, Typography } from '@/components/index';
 import { SelectedProductProps } from '@/types/completeJob.types';
 import colors from '@/config/Colors';
 import React from 'react';
 
 
-const JobInvoice = ({loading, selectedProducts, receivedAmount, setReceivedAmount, onCompleteJob }:{
-    selectedProducts:SelectedProductProps[],
-    receivedAmount:string,
-    setReceivedAmount:(e:string)=>void;
-    onCompleteJob:()=>void;
-    loading:boolean
+const JobInvoice = ({
+  loading,
+  selectedProducts,
+  receivedAmount,
+  setReceivedAmount,
+  onCompleteJob,
+  onClose,
+}: {
+  selectedProducts: SelectedProductProps[];
+  receivedAmount: string;
+  setReceivedAmount: (e: string) => void;
+  onCompleteJob: () => void;
+  loading: boolean;
+  onClose: () => void;
 }) => {
-
   // Total calculation based on product prices and quantities
   const calculateTotal = () => {
-    return selectedProducts.reduce((sum, item) => sum + (item?.product?.price * (item.quantity || 1)), 0);
+    return selectedProducts.reduce(
+      (sum, item) => sum + item?.product?.price * (item.quantity || 1),
+      0,
+    );
   };
 
-  const renderProductItem = ({item}:{item:SelectedProductProps}) => (
+  const renderProductItem = ({item}: {item: SelectedProductProps}) => (
     <View style={styles.productRow}>
       <View style={styles.productInfo}>
         <Text style={styles.productTitle}>{item?.product?.title}</Text>
-        <Text style={styles.productDetails}>Qty: {item?.quantity || 1} x USD. {item?.product?.price || 0}</Text>
+        <Text style={styles.productDetails}>
+          Qty: {item?.quantity || 1} x USD. {item?.product?.price || 0}
+        </Text>
       </View>
-      <Text style={styles.productTotal}>USD. {item?.product?.price * (item?.quantity || 1)}</Text>
+      <Text style={styles.productTotal}>
+        USD. {item?.product?.price * (item?.quantity || 1)}
+      </Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Job Invoice</Text>
+      <Header
+        leftIcon={true}
+        title="Job Invoice"
+        onBackPress={onClose || null}
+      />
 
-       {/* Input for Amount Received */}
+      <View style={{paddingHorizontal: 12, flex: 1}}>
+        {/* Input for Amount Received */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Amount Collected from Customer
-            <Text
-            style={{color:"red"}}
-            >
-            *
-            </Text>
-            </Text>
+          <Text style={styles.label}>
+            Amount Collected from Customer
+            <Text style={{color: 'red'}}>*</Text>
+          </Text>
           <TextInput
             style={styles.amountInput}
             placeholder="Enter Amount"
@@ -48,43 +65,55 @@ const JobInvoice = ({loading, selectedProducts, receivedAmount, setReceivedAmoun
             onChangeText={setReceivedAmount}
           />
         </View>
-      
-      {/* Products List */}
-      <FlatList
-        data={selectedProducts}
-        keyExtractor={(_,i) => i?.toString()}
-        renderItem={renderProductItem}
-        scrollEnabled={false} // Bottom sheet ke andar agar scroll issue ho
-        contentContainerStyle={styles.listContent}
-        ListFooterComponent={() => (
-          <View style={styles.divider} />
-        )}
-      />
 
-      {/* Totals Section */}
+        {/* Products List */}
+        <View style={{flex: 1, maxHeight: ScreenHeight - 350}}>
+          <FlatList
+            data={selectedProducts}
+            keyExtractor={(_: any, i: number) => i.toString()}
+            renderItem={renderProductItem}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContent}
+            ListEmptyComponent={() => (
+              <Typography style={{textAlign: 'center', marginTop: 20}}>
+                No products selected.
+              </Typography>
+            )}
+          />
+        </View>
+
+        {/* Totals Section */}
         <View style={styles.row}>
           <Text style={styles.totalLabel}>Total Material Cost:</Text>
           <Text style={styles.totalValue}>USD. {calculateTotal()}</Text>
         </View>
 
-      {/* Complete Button */}
-      <TouchableOpacity 
-      activeOpacity={0.8}
-        style={styles.completeButton} 
-        onPress={loading ? ()=>{}:onCompleteJob}
-        disabled={loading}
-      >
-        {loading && <ActivityIndicator color={colors.white} />}
-        <Text style={styles.completeButtonText}>Complete Job & Submit</Text>
-      </TouchableOpacity>
+        {/* Complete Button */}
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.completeButton}
+          onPress={loading ? () => {} : onCompleteJob}
+          disabled={loading}>
+          {loading && <ActivityIndicator color={colors.white} />}
+          <Text style={styles.completeButtonText}>Complete Job & Submit</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal:8,
+    flex: 1,
     backgroundColor: '#fff',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
   },
   header: {
     fontSize: 22,
@@ -131,6 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
+    marginTop: 10,
   },
   totalLabel: {
     fontSize: 18,
@@ -144,7 +174,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginTop: 10,
-    marginBottom:25,
+    marginBottom: 20,
   },
   label: {
     fontSize: 14,
@@ -165,10 +195,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 25,
     alignItems: 'center',
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"center",
-    gap:10
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 10,
   },
   completeButtonText: {
     color: '#fff',
