@@ -1,4 +1,4 @@
-import { Header, Input, Typography, View, Button, MaterialIcons, JobStatus, EmptyState, Pagination, } from '@/components/index';
+import { Header, Input, Typography, View, Button, MaterialIcons, JobStatus, EmptyState, Pagination, AppFlatlist, } from '@/components/index';
 import { getTimeAgo, helpRequestSchema, getErrorMessage, showAlert, showErrorAlert, } from '@/utils/index';
 import { ScrollView, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { useSupport, useCreateSupportRequest } from '@/hooks/index';
@@ -157,12 +157,12 @@ const CustomerSupport = () => {
           </Formik>
         </ScrollView>
       ) : (
-        <FlatList
+        <AppFlatlist
           onRefresh={refetchRequests}
           refreshing={isFetching}
           data={requests}
-          renderItem={({item}) => <RequestItem item={item} />}
-          keyExtractor={item => item?._id || ''}
+          renderItem={({item}: {item: any} ) => <RequestItem item={item} />}
+          keyExtractor={(item:any) => item?._id || ''}
           contentContainerStyle={styles.listContent}
           ListEmptyComponent={<EmptyState />}
           ListFooterComponent={

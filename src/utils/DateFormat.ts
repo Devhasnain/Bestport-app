@@ -1,37 +1,83 @@
-export const formatToDMY = (isoString:string) => {
-  const date = new Date(isoString);
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
+// ============================================================
+// DATE / TIME UTILITY FUNCTIONS
+// All functions treat input as UTC to avoid timezone issues
+// across multiple countries/devices
+// ============================================================
 
-  return `${day <10 ? `0${day}`: day}-${month <10 ? `0${month}`:month}-${year}`;
+/**
+ * Normalizes an ISO string to ensure it's treated as UTC.
+ * Appends 'Z' if no timezone info is present.
+ */
+const toUTCDate = (isoString: string): Date => {
+  const normalized =
+    isoString.endsWith('Z') || isoString.includes('+')
+      ? isoString
+      : `${isoString}Z`;
+  return new Date(normalized);
 };
 
-export const formatTo12HourTime = (isoString:string) => {
-  const date = new Date(isoString);
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
+// ------------------------------------------------------------
+
+/**
+ * Formats an ISO string to DD-MM-YYYY using UTC values.
+ * e.g. "2024-01-05T10:30:00.000Z" → "05-01-2024"
+ */
+export const formatToDMY = (isoString: string): string => {
+  if (!isoString) return '-';
+
+  const date = toUTCDate(isoString);
+  if (isNaN(date.getTime())) return '-';
+
+  const day = date.getUTCDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const year = date.getUTCFullYear();
+
+  return `${day}-${month}-${year}`;
+};
+
+// ------------------------------------------------------------
+
+/**
+ * Formats an ISO string to 12-hour time (hh:mm AM/PM) using UTC values.
+ * e.g. "2024-01-05T14:30:00.000Z" → "2:30 PM"
+ */
+export const formatTo12HourTime = (isoString: string): string => {
+  if (!isoString) return '-';
+
+  const date = toUTCDate(isoString);
+  if (isNaN(date.getTime())) return '-';
+
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
   const ampm = hours >= 12 ? 'PM' : 'AM';
 
-  hours = hours % 12;
-  hours = hours ? hours : 12;
+  hours = hours % 12 || 12;
 
-  const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-  return `${hours ? hours : '-'}:${paddedMinutes ? paddedMinutes : '-'} ${
-    ampm ? ampm : '-'
-  }`;
+  return `${hours}:${minutes} ${ampm}`;
 };
 
-export const getTimeAgo = (dateString:string) => {
-  const date = new Date(dateString);
+// ------------------------------------------------------------
+
+/**
+ * Returns a human-readable relative time string.
+ * e.g. "2024-01-05T10:30:00.000Z" → "3 days ago"
+ * Timezone-independent (works correctly for all countries).
+ */
+export const getTimeAgo = (dateString: string): string => {
+  if (!dateString) return 'Unknown date';
+
+  const date = toUTCDate(dateString);
+  if (isNaN(date.getTime())) return 'Invalid date';
+
   const now = new Date();
-  const diff = Math.floor((Number(now) - Number(date)) / 1000);
+  const diff = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  // Future date guard (device clock skew)
+  if (diff < 0) return 'just now';
 
   if (diff < 60) {
-    if (diff < 1) return 'just now';
-    if (diff === 1) return '1 sec ago';
-    if (diff < 60) return `${diff} secs ago`;
+    if (diff <= 1) return 'just now';
+    return `${diff} secs ago`;
   }
   if (diff < 3600) {
     const mins = Math.floor(diff / 60);
@@ -51,57 +97,70 @@ export const getTimeAgo = (dateString:string) => {
   }
 
   const years = Math.floor(diff / 31536000);
-  return `${years} y${years !== 1 ? 's' : ''} ago`;
+  return `${years} yr${years !== 1 ? 's' : ''} ago`;
 };
 
+// ------------------------------------------------------------
 
-export const formatToFull12HourDateTime = (isoString:string) => {
+/**
+ * Formats an ISO string to full date + 12-hour time using UTC values.
+ * e.g. "2024-01-05T14:30:00.000Z" → "05-01-2024, 2:30 PM"
+ */
+export const formatToFull12HourDateTime = (isoString: string): string => {
   if (!isoString) return '-';
 
-  const date = new Date(isoString);
+  const date = toUTCDate(isoString);
+  if (isNaN(date.getTime())) return '-';
 
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
-  const year = date.getFullYear();
+  const day = date.getUTCDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const year = date.getUTCFullYear();
 
-  let hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
   const ampm = hours >= 12 ? 'PM' : 'AM';
 
-  hours = hours % 12;
-  hours = hours ? hours : 12;
+  hours = hours % 12 || 12;
 
   return `${day}-${month}-${year}, ${hours}:${minutes} ${ampm}`;
 };
 
+// ------------------------------------------------------------
 
-export const getTicketExpiryText = (createdAt:Date) => {
-  if (!createdAt) return "Invalid time";
+/**
+ * Returns expiry text for a ticket (expires 15 mins after createdAt).
+ * Uses UTC diff so device timezone doesn't affect result.
+ * e.g. → "Expires in 7 minutes" or "Ticket expired"
+ */
+export const getTicketExpiryText = (createdAt: Date | string): string => {
+  if (!createdAt) return 'Invalid time';
 
   const createdTime = new Date(createdAt);
-  const now = new Date();
-  const diffMs = Number(now) - Number(createdTime);
-  const diffMins = Math.floor(diffMs / 60000); // convert ms to minutes
+  if (isNaN(createdTime.getTime())) return 'Invalid time';
 
-  if (diffMins >= 15) {
-    return "Ticket expired";
-  } else {
-    const remaining = 15 - diffMins;
-    return `Expires in ${remaining} minute${remaining !== 1 ? 's' : ''}`;
-  }
+  const now = new Date();
+  const diffMins = Math.floor((now.getTime() - createdTime.getTime()) / 60000);
+
+  if (diffMins >= 15) return 'Ticket expired';
+
+  const remaining = 15 - diffMins;
+  return `Expires in ${remaining} minute${remaining !== 1 ? 's' : ''}`;
 };
 
-export const isTicketExpired = (createdAt:Date) => {
+// ------------------------------------------------------------
+
+/**
+ * Returns true if ticket has expired (older than 15 mins).
+ * Uses UTC diff so device timezone doesn't affect result.
+ */
+export const isTicketExpired = (createdAt: Date | string): boolean => {
   if (!createdAt) return true;
 
   const createdTime = new Date(createdAt);
-  const now = new Date();
-  const diffMs = Number(now) - Number(createdTime);
-  const diffMins = Math.floor(diffMs / 60000);
+  if (isNaN(createdTime.getTime())) return true;
 
-  if (diffMins >= 15) {
-    return true;
-  } else {
-    return false
-  }
+  const now = new Date();
+  const diffMins = Math.floor((now.getTime() - createdTime.getTime()) / 60000);
+
+  return diffMins >= 15;
 };

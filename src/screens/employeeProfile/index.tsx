@@ -19,7 +19,7 @@ const EmployeeProfile = ({route}: any) => {
     return <PageLoader/>
   }
 
-  if (!error) return  <EmptyState/>;
+  if (error||!employee) return  <EmptyState/>;
 
   return (
     <>
